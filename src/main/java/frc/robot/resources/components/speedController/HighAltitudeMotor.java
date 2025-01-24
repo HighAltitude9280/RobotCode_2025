@@ -48,34 +48,34 @@ public class HighAltitudeMotor {
     SparkMaxConfig sparkMaxConfiguration = new SparkMaxConfig();
     SparkFlexConfig sparkFlexConfiguration = new SparkFlexConfig();
 
-    public HighAltitudeMotor(int port, TypeOfMotor m) {
-        this.port = port;
+    public HighAltitudeMotor(int driveMotorPort, TypeOfMotor m) {
+        this.port = driveMotorPort;
         motorToUse = m;
 
         switch (motorToUse) {
 
             case TALON_SRX:
 
-                talonSRX = new WPI_TalonSRX(port);
+                talonSRX = new WPI_TalonSRX(driveMotorPort);
 
                 break;
 
             case TALON_FX:
 
                 talonFXConfiguration = new TalonFXConfiguration();
-                talonFX = new TalonFX(port);
+                talonFX = new TalonFX(driveMotorPort);
                 talonFX.getConfigurator().apply(talonFXConfiguration);
                 break;
 
             case SPARK_MAX_BRUSHED:
 
-                sparkMax = new SparkMax(port, MotorType.kBrushed);
+                sparkMax = new SparkMax(driveMotorPort, MotorType.kBrushed);
 
                 break;
 
             case SPARK_MAX_BRUSHLESS:
                 sparkMaxConfiguration = new SparkMaxConfig();
-                sparkMax = new SparkMax(port, MotorType.kBrushless);
+                sparkMax = new SparkMax(driveMotorPort, MotorType.kBrushless);
                 sparkMaxConfiguration.inverted(false).idleMode(IdleMode.kCoast);
                 sparkMaxConfiguration.encoder.positionConversionFactor(1).velocityConversionFactor(1);
                 sparkMaxConfiguration.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0, 0,
@@ -87,7 +87,7 @@ public class HighAltitudeMotor {
 
             case SPARK_FLEX:
 
-                sparkFlex = new SparkFlex(port, MotorType.kBrushless);
+                sparkFlex = new SparkFlex(driveMotorPort, MotorType.kBrushless);
                 sparkFlexConfiguration.inverted(false).idleMode(IdleMode.kCoast);
                 sparkFlexConfiguration.encoder.positionConversionFactor(1).velocityConversionFactor(1);
                 sparkFlexConfiguration.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0, 0, 0);

@@ -5,16 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.resources.components.speedController.HighAltitudeMotor;
-import frc.robot.resources.components.speedController.HighAltitudeMotor.TypeOfMotor;
-import frc.robot.resources.joysticks.HighAltitudeJoystick;
-import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
-import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
-import frc.robot.resources.joysticks.HighAltitudeJoystick.JoystickType;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -24,16 +16,8 @@ import frc.robot.resources.joysticks.HighAltitudeJoystick.JoystickType;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  HighAltitudeMotor sparkMaxTest = new HighAltitudeMotor(39, TypeOfMotor.SPARK_MAX_BRUSHLESS);
-  HighAltitudeMotor talonFXTest = new HighAltitudeMotor(12,
-      TypeOfMotor.TALON_FX);
-
-  // Crea el objeto Orchestra
-  private HighAltitudeJoystick pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+  public static RobotContainer robotContainer;
+  private Command m_autonomousCommand;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -41,21 +25,9 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-
-    pilot.onTrue(ButtonType.A, new InstantCommand(() -> sparkMaxTest.setBrakeMode(true)));
-    pilot.onTrue(ButtonType.X, new InstantCommand(() -> sparkMaxTest.setBrakeMode(false)));
-
-    pilot.onTrue(ButtonType.B, new InstantCommand(() -> sparkMaxTest.setInverted(true)));
-    pilot.onTrue(ButtonType.Y, new InstantCommand(() -> sparkMaxTest.setInverted(false)));
-
-    pilot.onTrue(ButtonType.POV_N, new InstantCommand(() -> talonFXTest.setBrakeMode(true)));
-    pilot.onTrue(ButtonType.POV_S, new InstantCommand(() -> talonFXTest.setBrakeMode(false)));
-
-    pilot.onTrue(ButtonType.POV_W, new InstantCommand(() -> talonFXTest.setInverted(true)));
-    pilot.onTrue(ButtonType.POV_E, new InstantCommand(() -> talonFXTest.setInverted(false)));
+    robotContainer = new RobotContainer();
+    getRobotContainer().ConfigureButtonBindings();
+    getRobotContainer().generateAutos();
 
   }
 
@@ -72,11 +44,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("SparkMAX Encoder Position Value", sparkMaxTest.getEncPosition());
-    SmartDashboard.putNumber("SparkMAX Encoder Velocity Value", sparkMaxTest.getEncVelocity());
-
-    SmartDashboard.putNumber("TalonFX Encoder Position Value", talonFXTest.getEncPosition());
-    SmartDashboard.putNumber("TalonFX Encoder Velocity Value", talonFXTest.getEncVelocity());
+    /*
+     * SmartDashboard.putString("Pilot",
+     * robotContainer.getCurrentPilot().toString());
+     * SmartDashboard.putString("Copilot",
+     * robotContainer.getCurrentCopilot().toString());
+     * 
+     * SmartDashboard.putBoolean("Field Oriented",
+     * robotContainer.getSwerveDriveTrain().getIsFieldOriented());
+     */
 
   }
 
@@ -99,38 +75,33 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // getRobotContainer().getSwerveDriveTrain().setModulesBrakeMode(true);
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
+
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+    // getRobotContainer().getSwerveDriveTrain().setModulesBrakeMode(true);
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    double input = pilot.getAxis(AxisType.LEFT_Y);
-    sparkMaxTest.set(input * 0.5);
 
-    double input2 = pilot.getAxis(AxisType.RIGHT_Y);
-    talonFXTest.set(input2 * 0.2);
   }
 
   /** This function is called once when the robot is disabled. */
@@ -141,6 +112,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
+    getRobotContainer().putAutoChooser();
   }
 
   /** This function is called once when test mode is enabled. */
@@ -161,5 +133,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
+  }
+
+  public static RobotContainer getRobotContainer() {
+    return robotContainer;
   }
 }
