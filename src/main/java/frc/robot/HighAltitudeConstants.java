@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -88,6 +86,10 @@ public class HighAltitudeConstants {
     public static final double SWERVE_DRIVE_kP = 1.7375;
     public static final double SWERVE_DRIVE_kI = 0;
     public static final double SWERVE_DRIVE_kD = 0.0;
+
+    // FEEDFORWARD //
+    public static final double SWERVE_DRIVE_kS = 0;
+    public static final double SWERVE_DRIVE_kV = 0;
 
     // The reported encoder position after one revolution, check encoder
     // specifications.
@@ -182,39 +184,42 @@ public class HighAltitudeConstants {
     public static final double SWERVE_DIRECTION_kV = 0.01;
     public static final double SWERVE_DIRECTION_kA = 0; // no sé si dejarlo en 0
 
-    /* 
-    static RobotConfig config;
-    try
-        {
-            config = RobotConfig.fromGUISettings();
-        }catch(
-        Exception e)
-        {
-            // Handle exception as needed
-            e.printStackTrace();
-        }
-    
-        public static final PPHolonomicDriveController pathFollowerConfig = new PPHolonomicDriveController(
-                new PIDConstants(0.9, 0, 0.000025), // Translation constants
-                new PIDConstants(2.0, 0, 0), // Rotation constants
-                SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND,
-                Math.hypot(SWERVE_TRACK_WIDTH / 2, SWERVE_WHEEL_BASE / 2), // Drive base radius (distance from
-                                                                           // center to
-                                                                           // furthest module)
-                config, () -> {
-                // Boolean supplier that controls when the path will be mirrored for the red
-                // alliance
-                // This will flip the path being followed to the red side of the field.
-                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                    return alliance.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-            },
-            this.swerveDr // Reference to this subsystem to set requirements
-    );}*/
+    /*
+     * static RobotConfig config;
+     * try
+     * {
+     * config = RobotConfig.fromGUISettings();
+     * }catch(
+     * Exception e)
+     * {
+     * // Handle exception as needed
+     * e.printStackTrace();
+     * }
+     * 
+     * public static final PPHolonomicDriveController pathFollowerConfig = new
+     * PPHolonomicDriveController(
+     * new PIDConstants(0.9, 0, 0.000025), // Translation constants
+     * new PIDConstants(2.0, 0, 0), // Rotation constants
+     * SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND,
+     * Math.hypot(SWERVE_TRACK_WIDTH / 2, SWERVE_WHEEL_BASE / 2), // Drive base
+     * radius (distance from
+     * // center to
+     * // furthest module)
+     * config, () -> {
+     * // Boolean supplier that controls when the path will be mirrored for the red
+     * // alliance
+     * // This will flip the path being followed to the red side of the field.
+     * // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+     * 
+     * var alliance = DriverStation.getAlliance();
+     * if (alliance.isPresent()) {
+     * return alliance.get() == DriverStation.Alliance.Red;
+     * }
+     * return false;
+     * },
+     * this.swerveDr // Reference to this subsystem to set requirements
+     * );}
+     */
 
     //// SpeedReduction constants
 
@@ -227,80 +232,6 @@ public class HighAltitudeConstants {
     public static final double YAW_OFFSET = 5.72;
 
     public static final double DISTANCE_CORRECTION = 0.5;
-
-    public static final double NOTE_DETECTION_YAW_OFFSET = -2.0;
-    public static final double NOTE_DETECTION_YAW_P = 08.0;
-
-    public static final double NOTE_DETECTION_DRIVE_POWER = 0.3;
-    public static final double NOTE_DETECTION_TURN_POWER = 0.8;
-
-    ////////////////////////// SHOOTER //////////////////////////
-
-    public static final boolean SHOOTER_MOTORS_BRAKING_MODE = false;
-    public static final double SHOOTER_RPM_TO_POWER = 1f / 5000f;
-    public static final double SHOOTER_RPM_STEP = 0.000004;
-    public static final double SHOOTER_ON_TARGET = 50;
-
-    // LEFT //
-
-    // Order of tuning: feed forward, then PID
-    public static final double SHOOTER_LEFT_kP = 0.00005;
-    public static final double SHOOTER_LEFT_kD = 0.000011;
-
-    public static final double SHOOTER_LEFT_kS = 0.0;
-    public static final double SHOOTER_LEFT_kV = 0.000177;
-
-    // RIGHT //
-    public static final double SHOOTER_RIGHT_kP = 0.000027;
-    public static final double SHOOTER_RIGHT_kD = 0.000011;
-
-    public static final double SHOOTER_RIGHT_kS = 0.0;
-    public static final double SHOOTER_RIGHT_kV = 0.0001835;
-
-    ////////////////////////// INDEXER //////////////////////////
-
-    public static final double INDEXER_IN_SPEED = 0.7;
-    public static final double INDEXER_OUT_SPEED = -0.7;
-
-    ////////////////////////// INTAKE //////////////////////////
-
-    public static final double INTAKE_IN_SPEED = 0.6;
-    public static final double INTAKE_OUT_SPEED = -0.6;
-
-    public static final boolean INTAKE_MOTOR_BRAKING_MODE = false;
-
-    ////////////////////////// SHOOTER PIVOT //////////////////////////
-
-    public static final boolean SHOOTER_PIVOT_MOTOR_BRAKING_MODE = true;
-
-    // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
-    // NUMBERS. SHOOTER PIVOT REVS / MOTOR REVS
-    public static final double SHOOTER_PIVOT_RATIO = ((72.0 * 80.0 * 26.0) / (12.0 * 16.0 * 12.0));
-    // 2592 //124416
-    public static final double SHOOTER_PIVOT_DEGREES_PER_REVOLUTION = 360
-            / SHOOTER_PIVOT_RATIO;
-
-    public static final double SHOOTER_PIVOT_BRAKING_DEGREES = 0; // 50;
-
-    public static final double SHOOTER_PIVOT_ARRIVE_OFFSET = 0; // 0.05;
-
-    public static final double SHOOTER_PIVOT_ABSOLUTE_ENCODER_DEGREES_PER_PULSE = 360
-            / SHOOTER_PIVOT_RATIO;
-
-    public static final double SHOOTER_PIVOT_AUTO_MAX_POWER = 0.5;
-
-    public static final double SHOOTER_PIVOT_UPPER_LIMIT = 0; // 107.7;
-    // 107.666015625 Shuffle Report
-
-    public static final double SHOOTER_PIVOT_LOWER_LIMIT = 0.0;
-    // 0.17578125 Shuffle Report
-
-    public static final double SHOOTER_PIVOT_ANGLE_CORRECTION_CONSTANT = 0; // 20;
-
-    public static final double SHOOTER_PIVOT_PITCH_TO_TARGET_MULTIPLIER = 0; // -0.003;
-    public static final double SHOOTER_PIVOT_PITCH_TO_TARGET_OFFSET = 0; // .18;
-
-    public static final double SHOOTER_PIVOT_ZERO_ANGLE = 0; // 65.0;
 
     //////////////////////// DRIVERS ////////////////////////
 

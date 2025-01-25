@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.swerve;
 
-
-
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -41,7 +39,7 @@ public class HighSwerveModule {
 
   private double lastTimeAcc = Timer.getFPGATimestamp();
 
-  private double directionLastSpeed = 0;
+  private double directionLastSpeed = getEncoderVelocity();
   private double lastTime = Timer.getFPGATimestamp();
 
   private SimpleMotorFeedforward directionFeedforward;
@@ -51,7 +49,7 @@ public class HighSwerveModule {
   private HighAltitudeMotor driveMotor;
 
   private PIDController drivePIDController;
-  private SimpleMotorFeedforward driveFeedforward;// TODO: fix this
+  private SimpleMotorFeedforward driveFeedforward;
   private boolean mpsOnTarget = false;
 
   private double encoderOffSetPulses;
@@ -66,10 +64,6 @@ public class HighSwerveModule {
       boolean isDirectionMotorReversed, boolean isDirectionEncoderReversed,
 
       int encodedTalonPort, double encoderOffsetPulses, boolean isTalonEncoderReversed) {
-
-    driveMotor = new HighAltitudeMotor(driveMotorPort, driveTypeOfMotor);
-    driveMotor.setInverted(isDriveMotorReversed);
-    driveMotor.setBrakeMode(true);
 
     directionMotor = new HighAltitudeMotor(directionMotorPort, directionTypeOfMotor);
     directionMotor.setInverted(isDirectionMotorReversed);
@@ -94,12 +88,17 @@ public class HighSwerveModule {
     drivePIDController = new PIDController(HighAltitudeConstants.SWERVE_DRIVE_kP,
         HighAltitudeConstants.SWERVE_DRIVE_kI, HighAltitudeConstants.SWERVE_DRIVE_kD);
 
+    driveFeedforward = new SimpleMotorFeedforward(HighAltitudeConstants.SWERVE_DRIVE_kS,
+        HighAltitudeConstants.SWERVE_DRIVE_kV);
+
     absoluteEncoderController = new CANcoder(encodedTalonPort);
     this.isTalonEncoderReversed = isTalonEncoderReversed;
     this.encoderOffSetPulses = encoderOffsetPulses;
 
     // DRIVE MOTOR //
-
+    driveMotor = new HighAltitudeMotor(driveMotorPort, driveTypeOfMotor);
+    driveMotor.setInverted(isDriveMotorReversed);
+    driveMotor.setBrakeMode(true);
   }
 
   ///// CANCODER /////
@@ -193,15 +192,23 @@ public class HighSwerveModule {
     return mpsOnTarget;
   }
 
+  public void controlSwerveSpeed(double mps) { // TODO: pendiente de revisión
+    double feedforward = driveFeedforward.calculate(mps);
 
-  public void controlSwerveSpeed(double mps) {
-    double driveOutput = drivePIDController.calculate(getDriveVelocity(), mps);
-    Math.clamp(driveOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
+    double pidOutput = drivePIDController.calculate(getDriveVelocity(), mps);
+
+    double driveOutput = pidOutput + feedforward;
+
+    driveOutput = Math.clamp(driveOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
+
     driveMotor.setVoltage(driveOutput);
 
     double delta = mps - getDriveVelocity();
+
     SmartDashboard.putNumber("Error Drive PID", delta);
-    SmartDashboard.putNumber("Voltage Output Drive PID", driveOutput);
+    SmartDashboard.putNumber("Voltage Output Drive PID", pidOutput);
+    SmartDashboard.putNumber("Feedforward Output", feedforward);
+    SmartDashboard.putNumber("Total Voltage Output", driveOutput);
 
     mpsOnTarget = (Math.abs(delta) <= HighAltitudeConstants.SWERVE_DRIVE_ON_TARGET);
   }
@@ -221,13 +228,10 @@ public class HighSwerveModule {
     directionLastSpeed = targetSpeed;
     lastTime = Timer.getFPGATimestamp();
 
-    directionPIDAccelerationSetPoint = (targetSpeed - directionLastSpeed)
-        / (Timer.getFPGATimestamp() - lastTimeAcc);
+    directionPIDAccelerationSetPoint = directionAcceleration;
+
     directionPIDAngleSetPoint = getDirectionPIDController().getSetpoint().position;
     directionPIDVelocitySetPoint = getDirectionPIDController().getSetpoint().velocity;
-
-    getEncoderAcceleration();
-    double delta = currentAngleDirectionPower - getAbsoluteEncoderRAD();// TODO: fix this
   }
 
   public ProfiledPIDController getDirectionPIDController() {
