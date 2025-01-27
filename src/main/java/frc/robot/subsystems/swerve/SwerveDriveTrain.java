@@ -16,7 +16,9 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -112,19 +114,22 @@ public class SwerveDriveTrain extends SubsystemBase {
             backRight.getPosition()
         }, new Pose2d(0.0, 0.0, new Rotation2d(0)));
 
+    RobotConfig config;
+    try {
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
     // Configure AutoBuilder
     AutoBuilder.configure(
         this::getPose,
         this::resetPose,
-        this::getChassisSpeeds,  //TODO: fix this
-        this::driveSpeed -> 
-        HighAltitudeConstants.pathFollowerConfig,
+        this::getChassisSpeeds, // TODO: fix this
+        this::driveSpeed,
+        HighAltitudeConstants.pathFollowerConfig, 
+        config,
         () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red
-          // alliance
-          // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
             return alliance.get() == DriverStation.Alliance.Red;
@@ -197,6 +202,11 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   // 5. Set the states to the swerve modules
   public void driveSpeed(ChassisSpeeds chassisSpeeds) {
+    SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    setModuleStates(moduleStates);
+  }
+
+  public void driveSpeed(ChassisSpeeds chassisSpeeds, DriveFeedforwards driveFeedforwards) {
     SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     setModuleStates(moduleStates);
   }
@@ -381,7 +391,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
   }
 
-  public boolean pointToSpeaker(double maxPower) { //TODO: cambiar a Reef?
+  public boolean pointToSpeaker(double maxPower) { // TODO: cambiar a Reef?
     return pointToTarget(HighAltitudeConstants.SPEAKER.toPose2d(), maxPower);
   }
 

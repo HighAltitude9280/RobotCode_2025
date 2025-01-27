@@ -30,9 +30,9 @@ public class HighSwerveModule {
 
   private final ProfiledPIDController directionProfiledPIDController;
 
+  private double directionPIDAngleTarget = 0;
   private double directionPIDAngleSetPoint = 0;
   private double directionPIDVelocitySetPoint = 0;
-  private double directionPIDAccelerationSetPoint = 0;
 
   private double directionLastSpeed = getEncoderVelocity();
   private double lastTime = Timer.getFPGATimestamp();
@@ -107,8 +107,12 @@ public class HighSwerveModule {
     return absoluteEncoderController.getPosition().getValueAsDouble();
   }
 
+  /**
+   * @return direction CANCoder velocity in radians / s
+   */
   public double getEncoderVelocity() {
-    return absoluteEncoderController.getVelocity().getValueAsDouble() * 2 * Math.PI
+    return absoluteEncoderController.getVelocity().getValueAsDouble()
+        * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE
         * (isTalonEncoderReversed ? -1.0 : 1.0);
 
   }
@@ -124,17 +128,20 @@ public class HighSwerveModule {
     return driveMotor.getEncPosition();
   }
 
+  /**
+   * @return drive encoder distance in meters.
+   */
   public double getDriveDistance() {
     return driveMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REVOLUTION;
   }
 
+  /**
+   * @return drive encoder velocity in meters per second.
+   */
   public double getDriveVelocity() {
     return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS;
   }
 
-  public double getDriveMetersRevolution() {
-    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REVOLUTION;
-  }
 
   public double getDirectionEncoder() {
     return directionMotor.getEncPosition() * (isDirectionEncoderReversed ? -1.0 : 1.0);
@@ -179,10 +186,6 @@ public class HighSwerveModule {
     controlSwerveSpeed(state.speedMetersPerSecond);
   }
 
-  public boolean onMPSTarget() {
-    return mpsOnTarget;
-  }
-
   public void controlSwerveSpeed(double mps) {
     double feedforward = driveFeedforward.calculate(mps);
 
@@ -193,38 +196,26 @@ public class HighSwerveModule {
     driveOutput = Math.clamp(driveOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
 
     driveMotor.setVoltage(driveOutput);
-
-    double delta = mps - getDriveVelocity();
-
-    SmartDashboard.putNumber("Error Drive PID", delta);
-    SmartDashboard.putNumber("Voltage Output Drive PID", pidOutput);
-    SmartDashboard.putNumber("Feedforward Output", feedforward);
-    SmartDashboard.putNumber("Total Voltage Output", driveOutput);
-
-    // mpsOnTarget = (Math.abs(delta) <=
-    // HighAltitudeConstants.SWERVE_DRIVE_ON_TARGET);
   }
 
+  /**
+   * Moves the swerve module to the desired angle.
+   * @param angleTarget the target angle in radians.
+   */
   public void controlSwerveDirection(double angleTarget) {
     double pidVal = directionProfiledPIDController.calculate(getAbsoluteEncoderRAD(),
         angleTarget);
     double targetSpeed = directionProfiledPIDController.getSetpoint().velocity;
 
-    double directionAcceleration = (targetSpeed - directionLastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-    double feedforwardVal = directionFeedforward.calculate(targetSpeed, directionAcceleration);
-
+    double feedforwardVal = directionFeedforward.calculate(targetSpeed);
     double directionOutput = pidVal + feedforwardVal;
+
     Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
 
     directionMotor.setVoltage(directionOutput);
 
-    // directionLastSpeed = targetSpeed;
-    directionLastSpeed = getEncoderVelocity();
-
-    lastTime = Timer.getFPGATimestamp();
-
-    directionPIDAccelerationSetPoint = directionAcceleration;
-
+    
+    directionPIDAngleTarget = angleTarget;
     directionPIDAngleSetPoint = getDirectionPIDController().getSetpoint().position;
     directionPIDVelocitySetPoint = getDirectionPIDController().getSetpoint().velocity;
   }
@@ -251,11 +242,10 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "AbsRawPos", absoluteEncoderController.getPosition().getValueAsDouble());
   }
 
-  public void controlTunning(String identifier) {
+  public void putControlTunningValues(String identifier) {
     // This is what you should print:
     // 1. Velocity of the DriveMotorEnc
     SmartDashboard.putNumber(identifier + "DriveVelocity", getDriveVelocity());
-    SmartDashboard.putNumber(identifier + "Drive Meters Revolution", getDriveMetersRevolution());
 
     // 2. Graphic of the CANCoder Angle
     SmartDashboard.putNumber(identifier + "CANCoder Angle", getAbsoluteEncoderRAD());
@@ -264,14 +254,11 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "CANCoder Velocity", getEncoderVelocity());
 
     // 5. Setpoint of the ProfiledPIDController Angle
-    // SmartDashboard.putNumber(identifier + "Direction Angle SetPoint",
-    // directionPIDAngleSetPoint);
+    SmartDashboard.putNumber(identifier + "Direction Angle target", directionPIDAngleTarget);
+    SmartDashboard.putNumber(identifier + "Direction Angle SetPoint", directionPIDAngleSetPoint);
 
     // 6. Setpoint of the ProfiledPIDController Velocity
     SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint", directionPIDVelocitySetPoint);
-
-    // 7. Setpoint of the ProfiledPIDController Acceleration
-    SmartDashboard.putNumber(identifier + "Direction Acceleration SetPoint", directionPIDAccelerationSetPoint);
 
   }
 
