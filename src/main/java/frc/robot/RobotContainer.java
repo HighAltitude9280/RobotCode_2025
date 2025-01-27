@@ -9,21 +9,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.resources.components.Navx;
+import frc.robot.subsystems.swerve.SwerveDriveTrain;
+import frc.robot.subsystems.vision.vision;
 
 /** Add your docs here. */
 public class RobotContainer {
 
     private Navx navx;
+    private SwerveDriveTrain swerveDriveTrain;
+    private vision vision;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
         navx = new Navx();
-
+        swerveDriveTrain = new SwerveDriveTrain();
+        vision = new vision();
     }
 
     public Navx getNavx() {
         return navx;
+    }
+
+    public vision getVision() {
+        return vision;
+    }
+
+    public SwerveDriveTrain getSwerveDriveTrain() {
+        return swerveDriveTrain;
     }
 
     public void ConfigureButtonBindings() {

@@ -34,16 +34,10 @@ public class HighSwerveModule {
   private double directionPIDVelocitySetPoint = 0;
   private double directionPIDAccelerationSetPoint = 0;
 
-  private double lastEncoderVelocityEnc = 0;
-  private double lastTimeEnc = Timer.getFPGATimestamp();
-
-  private double lastTimeAcc = Timer.getFPGATimestamp();
-
   private double directionLastSpeed = getEncoderVelocity();
   private double lastTime = Timer.getFPGATimestamp();
 
   private SimpleMotorFeedforward directionFeedforward;
-  private double currentAngleDirectionPower;
 
   /// DRIVE ///
   private HighAltitudeMotor driveMotor;
@@ -119,10 +113,6 @@ public class HighSwerveModule {
 
   }
 
-  public double getEncoderAcceleration() {
-    return (lastEncoderVelocityEnc - getEncoderVelocity()) / lastTimeEnc - Timer.getFPGATimestamp(); // TODO: fix this
-  }
-
   ///// MOTOR ENCODERS /////
 
   public void resetEncoders() {
@@ -183,7 +173,8 @@ public class HighSwerveModule {
       return;
     }
 
-    state = SwerveModuleState.optimize(state, getState().angle);// TODO: fix this
+    state.optimize(getState().angle);
+
     controlSwerveDirection(state.angle.getRadians());
     controlSwerveSpeed(state.speedMetersPerSecond);
   }
@@ -192,7 +183,7 @@ public class HighSwerveModule {
     return mpsOnTarget;
   }
 
-  public void controlSwerveSpeed(double mps) { // TODO: pendiente de revisión
+  public void controlSwerveSpeed(double mps) {
     double feedforward = driveFeedforward.calculate(mps);
 
     double pidOutput = drivePIDController.calculate(getDriveVelocity(), mps);
@@ -210,7 +201,8 @@ public class HighSwerveModule {
     SmartDashboard.putNumber("Feedforward Output", feedforward);
     SmartDashboard.putNumber("Total Voltage Output", driveOutput);
 
-    mpsOnTarget = (Math.abs(delta) <= HighAltitudeConstants.SWERVE_DRIVE_ON_TARGET);
+    // mpsOnTarget = (Math.abs(delta) <=
+    // HighAltitudeConstants.SWERVE_DRIVE_ON_TARGET);
   }
 
   public void controlSwerveDirection(double angleTarget) {
@@ -225,7 +217,10 @@ public class HighSwerveModule {
     Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
 
     directionMotor.setVoltage(directionOutput);
-    directionLastSpeed = targetSpeed;
+
+    // directionLastSpeed = targetSpeed;
+    directionLastSpeed = getEncoderVelocity();
+
     lastTime = Timer.getFPGATimestamp();
 
     directionPIDAccelerationSetPoint = directionAcceleration;
@@ -268,11 +263,9 @@ public class HighSwerveModule {
     // 3. Graphic of the CANCoder Velocity
     SmartDashboard.putNumber(identifier + "CANCoder Velocity", getEncoderVelocity());
 
-    // 4. Graphic of the CANCoder Acceleration
-    SmartDashboard.putNumber(identifier + "CANCoder Acceleration", getEncoderAcceleration());
-
     // 5. Setpoint of the ProfiledPIDController Angle
-    SmartDashboard.putNumber(identifier + "Direction Angle SetPoint", directionPIDAngleSetPoint);
+    // SmartDashboard.putNumber(identifier + "Direction Angle SetPoint",
+    // directionPIDAngleSetPoint);
 
     // 6. Setpoint of the ProfiledPIDController Velocity
     SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint", directionPIDVelocitySetPoint);
