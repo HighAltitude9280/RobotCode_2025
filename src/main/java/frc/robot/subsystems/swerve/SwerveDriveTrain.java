@@ -8,7 +8,6 @@ import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.resources.math.Math;
-import frc.robot.subsystems.vision.vision;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -19,7 +18,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -34,7 +32,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDriveTrain extends SubsystemBase {
@@ -285,21 +282,23 @@ public class SwerveDriveTrain extends SubsystemBase {
             backRight.getPosition() });
     field.setRobotPose(getPose());
   }
-
-  public void updateOdometryWithVision() {
-    for (Optional<EstimatedRobotPose> pos : Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose())) {
-      if (pos == null || pos.isEmpty())
-        continue;
-      var pose = pos.get();
-      swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-          pose.timestampSeconds);
-    }
-  }
+  /*
+   * public void updateOdometryWithVision() {
+   * for (Optional<EstimatedRobotPose> pos :
+   * Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose())) {
+   * if (pos == null || pos.isEmpty())
+   * continue;
+   * var pose = pos.get();
+   * swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+   * pose.timestampSeconds);
+   * }
+   * } TODO: arreglar este desmadre
+   
 
   public void addVisionMeasurement(Pose2d visionMeasurement, double timeStampSeconds) {
     swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
         timeStampSeconds);
-  }
+  }*/
 
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
@@ -374,7 +373,6 @@ public class SwerveDriveTrain extends SubsystemBase {
         HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
         HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
 
-    
     return AutoBuilder.pathfindThenFollowPath(path, constraints);
   }
 
@@ -441,9 +439,10 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    updateOdometryWithVision();
+    // updateOdometryWithVision(); TODO: fix this
     putAllInfoInSmartDashboard();
   }
+
   /*
    * public void updateEncoders() {
    * frontLeft.updateEncoders();

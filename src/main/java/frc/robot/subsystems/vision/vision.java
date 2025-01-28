@@ -41,7 +41,6 @@ public class vision extends SubsystemBase {
     poseCamBack = new PhotonCamera("ArducamBack");
 
     alignmentCam = new PhotonCamera("limelight");
-    
 
     AprilTagFieldLayout fieldLayout;
     try {
@@ -64,13 +63,14 @@ public class vision extends SubsystemBase {
 
       e.printStackTrace();
     }
-
-    // Initialize pose1 and pose2 after poseEstimators are created
-    pose1 = poseEstimatorBack.update(resultBack);
-    pose2 = poseEstimatorFront.update(resultFront);
-
-    resultBack = poseCamBack.getLatestResult();
-    resultFront = poseCamFront.getLatestResult();
+    /*
+     * // Initialize pose1 and pose2 after poseEstimators are created
+     * pose1 = poseEstimatorBack.update(resultBack);
+     * pose2 = poseEstimatorFront.update(resultFront);
+     * 
+     * resultBack = poseCamBack.getLatestResult();
+     * resultFront = poseCamFront.getLatestResult();
+     */
   }
 
   public ArrayList<Optional<EstimatedRobotPose>> getEstimatedPosition() {
@@ -87,33 +87,31 @@ public class vision extends SubsystemBase {
       return new ArrayList<>(List.of(pose1, pose2)); // Return current poses without updating
     }
 
-    poseEstimatorFront.setReferencePose(prevEstimatedRobotPose); //TODO: creo q falta uno para back
+    poseEstimatorFront.setReferencePose(prevEstimatedRobotPose); // TODO: creo q falta uno para back
     ArrayList<Optional<EstimatedRobotPose>> result = new ArrayList<>();
     result.add(pose1);
     result.add(pose2);
     return result;
   }
 
-  public boolean alignmentCamHasTargets()
-  {
-    return alignmentResults == null || alignmentResults.isEmpty() || alignmentResults.get(alignmentResults.size()-1).hasTargets();
+  public boolean alignmentCamHasTargets() {
+    return alignmentResults == null || alignmentResults.isEmpty()
+        || alignmentResults.get(alignmentResults.size() - 1).hasTargets();
   }
 
-  public double getTargetYaw(int id)
-  {
-    for (var target : alignmentResults.get(alignmentResults.size() -1 ).getTargets()) {
+  public double getTargetYaw(int id) {
+    for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
       if (target.getFiducialId() == id) {
-          return target.getYaw();
+        return target.getYaw();
       }
     }
     return Double.NaN;
   }
 
-  public double getTargetSize(int id)
-  {
-    for (var target : alignmentResults.get(alignmentResults.size() -1 ).getTargets()) {
+  public double getTargetSize(int id) {
+    for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
       if (target.getFiducialId() == id) {
-          return target.getArea();
+        return target.getArea();
       }
     }
     return Double.NaN;
@@ -122,8 +120,14 @@ public class vision extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    pose1 = poseEstimatorBack.update(resultBack);
-    pose2 = poseEstimatorFront.update(resultFront);
-    alignmentResults = alignmentCam.getAllUnreadResults();
+    if (poseEstimatorBack != null) {
+      pose1 = poseEstimatorBack.update(resultBack);
+    }
+    if (poseEstimatorFront != null) {
+      pose2 = poseEstimatorFront.update(resultFront);
+    }
+    if (alignmentCam != null) {
+      alignmentResults = alignmentCam.getAllUnreadResults();
+    }
   }
 }
