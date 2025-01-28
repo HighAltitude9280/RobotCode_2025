@@ -34,9 +34,6 @@ public class HighSwerveModule {
   private double directionPIDAngleSetPoint = 0;
   private double directionPIDVelocitySetPoint = 0;
 
-  private double directionLastSpeed = getEncoderVelocity();
-  private double lastTime = Timer.getFPGATimestamp();
-
   private SimpleMotorFeedforward directionFeedforward;
 
   /// DRIVE ///
@@ -44,7 +41,6 @@ public class HighSwerveModule {
 
   private PIDController drivePIDController;
   private SimpleMotorFeedforward driveFeedforward;
-  private boolean mpsOnTarget = false;
 
   private double encoderOffSetPulses;
 

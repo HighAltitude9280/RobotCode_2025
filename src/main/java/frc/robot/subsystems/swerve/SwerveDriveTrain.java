@@ -18,6 +18,7 @@ import org.photonvision.EstimatedRobotPose;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
@@ -114,20 +115,21 @@ public class SwerveDriveTrain extends SubsystemBase {
             backRight.getPosition()
         }, new Pose2d(0.0, 0.0, new Rotation2d(0)));
 
-    RobotConfig config;
+    RobotConfig config = null;
     try {
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
     }
+
     // Configure AutoBuilder
     AutoBuilder.configure(
         this::getPose,
         this::resetPose,
-        this::getChassisSpeeds, // TODO: fix this
+        this::getChassisSpeeds,
         this::driveSpeed,
-        HighAltitudeConstants.pathFollowerConfig, 
+        HighAltitudeConstants.pathFollowerConfig,
         config,
         () -> {
           var alliance = DriverStation.getAlliance();
@@ -202,11 +204,6 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   // 5. Set the states to the swerve modules
   public void driveSpeed(ChassisSpeeds chassisSpeeds) {
-    SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-    setModuleStates(moduleStates);
-  }
-
-  public void driveSpeed(ChassisSpeeds chassisSpeeds, DriveFeedforwards driveFeedforwards) {
     SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     setModuleStates(moduleStates);
   }
@@ -366,13 +363,19 @@ public class SwerveDriveTrain extends SubsystemBase {
         HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
         HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
 
-    Subsystem swerve = this;
-    Command pathCommand = new PathfindHolonomic(targetPose, constraints,
-        this::getPose, this::getChassisSpeeds,
-        this::driveSpeed, HighAltitudeConstants.pathFollowerConfig, swerve);
-    // antes this::driveRobotRelative
+    return AutoBuilder.pathfindToPose(targetPose, constraints);
+  }
 
-    return pathCommand;
+  public Command pathfindThenPath(PathPlannerPath path) {
+
+    PathConstraints constraints = new PathConstraints(
+        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
+        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
+        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
+        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
+
+    
+    return AutoBuilder.pathfindThenFollowPath(path, constraints);
   }
 
   public ChassisSpeeds getChassisSpeeds() {
@@ -389,10 +392,6 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
     setModuleStates(
         HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
-  }
-
-  public boolean pointToSpeaker(double maxPower) { // TODO: cambiar a Reef?
-    return pointToTarget(HighAltitudeConstants.SPEAKER.toPose2d(), maxPower);
   }
 
   public boolean pointToTarget(Pose2d target, double maxPower) {
@@ -431,10 +430,6 @@ public class SwerveDriveTrain extends SubsystemBase {
     defaultDrive(speed, strafe, turnPower);
   }
 
-  public double distanceToSpeaker() {
-    return getPose().getTranslation().getDistance(HighAltitudeConstants.SPEAKER.toPose2d().getTranslation());
-  }
-
   public boolean getIsOnCompetitiveField() {
     return isOnCompetitiveField;
   }
@@ -447,7 +442,6 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void periodic() {
     updateOdometry();
     updateOdometryWithVision();
-    // updateEncoders(); //TODO: fix this
     putAllInfoInSmartDashboard();
   }
   /*
@@ -471,9 +465,9 @@ public class SwerveDriveTrain extends SubsystemBase {
     backLeft.putEncoderValuesInvertedApplied("BL");
     backRight.putEncoderValuesInvertedApplied("BR");
 
-    frontLeft.controlTunning("FL");
-    frontRight.controlTunning("FR");
-    backLeft.controlTunning("BL");
-    backRight.controlTunning("BR");
+    frontLeft.putControlTunningValues("FL");
+    frontRight.putControlTunningValues("FR");
+    backLeft.putControlTunningValues("BL");
+    backRight.putControlTunningValues("BR");
   }
 }

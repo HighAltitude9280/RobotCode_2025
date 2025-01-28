@@ -215,11 +215,18 @@ public class HighAltitudeConstants {
         public static final double PATHFINDING_MAX_ANGULAR_SPEED = Math.PI / 2;
         public static final double PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION = Math.PI;
 
-        public static final Pose3d SPEAKER = new Pose3d(0f, 1.6, 1.64, new Rotation3d());
-        public static final Pose2d AMP_POS = new Pose2d(new Translation2d(3., 4.31), new Rotation2d(-Math.PI / 2));
+        // Reef positions for pathfinding, in meteres, measured as blue alliance (automatically mirrored).
 
-        public static final double SWERVE_DRIVE_ON_TARGET = 0;
+        // Back (closer to the driver station)
+        public static final Pose2d REEF_BL = new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60));
+        public static final Pose2d REEF_BC = new Pose2d(2.963, 4.015, Rotation2d.fromDegrees(0));
+        public static final Pose2d REEF_BR = new Pose2d(3.704, 2.668, Rotation2d.fromDegrees(60));
+        // Front (opposite to the driver station)
+        public static final Pose2d REEF_FR = new Pose2d(5.282, 2.620, Rotation2d.fromDegrees(120));
+        public static final Pose2d REEF_FC = new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180));
+        public static final Pose2d REEF_FL = new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120));
+        
 
-        public static final Pose2d CURRENT_ROBOT_POSE = null;
+
 
 }
