@@ -24,23 +24,24 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class vision extends SubsystemBase {
-  PhotonCamera tagsCameraFront, tagsCameraBack;
+  PhotonCamera poseCamFront, poseCamBack, alignmentCam;
   PhotonPipelineResult resultFront, resultBack;
 
   PhotonPoseEstimator poseEstimatorFront, poseEstimatorBack;
 
-  private ArrayList<Optional<EstimatedRobotPose>> estimatedPoseFront, estimatedPoseBack; // TODO: fix this
-
   private Optional<EstimatedRobotPose> pose1;
   private Optional<EstimatedRobotPose> pose2;
 
+  List<PhotonPipelineResult> alignmentResults;
+
   /** Creates a new vision. */
   public vision() {
-    tagsCameraFront = new PhotonCamera("ArducamFront");
-    tagsCameraBack = new PhotonCamera("ArducamBack");
+    // TODO : Set camera names
+    poseCamFront = new PhotonCamera("ArducamFront");
+    poseCamBack = new PhotonCamera("ArducamBack");
 
-    estimatedPoseFront = new ArrayList<>();
-    estimatedPoseBack = new ArrayList<>();
+    alignmentCam = new PhotonCamera("limelight");
+    
 
     AprilTagFieldLayout fieldLayout;
     try {
@@ -68,8 +69,8 @@ public class vision extends SubsystemBase {
     pose1 = poseEstimatorBack.update(resultBack);
     pose2 = poseEstimatorFront.update(resultFront);
 
-    resultBack = tagsCameraBack.getLatestResult();
-    resultFront = tagsCameraFront.getLatestResult();
+    resultBack = poseCamBack.getLatestResult();
+    resultFront = poseCamFront.getLatestResult();
   }
 
   public ArrayList<Optional<EstimatedRobotPose>> getEstimatedPosition() {
@@ -93,11 +94,36 @@ public class vision extends SubsystemBase {
     return result;
   }
 
+  public boolean alignmentCamHasTargets()
+  {
+    return alignmentResults == null || alignmentResults.isEmpty() || alignmentResults.get(alignmentResults.size()-1).hasTargets();
+  }
+
+  public double getTargetYaw(int id)
+  {
+    for (var target : alignmentResults.get(alignmentResults.size() -1 ).getTargets()) {
+      if (target.getFiducialId() == id) {
+          return target.getYaw();
+      }
+    }
+    return Double.NaN;
+  }
+
+  public double getTargetSize(int id)
+  {
+    for (var target : alignmentResults.get(alignmentResults.size() -1 ).getTargets()) {
+      if (target.getFiducialId() == id) {
+          return target.getArea();
+      }
+    }
+    return Double.NaN;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     pose1 = poseEstimatorBack.update(resultBack);
     pose2 = poseEstimatorFront.update(resultFront);
-    getEstimatedPosition();
+    alignmentResults = alignmentCam.getAllUnreadResults();
   }
 }
