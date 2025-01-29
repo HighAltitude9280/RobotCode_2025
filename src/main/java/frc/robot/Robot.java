@@ -19,6 +19,17 @@ public class Robot extends TimedRobot {
   public static RobotContainer robotContainer;
   private Command m_autonomousCommand;
 
+  // Branch selection modes.
+  private static boolean leftMode = true;
+  public static boolean isLeftMode() {
+    return leftMode;
+  }
+
+  private static boolean frontMode = true;
+  public static boolean isFrontMode() {
+    return frontMode;
+  }
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
