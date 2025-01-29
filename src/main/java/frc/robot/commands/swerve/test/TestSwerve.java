@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.swerve;
+package frc.robot.commands.swerve.test;
 
 import java.util.ArrayList;
 
@@ -11,16 +11,19 @@ import frc.robot.Robot;
 import frc.robot.subsystems.swerve.HighSwerveModule;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
-public class SolisTestSwerve extends Command {
+public class TestSwerve extends Command {
   SwerveDriveTrain swerveDriveTrain;
   ArrayList<HighSwerveModule> modules;
+  double turn = 0.1;
+  double speed = 0;
 
   /** Creates a new TestSwerve. */
-  public SolisTestSwerve() {
+  public TestSwerve() {
     swerveDriveTrain = Robot.getRobotContainer().getSwerveDriveTrain();
     addRequirements(swerveDriveTrain);
 
     modules = swerveDriveTrain.getModules();
+
   }
 
   // Called when the command is initially scheduled.
@@ -31,9 +34,8 @@ public class SolisTestSwerve extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = 0.25;
-    double turn = 0;
-
+    turn = 0.1;
+    speed = 0;
     for (HighSwerveModule swerveModule : modules) {
       swerveModule.getDriveMotor().set(speed);
       swerveModule.getDirectionMotor().set(turn);
@@ -51,6 +53,12 @@ public class SolisTestSwerve extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    turn = 0;
+    speed = 0;
+    for (HighSwerveModule swerveModule : modules) {
+      swerveModule.getDriveMotor().set(speed);
+      swerveModule.getDirectionMotor().set(turn);
+    }
   }
 
   // Returns true when the command should end.

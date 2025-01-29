@@ -138,7 +138,6 @@ public class HighSwerveModule {
     return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS;
   }
 
-
   public double getDirectionEncoder() {
     return directionMotor.getEncPosition() * (isDirectionEncoderReversed ? -1.0 : 1.0);
   }
@@ -171,10 +170,12 @@ public class HighSwerveModule {
   // STATE SETTER
 
   public void setState(SwerveModuleState state) {
-    if (Math.abs(state.speedMetersPerSecond) < 0.01) {
-      stop();
-      return;
-    }
+    /*
+     * if (Math.abs(state.speedMetersPerSecond) < 0.01) {
+     * stop();
+     * return;
+     * }
+     */
 
     state.optimize(getState().angle);
 
@@ -196,6 +197,7 @@ public class HighSwerveModule {
 
   /**
    * Moves the swerve module to the desired angle.
+   * 
    * @param angleTarget the target angle in radians.
    */
   public void controlSwerveDirection(double angleTarget) {
@@ -208,12 +210,11 @@ public class HighSwerveModule {
 
     Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
 
-    directionMotor.setVoltage(directionOutput);
-
-    
     directionPIDAngleTarget = angleTarget;
     directionPIDAngleSetPoint = getDirectionPIDController().getSetpoint().position;
     directionPIDVelocitySetPoint = getDirectionPIDController().getSetpoint().velocity;
+
+    directionMotor.setVoltage(directionOutput);
   }
 
   public ProfiledPIDController getDirectionPIDController() {
@@ -250,7 +251,7 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "CANCoder Velocity", getEncoderVelocity());
 
     // 5. Setpoint of the ProfiledPIDController Angle
-    SmartDashboard.putNumber(identifier + "Direction Angle target", directionPIDAngleTarget);
+    SmartDashboard.putNumber(identifier + "Direction Angle Target", directionPIDAngleTarget);
     SmartDashboard.putNumber(identifier + "Direction Angle SetPoint", directionPIDAngleSetPoint);
 
     // 6. Setpoint of the ProfiledPIDController Velocity

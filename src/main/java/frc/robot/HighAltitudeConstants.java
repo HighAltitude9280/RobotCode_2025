@@ -67,7 +67,7 @@ public class HighAltitudeConstants {
         public static final double SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE = (2.0 * Math.PI)
                         / SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION;
 
-        /////////// DRIVING MOTOR ///////////
+        /////////// DRIVING MOTOR /////////// TODO: DRIVING MOTOR
 
         // HOW TO GET THE VALUES //
         /*
@@ -86,13 +86,13 @@ public class HighAltitudeConstants {
          */
 
         // FEEDBACK //
-        public static final double SWERVE_DRIVE_kP = 1.7375;
-        public static final double SWERVE_DRIVE_kI = 0;
+        public static final double SWERVE_DRIVE_kP = 0.01;
+        public static final double SWERVE_DRIVE_kI = 0.0;
         public static final double SWERVE_DRIVE_kD = 0.0;
 
         // FEEDFORWARD //
         public static final double SWERVE_DRIVE_kS = 0;
-        public static final double SWERVE_DRIVE_kV = 0;
+        public static final double SWERVE_DRIVE_kV = 0.01;
 
         // The reported encoder position after one revolution, check encoder
         // specifications.
@@ -153,8 +153,8 @@ public class HighAltitudeConstants {
         /// PROFILED PID CONTROLLER FOR SWERVE DIRECTION ///
 
         // CONSTRAINTS //
-        public static final double SWERVE_DIRECTION_MAX_VELOCITY = 0;
-        public static final double SWERVE_DIRECTION_MAX_ACCELERATION = 0;
+        public static final double SWERVE_DIRECTION_MAX_VELOCITY = 40;
+        public static final double SWERVE_DIRECTION_MAX_ACCELERATION = 40;
 
         // HOW TO GET THE VALUES //
         /*
@@ -178,13 +178,13 @@ public class HighAltitudeConstants {
          */
         // FEEDBACK //
 
-        public static final double SWERVE_DIRECTION_kP = 0.0; // 0.128
+        public static final double SWERVE_DIRECTION_kP = 0.128; // 0.128
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
         public static final double SWERVE_DIRECTION_kD = 0; // 0.0128
 
         // FEEDFORWARD //
         public static final double SWERVE_DIRECTION_kS = 0;
-        public static final double SWERVE_DIRECTION_kV = 0.01;
+        public static final double SWERVE_DIRECTION_kV = 0.1;
         public static final double SWERVE_DIRECTION_kA = 0; // no sé si dejarlo en 0
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
@@ -215,7 +215,8 @@ public class HighAltitudeConstants {
         public static final double PATHFINDING_MAX_ANGULAR_SPEED = Math.PI / 2;
         public static final double PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION = Math.PI;
 
-        // Reef positions for pathfinding, in meteres, measured as blue alliance (automatically mirrored).
+        // Reef positions for pathfinding, in meteres, measured as blue alliance
+        // (automatically mirrored).
 
         // Back (closer to the driver station)
         public static final Pose2d REEF_BL = new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60));
@@ -225,8 +226,5 @@ public class HighAltitudeConstants {
         public static final Pose2d REEF_FR = new Pose2d(5.282, 2.620, Rotation2d.fromDegrees(120));
         public static final Pose2d REEF_FC = new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180));
         public static final Pose2d REEF_FL = new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120));
-        
-
-
 
 }

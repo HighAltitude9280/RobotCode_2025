@@ -4,8 +4,14 @@
 
 package frc.robot;
 
+import frc.robot.commands.swerve.DefaultSwerveDriveNew;
+import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
+import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
+import frc.robot.commands.swerve.test.TestSwerve;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
+import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
+import frc.robot.resources.joysticks.HighAltitudeJoystick.JoystickType;
 
 /** Add your docs here. */
 public class OI {
@@ -15,6 +21,39 @@ public class OI {
     private HighAltitudeJoystick copilot;
 
     public void ConfigureButtonBindings() {
+        ////////////////////////// PILOT //////////////////////////
+
+        switch (HighAltitudeConstants.CURRENT_PILOT) {
+
+            case Joakin:
+
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.2);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.2);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.2);
+
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+
+                pilot.whileTrue(ButtonType.A, new TestDirectionPIDSwerve());
+                pilot.whileTrue(ButtonType.B, new TestSwerve());
+
+
+            default:
+                break;
+
+        }
+        switch (HighAltitudeConstants.CURRENT_COPILOT) {
+
+            case DefaultUser:
+
+                copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+
+                break;
+            default:
+                break;
+        }
 
     }
 

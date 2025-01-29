@@ -269,6 +269,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     frontRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     backLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    System.out.println("qpd Toilet");
   }
   // Odometry
 
@@ -293,12 +294,14 @@ public class SwerveDriveTrain extends SubsystemBase {
    * pose.timestampSeconds);
    * }
    * } TODO: arreglar este desmadre
-   
-
-  public void addVisionMeasurement(Pose2d visionMeasurement, double timeStampSeconds) {
-    swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
-        timeStampSeconds);
-  }*/
+   * 
+   * 
+   * public void addVisionMeasurement(Pose2d visionMeasurement, double
+   * timeStampSeconds) {
+   * swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
+   * timeStampSeconds);
+   * }
+   */
 
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
