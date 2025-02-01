@@ -34,13 +34,13 @@ public class TestSwerve extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turn = 0.1;
-    speed = 0;
+    turn = 0.0;
+    speed = 0.1;
     for (HighSwerveModule swerveModule : modules) {
       swerveModule.getDriveMotor().set(speed);
       swerveModule.getDirectionMotor().set(turn);
     }
-    System.out.println("AAAAAAAAAAAAAAAAAAAAA");
+    //System.out.println("AAAAAAAAAAAAAAAAAAAAA");
     /*
      * for (HighAltitudeSwerveModule swerveModule : modules) {
      * swerveModule.getDriveMotor().set(0);

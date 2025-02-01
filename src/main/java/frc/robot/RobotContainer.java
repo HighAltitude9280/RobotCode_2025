@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
 import frc.robot.subsystems.vision.vision;
@@ -41,6 +42,7 @@ public class RobotContainer {
 
     public void ConfigureButtonBindings() {
         OI.getInstance().ConfigureButtonBindings();
+        swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case Joakin:

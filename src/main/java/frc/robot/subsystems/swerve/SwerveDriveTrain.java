@@ -40,7 +40,9 @@ public class SwerveDriveTrain extends SubsystemBase {
   ArrayList<HighSwerveModule> modules;
   private SwerveDrivePoseEstimator swerveDrivePoseEstimator;
 
-  private boolean isFieldOriented = true;
+
+  //TODO: cambiar isFieldOriented
+  private boolean isFieldOriented = false;
   private boolean isOnCompetitiveField = false;
 
   private Field2d field = new Field2d();
@@ -168,7 +170,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public Rotation2d getRotation2dCCWPositive() {
-    return Rotation2d.fromDegrees(getHeadingCCWPositive());
+    //TODO: si es asi?
+    return Rotation2d.fromDegrees(-getHeadingCCWPositive());
   }
 
   public void defaultDrive(double speed, double strafe, double turn) {
@@ -181,11 +184,11 @@ public class SwerveDriveTrain extends SubsystemBase {
     if (cleanUpMode = true) {
       speed *= HighAltitudeConstants.SWERVE_DRIVE_CLEANUP_MODE_SPEED_METERS_PER_SECOND;
       strafe *= HighAltitudeConstants.SWERVE_DRIVE_CLEANUP_MODE_SPEED_METERS_PER_SECOND;
-      turn *= HighAltitudeConstants.SWERVE_DRIVE_CLEANUP_MODE_SPEED_METERS_PER_SECOND;
+      turn *= 8.0;
     } else {
       speed *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
       strafe *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
-      turn *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
+      turn *= 8.0;
     }
 
     // 4. Construct the chassis speeds
@@ -269,7 +272,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     frontRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     backLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    System.out.println("qpd Toilet");
+    //System.out.println("qpd Toilet");
   }
   // Odometry
 
@@ -471,5 +474,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     frontRight.putControlTunningValues("FR");
     backLeft.putControlTunningValues("BL");
     backRight.putControlTunningValues("BR");
+
+    SmartDashboard.putBoolean("IsFieldOriented?", getIsFieldOriented());
   }
 }

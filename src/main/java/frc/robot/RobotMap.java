@@ -13,14 +13,14 @@ public class RobotMap {
 
     ///// FRONT LEFT
     // DRIVE
-    public static final int SWERVE_FRONT_LEFT_DRIVE_MOTOR_PORT = 16;
+    public static final int SWERVE_FRONT_LEFT_DRIVE_MOTOR_PORT = 12;
     public static final TypeOfMotor SWERVE_FRONT_LEFT_DRIVE_MOTOR_TYPE = TypeOfMotor.TALON_FX;
     public static final boolean SWERVE_FRONT_LEFT_DRIVE_MOTOR_INVERTED = false;
     public static final boolean SWERVE_FRONT_LEFT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_FRONT_LEFT_DIRECTION_MOTOR_PORT = 17;
     public static final TypeOfMotor SWERVE_FRONT_LEFT_DIRECTION_MOTOR_TYPE = TypeOfMotor.SPARK_MAX_BRUSHLESS;
-    public static final boolean SWERVE_FRONT_LEFT_DIRECTION_MOTOR_INVERTED = false;
+    public static final boolean SWERVE_FRONT_LEFT_DIRECTION_MOTOR_INVERTED = true;
     public static final boolean SWERVE_FRONT_LEFT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
     public static final int SWERVE_FRONT_LEFT_ENCODED_TALON_PORT = 39;
@@ -31,12 +31,12 @@ public class RobotMap {
     // DRIVE
     public static final int SWERVE_FRONT_RIGHT_DRIVE_MOTOR_PORT = 10;
     public static final TypeOfMotor SWERVE_FRONT_RIGHT_DRIVE_MOTOR_TYPE = TypeOfMotor.TALON_FX;
-    public static final boolean SWERVE_FRONT_RIGHT_DRIVE_MOTOR_INVERTED = false;
+    public static final boolean SWERVE_FRONT_RIGHT_DRIVE_MOTOR_INVERTED = true;
     public static final boolean SWERVE_FRONT_RIGHT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_PORT = 11;
     public static final TypeOfMotor SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_TYPE = TypeOfMotor.SPARK_MAX_BRUSHLESS;
-    public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_INVERTED = false;
+    public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_INVERTED = true;
     public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
     public static final int SWERVE_FRONT_RIGHT_ENCODED_TALON_PORT = 40;
@@ -52,7 +52,7 @@ public class RobotMap {
     // DIRECTION
     public static final int SWERVE_BACK_LEFT_DIRECTION_MOTOR_PORT = 15;
     public static final TypeOfMotor SWERVE_BACK_LEFT_DIRECTION_MOTOR_TYPE = TypeOfMotor.SPARK_MAX_BRUSHLESS;
-    public static final boolean SWERVE_BACK_LEFT_DIRECTION_MOTOR_INVERTED = false;
+    public static final boolean SWERVE_BACK_LEFT_DIRECTION_MOTOR_INVERTED = true;
     public static final boolean SWERVE_BACK_LEFT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
     public static final int SWERVE_BACK_LEFT_ENCODED_TALON_PORT = 38;
@@ -61,9 +61,9 @@ public class RobotMap {
 
     ///// BACK RIGHT
     // DRIVE
-    public static final int SWERVE_BACK_RIGHT_DRIVE_MOTOR_PORT = 12;
+    public static final int SWERVE_BACK_RIGHT_DRIVE_MOTOR_PORT = 16;
     public static final TypeOfMotor SWERVE_BACK_RIGHT_DRIVE_MOTOR_TYPE = TypeOfMotor.TALON_FX;
-    public static final boolean SWERVE_BACK_RIGHT_DRIVE_MOTOR_INVERTED = false;
+    public static final boolean SWERVE_BACK_RIGHT_DRIVE_MOTOR_INVERTED = true;
     public static final boolean SWERVE_BACK_RIGHT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_BACK_RIGHT_DIRECTION_MOTOR_PORT = 13;

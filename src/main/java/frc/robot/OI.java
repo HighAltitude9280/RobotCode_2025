@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.commands.swerve.DefaultSwerveDriveNew;
+import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
 import frc.robot.commands.swerve.test.TestSwerve;
@@ -35,6 +35,7 @@ public class OI {
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                pilot.onTrue(ButtonType.X, new ResetOdometryZeros());
 
                 pilot.whileTrue(ButtonType.A, new TestDirectionPIDSwerve());
                 pilot.whileTrue(ButtonType.B, new TestSwerve());

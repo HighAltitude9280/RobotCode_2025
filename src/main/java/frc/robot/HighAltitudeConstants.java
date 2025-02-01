@@ -20,7 +20,7 @@ public class HighAltitudeConstants {
 
         ////////////////////////// SWERVE //////////////////////////
 
-        public static final double MAX_VOLTAGE = 12.5;
+        public static final double MAX_VOLTAGE = 12;
         // ponlo a 3 para pruebas
 
         /// CONSTANTS FOR MK4i L4 Config DRIVE MOTOR ///
@@ -86,13 +86,13 @@ public class HighAltitudeConstants {
          */
 
         // FEEDBACK //
-        public static final double SWERVE_DRIVE_kP = 0.01;
+        public static final double SWERVE_DRIVE_kP = 0.0;
         public static final double SWERVE_DRIVE_kI = 0.0;
         public static final double SWERVE_DRIVE_kD = 0.0;
 
         // FEEDFORWARD //
         public static final double SWERVE_DRIVE_kS = 0;
-        public static final double SWERVE_DRIVE_kV = 0.01;
+        public static final double SWERVE_DRIVE_kV = 1.0;
 
         // The reported encoder position after one revolution, check encoder
         // specifications.
@@ -178,14 +178,16 @@ public class HighAltitudeConstants {
          */
         // FEEDBACK //
 
-        public static final double SWERVE_DIRECTION_kP = 0.128; // 0.128
+        public static final double SWERVE_DIRECTION_kP = 5.5; // 0.128
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
         public static final double SWERVE_DIRECTION_kD = 0; // 0.0128
-
+ 
         // FEEDFORWARD //
         public static final double SWERVE_DIRECTION_kS = 0;
-        public static final double SWERVE_DIRECTION_kV = 0.1;
+        public static final double SWERVE_DIRECTION_kV = 0.0;
         public static final double SWERVE_DIRECTION_kA = 0; // no sé si dejarlo en 0
+
+
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
         PPHolonomicDriveController(new PIDConstants(0.9, 0, 0.000025),

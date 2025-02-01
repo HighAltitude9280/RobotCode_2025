@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.resources.components.speedController.HighAltitudeMotor;
@@ -35,6 +34,8 @@ public class HighSwerveModule {
   private double directionPIDVelocitySetPoint = 0;
 
   private SimpleMotorFeedforward directionFeedforward;
+
+  private double directionOutput;
 
   /// DRIVE ///
   private HighAltitudeMotor driveMotor;
@@ -206,15 +207,20 @@ public class HighSwerveModule {
     double targetSpeed = directionProfiledPIDController.getSetpoint().velocity;
 
     double feedforwardVal = directionFeedforward.calculate(targetSpeed);
-    double directionOutput = pidVal + feedforwardVal;
+    double directionOutput = pidVal;
 
-    Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
+    directionOutput = Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE,
+        HighAltitudeConstants.MAX_VOLTAGE);
 
+    // directionOutput = Math.clamp(-HighAltitudeConstants.MAX_VOLTAGE,
+    // HighAltitudeConstants.MAX_VOLTAGE);
     directionPIDAngleTarget = angleTarget;
     directionPIDAngleSetPoint = getDirectionPIDController().getSetpoint().position;
     directionPIDVelocitySetPoint = getDirectionPIDController().getSetpoint().velocity;
 
     directionMotor.setVoltage(directionOutput);
+
+    this.directionOutput = directionOutput;
   }
 
   public ProfiledPIDController getDirectionPIDController() {
@@ -252,11 +258,15 @@ public class HighSwerveModule {
 
     // 5. Setpoint of the ProfiledPIDController Angle
     SmartDashboard.putNumber(identifier + "Direction Angle Target", directionPIDAngleTarget);
+
     SmartDashboard.putNumber(identifier + "Direction Angle SetPoint", directionPIDAngleSetPoint);
 
     // 6. Setpoint of the ProfiledPIDController Velocity
     SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint", directionPIDVelocitySetPoint);
 
+    SmartDashboard.putNumber(identifier + "Direction Output", directionOutput);
+
+    SmartDashboard.putNumber(identifier + "Direction ERROR", directionPIDAngleTarget - getAbsoluteEncoderRAD());
   }
 
   public void putEncoderValuesInvertedApplied(String identifier) {
