@@ -25,10 +25,11 @@ public class HighAltitudeConstants {
 
         /// CONSTANTS FOR MK4i L4 Config DRIVE MOTOR ///
         // In meters
-        public static final double SWERVE_WHEEL_DIAMETER = 4 * 0.0254;
+        public static final double SWERVE_WHEEL_DIAMETER = 4.0 * 0.0254;
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. (Driven / Driver) //pinion
         public static final double SWERVE_DRIVE_GEAR_RATIO = (50.0 * 16.0 * 45.0) / (16.0 * 28.0 * 15.0);
+        
         // ft/s //ft -> in //im -> m
         public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 19.5 * 12 * 0.0254;
 
@@ -92,7 +93,7 @@ public class HighAltitudeConstants {
 
         // FEEDFORWARD //
         public static final double SWERVE_DRIVE_kS = 0;
-        public static final double SWERVE_DRIVE_kV = 1.0;
+        public static final double SWERVE_DRIVE_kV = 2.0;
 
         // The reported encoder position after one revolution, check encoder
         // specifications.
@@ -107,7 +108,7 @@ public class HighAltitudeConstants {
         // encoder velocity * this constant = meters/second
         public static final double SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS = SWERVE_DRIVE_METERS_PER_REVOLUTION;
 
-        public static final double SWERVE_VELOCITY_IN_METERS_PER_SEC = (10980 / 2048)
+        public static final double SWERVE_VELOCITY_IN_METERS_PER_SEC = (10.0 / 2048.0)
                         * (SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS);
 
         public static final double SWERVE_DRIVE_CLEANUP_MODE_SPEED_METERS_PER_SECOND = SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND
@@ -156,7 +157,7 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_MAX_VELOCITY = 40;
         public static final double SWERVE_DIRECTION_MAX_ACCELERATION = 40;
 
-        // HOW TO GET THE VALUES //
+        // HOW TO GET THE VALUES //  //TODO: cambiar esto
         /*
          * Necesitas las graficas: a) Gráfica del angúlo
          * b) Gráfica de velocidad del encoder
@@ -176,16 +177,12 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
+      
         // FEEDBACK //
 
-        public static final double SWERVE_DIRECTION_kP = 5.5; // 0.128
+        public static final double SWERVE_DIRECTION_kP = 12; // 0.128
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
-        public static final double SWERVE_DIRECTION_kD = 0; // 0.0128
- 
-        // FEEDFORWARD //
-        public static final double SWERVE_DIRECTION_kS = 0;
-        public static final double SWERVE_DIRECTION_kV = 0.0;
-        public static final double SWERVE_DIRECTION_kA = 0; // no sé si dejarlo en 0
+        public static final double SWERVE_DIRECTION_kD = 0.1; // 0.0128
 
 
 

@@ -35,7 +35,7 @@ public class TestSwerve extends Command {
   @Override
   public void execute() {
     turn = 0.0;
-    speed = 0.1;
+    speed = 0.0;
     for (HighSwerveModule swerveModule : modules) {
       swerveModule.getDriveMotor().set(speed);
       swerveModule.getDirectionMotor().set(turn);

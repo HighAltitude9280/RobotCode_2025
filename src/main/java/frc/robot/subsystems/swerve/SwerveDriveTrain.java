@@ -274,6 +274,15 @@ public class SwerveDriveTrain extends SubsystemBase {
     backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     //System.out.println("qpd Toilet");
   }
+
+  public void setModulesMPS(double mps) {
+    frontLeft.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
+    frontRight.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
+    backLeft.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
+    backRight.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
+    //System.out.println("qpd Toilet");
+  }
+
   // Odometry
 
   public void updateOdometry() {

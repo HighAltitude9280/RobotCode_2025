@@ -33,8 +33,6 @@ public class HighSwerveModule {
   private double directionPIDAngleSetPoint = 0;
   private double directionPIDVelocitySetPoint = 0;
 
-  private SimpleMotorFeedforward directionFeedforward;
-
   private double directionOutput;
 
   /// DRIVE ///
@@ -70,10 +68,6 @@ public class HighSwerveModule {
 
     // enableContinousInput() calculates the route with less error
     directionProfiledPIDController.enableContinuousInput(-Math.PI, Math.PI);
-
-    directionFeedforward = new SimpleMotorFeedforward(HighAltitudeConstants.SWERVE_DIRECTION_kS,
-        HighAltitudeConstants.SWERVE_DIRECTION_kV,
-        HighAltitudeConstants.SWERVE_DIRECTION_kA);
 
     // DRIVE CONTROL //
     drivePIDController = new PIDController(HighAltitudeConstants.SWERVE_DRIVE_kP,
@@ -136,7 +130,7 @@ public class HighSwerveModule {
    * @return drive encoder velocity in meters per second.
    */
   public double getDriveVelocity() {
-    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS;
+    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_VELOCITY_IN_METERS_PER_SEC;
   }
 
   public double getDirectionEncoder() {
@@ -204,9 +198,7 @@ public class HighSwerveModule {
   public void controlSwerveDirection(double angleTarget) {
     double pidVal = directionProfiledPIDController.calculate(getAbsoluteEncoderRAD(),
         angleTarget);
-    double targetSpeed = directionProfiledPIDController.getSetpoint().velocity;
 
-    double feedforwardVal = directionFeedforward.calculate(targetSpeed);
     double directionOutput = pidVal;
 
     directionOutput = Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE,

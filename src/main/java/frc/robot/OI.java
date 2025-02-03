@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
+import frc.robot.commands.swerve.test.TestDrivePIDFFSwerve;
 import frc.robot.commands.swerve.test.TestSwerve;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
@@ -37,7 +38,9 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrue(ButtonType.X, new ResetOdometryZeros());
 
-                pilot.whileTrue(ButtonType.A, new TestDirectionPIDSwerve());
+                pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
+                pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(0.5));
+                pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-0.5));  
                 pilot.whileTrue(ButtonType.B, new TestSwerve());
 
 
