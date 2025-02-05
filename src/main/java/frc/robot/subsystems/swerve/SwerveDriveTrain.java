@@ -294,25 +294,21 @@ public class SwerveDriveTrain extends SubsystemBase {
             backRight.getPosition() });
     field.setRobotPose(getPose());
   }
-  /*
-   * public void updateOdometryWithVision() {
-   * for (Optional<EstimatedRobotPose> pos :
-   * Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose())) {
-   * if (pos == null || pos.isEmpty())
-   * continue;
-   * var pose = pos.get();
-   * swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-   * pose.timestampSeconds);
-   * }
-   * } TODO: arreglar este desmadre
-   * 
-   * 
-   * public void addVisionMeasurement(Pose2d visionMeasurement, double
-   * timeStampSeconds) {
-   * swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
-   * timeStampSeconds);
-   * }
-   */
+
+  public void updateOdometryWithVision() {
+    for (Optional<EstimatedRobotPose> pos : Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose())) {
+      if (pos == null || pos.isEmpty())
+        continue;
+      var pose = pos.get();
+      swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+          pose.timestampSeconds);
+    }
+  }
+
+  public void addVisionMeasurement(Pose2d visionMeasurement, double timeStampSeconds) {
+    swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
+        timeStampSeconds);
+  }
 
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
@@ -442,6 +438,53 @@ public class SwerveDriveTrain extends SubsystemBase {
     defaultDrive(speed, strafe, turnPower);
   }
 
+  /**
+   * Aligns with a target whose real angle is known. Note that this method will
+   * disable field oriented driving
+   * 
+   * @param angle          The real angle of the target in degrees.
+   * @param yaw            The current yaw reported by the sensors.
+   * @param area           The current area of the target reported by the sensors.
+   * @param yawOffset      The target yaw.
+   * @param targetArea     The target area
+   * @param maxTurnPower   The maximum turning power that will be passed (in
+   *                       percentage, from 0 to 1).
+   * @param maxSpeedPower  The maximum power that will be passed as speed (in
+   *                       percentage, from 0 to 1).
+   * @param maxStrafePower The maximum power that will be passed as strafe (in
+   *                       percentage, from 0 to 1).
+   * 
+   * @return True if it's considered onTarget
+   */
+  public boolean alignWithTarget(double angle, double yaw, double area, double targetYaw, double targetArea,
+      double maxTurnPower, double maxSpeedPower, double maxStrafePower) {
+
+    double deltaAngle = Math.deltaAngle(getPose().getRotation().getDegrees(), angle);
+    double turnPower = deltaAngle / HighAltitudeConstants.VISION_TURN_BRAKE_DISTANCE;
+    turnPower = Math.clamp(maxTurnPower * turnPower, -maxTurnPower, maxTurnPower);
+
+    boolean turnOnTarget = Math.abs(deltaAngle) < HighAltitudeConstants.VISION_TURN_ARRIVE_OFFSET;
+    turnPower = turnOnTarget ? 0 : turnPower;
+
+    double deltaArea = targetArea - area;
+    double speedPower = deltaArea / HighAltitudeConstants.VISION_SPEED_BRAKE_DISTANCE;
+    speedPower = Math.clamp(speedPower * maxSpeedPower, -maxSpeedPower, maxSpeedPower);
+
+    boolean speedOnTarget = Math.abs(deltaArea) < HighAltitudeConstants.VISION_SPEED_ARRIVE_OFFSET;
+    speedPower = speedOnTarget ? 0 : speedPower;
+
+    double deltaYaw = targetYaw - yaw;
+    double strafePower = deltaYaw / HighAltitudeConstants.VISION_STRAFE_BRAKE_DISTANCE;
+    strafePower = Math.clamp(strafePower * maxStrafePower, -maxStrafePower, maxStrafePower);
+
+    boolean strafeOnTarget = Math.abs(deltaYaw) < HighAltitudeConstants.VISION_STRAFE_ARRIVE_OFFSET;
+    strafePower = strafeOnTarget ? 0 : strafePower;
+
+    defaultDrive(speedPower, strafePower, turnPower);
+    return turnOnTarget && speedOnTarget && strafeOnTarget;
+
+  }
+
   public boolean getIsOnCompetitiveField() {
     return isOnCompetitiveField;
   }
@@ -453,7 +496,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    // updateOdometryWithVision(); TODO: fix this
+    updateOdometryWithVision();
     putAllInfoInSmartDashboard();
   }
 
@@ -465,7 +508,6 @@ public class SwerveDriveTrain extends SubsystemBase {
    * backRight.updateEncoders();
    * }
    */
-
   public void putAllInfoInSmartDashboard() {
 
     frontLeft.putProcessedValues("FL");

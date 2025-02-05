@@ -153,24 +153,18 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_MAX_VELOCITY = 40;
         public static final double SWERVE_DIRECTION_MAX_ACCELERATION = 40;
 
-        // HOW TO GET THE VALUES // //TODO: cambiar esto
+        // HOW TO GET THE VALUES //
         /*
-         * Necesitas las graficas: a) Gráfica del angúlo
-         * b) Gráfica de velocidad del encoder
-         * c) Gráfica de aceleración
-         * d) Setpoint del ángulo
-         * e) Setpoint de la velocidad
-         * f) Setpoint de aceleración
+         * Necesitas las graficas:
+         * a) Gráfica del ángulo del CANCoder
+         * d) Setpoint del ángulo del CANCoder
          * 
          * PASO 1:
          * 1. PID en 0
-         * 2. kS dejarla en 0
-         * 3. Tunear kV hasta que la velocidad esté en target
+         * 2. Poner la kP lo más grande que pueda sin que se pase del target
          * 
          * PASO 2:
-         * 4. Ya no mueves el feedforward
-         * 5. Poner la kP lo más grande que pueda sin que se pase del target
-         * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
+         * 3. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
 
@@ -184,6 +178,7 @@ public class HighAltitudeConstants {
         PPHolonomicDriveController(new PIDConstants(0.9, 0, 0.000025),
                         new PIDConstants(2.0, 0, 0));
 
+                        
         //// SpeedReduction constants
 
         public static final double SWERVE_TURN_BRAKE_DISTANCE = 32; // 32.0;
@@ -191,10 +186,25 @@ public class HighAltitudeConstants {
 
         //// VISION
 
-        public static final double YAW_CORRECTION = 0.15;
-        public static final double YAW_OFFSET = 5.72;
+        // TODO: CONFIGURE THESE CONSTANTS
+        public static final double VISION_YAW_OFFSET_TARGET_LEFT = 15;
+        public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -15;
 
-        public static final double DISTANCE_CORRECTION = 0.5;
+        public static final double VISION_AREA_TARGET = 0.5;
+
+        // Speed reduction constants for aligning with apriltags.
+        public static final double VISION_TURN_ARRIVE_OFFSET = 3;
+        public static final double VISION_TURN_BRAKE_DISTANCE = 32;
+
+        public static final double VISION_STRAFE_ARRIVE_OFFSET = 1;
+        public static final double VISION_STRAFE_BRAKE_DISTANCE = 32;
+
+        public static final double VISION_SPEED_ARRIVE_OFFSET = 0.05;
+        public static final double VISION_SPEED_BRAKE_DISTANCE = 0.5;
+
+        public static final double VISION_TURN_MAX_POWER = 0.1;
+        public static final double VISION_STRAFE_MAX_POWER = 0.1;
+        public static final double VISION_SPEED_MAX_POWER = 0.1;
 
         //////////////////////// DRIVERS ////////////////////////
 
@@ -211,13 +221,51 @@ public class HighAltitudeConstants {
         // Reef positions for pathfinding, in meteres, measured as blue alliance
         // (automatically mirrored).
 
-        // Back (closer to the driver station)
-        public static final Pose2d REEF_BL = new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60));
-        public static final Pose2d REEF_BC = new Pose2d(2.963, 4.015, Rotation2d.fromDegrees(0));
-        public static final Pose2d REEF_BR = new Pose2d(3.704, 2.668, Rotation2d.fromDegrees(60));
-        // Front (opposite to the driver station)
-        public static final Pose2d REEF_FR = new Pose2d(5.282, 2.620, Rotation2d.fromDegrees(120));
-        public static final Pose2d REEF_FC = new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180));
-        public static final Pose2d REEF_FL = new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120));
+        // Note that this array should be in the same order as the enum
+        // i.e. PATHFINDING_REEF_POS[REEF_POSITION.BC] should correspond to BC.
+        public static final Pose2d[] PATHFINDING_REEF_POS = {
+                        // Back (closer to the driver station)
+                        new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60)),
+                        new Pose2d(2.963, 4.015, Rotation2d.fromDegrees(0)),
+                        new Pose2d(3.704, 2.668, Rotation2d.fromDegrees(60)),
+                        // Front (opposite to the driver station)
+                        new Pose2d(5.282, 2.620, Rotation2d.fromDegrees(120)),
+                        new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180)),
+                        new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120))
+        };
+
+        public static final int[] BLUE_APRILTAG_IDS = { 19, 18, 17, 22, 21, 20 };
+        public static final int[] RED_APRILTAG_IDS = { 6, 7, 8, 9, 10, 11 };
+
+        public enum REEF_POSITION {
+                BL(0), BC(1), BR(2), FR(3), FC(4), FL(5);
+
+                int id;
+
+                private REEF_POSITION(int id) {
+                        this.id = id;
+                }
+
+                public int getID() {
+                        return id;
+                }
+        }
+
+        public enum REEF_SIDE {
+                LEFT(REEF_POSITION.BL, REEF_POSITION.FL),
+                CENTER(REEF_POSITION.BC, REEF_POSITION.FC),
+                RIGHT(REEF_POSITION.BR, REEF_POSITION.FR);
+
+                private REEF_POSITION back, front;
+
+                REEF_SIDE(REEF_POSITION back, REEF_POSITION front) {
+                        this.back = back;
+                        this.front = front;
+                }
+
+                public REEF_POSITION getPosition(boolean front) {
+                        return front ? this.front : this.back;
+                }
+        }
 
 }

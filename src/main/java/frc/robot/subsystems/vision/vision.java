@@ -103,7 +103,6 @@ public class Vision extends SubsystemBase {
     return result;
   }
 
-  
   public boolean alignmentCamHasTargets() {
     return alignmentResults == null || alignmentResults.isEmpty()
         || alignmentResults.get(alignmentResults.size() - 1).hasTargets();
