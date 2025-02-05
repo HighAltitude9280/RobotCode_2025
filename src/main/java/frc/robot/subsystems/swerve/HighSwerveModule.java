@@ -123,14 +123,14 @@ public class HighSwerveModule {
    * @return drive encoder distance in meters.
    */
   public double getDriveDistance() {
-    return driveMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REVOLUTION;
+    return driveMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REV;
   }
 
   /**
    * @return drive encoder velocity in meters per second.
    */
   public double getDriveVelocity() {
-    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_VELOCITY_IN_METERS_PER_SEC;
+    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_PER_VELOCITY_UNITS;
   }
 
   public double getDirectionEncoder() {

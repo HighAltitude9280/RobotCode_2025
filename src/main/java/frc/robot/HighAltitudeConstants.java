@@ -29,7 +29,7 @@ public class HighAltitudeConstants {
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. (Driven / Driver) //pinion
         public static final double SWERVE_DRIVE_GEAR_RATIO = (50.0 * 16.0 * 45.0) / (16.0 * 28.0 * 15.0);
-        
+
         // ft/s //ft -> in //im -> m
         public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 19.5 * 12 * 0.0254;
 
@@ -101,17 +101,13 @@ public class HighAltitudeConstants {
 
         // Use this constants to convert from encoder position to meters
         // encoder position * this constant = meters
-        public static final double SWERVE_DRIVE_METERS_PER_REVOLUTION = (Math.PI * SWERVE_WHEEL_DIAMETER)
+        public static final double SWERVE_DRIVE_METERS_PER_REV = (Math.PI * SWERVE_WHEEL_DIAMETER)
                         / (SWERVE_DRIVE_GEAR_RATIO);
 
-        // Use this constant to convert from motor velocity to meters per second
-        // encoder velocity * this constant = meters/second
-        public static final double SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS = SWERVE_DRIVE_METERS_PER_REVOLUTION;
+        // encoder position * this constant = meters
+        public static final double SWERVE_DRIVE_PER_VELOCITY_UNITS = SWERVE_DRIVE_METERS_PER_REV;
 
-        public static final double SWERVE_VELOCITY_IN_METERS_PER_SEC = (10.0 / 2048.0)
-                        * (SWERVE_DRIVE_METERS_PER_SEC_PER_VELOCITY_UNITS);
-
-        public static final double SWERVE_DRIVE_CLEANUP_MODE_SPEED_METERS_PER_SECOND = SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND
+        public static final double SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND = SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND
                         * 0.8;
 
         // Arbitrary to make controlling the swerve easier in teleop
@@ -157,7 +153,7 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_MAX_VELOCITY = 40;
         public static final double SWERVE_DIRECTION_MAX_ACCELERATION = 40;
 
-        // HOW TO GET THE VALUES //  //TODO: cambiar esto
+        // HOW TO GET THE VALUES // //TODO: cambiar esto
         /*
          * Necesitas las graficas: a) Gráfica del angúlo
          * b) Gráfica de velocidad del encoder
@@ -177,14 +173,12 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
-      
+
         // FEEDBACK //
 
         public static final double SWERVE_DIRECTION_kP = 12; // 0.128
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
         public static final double SWERVE_DIRECTION_kD = 0.1; // 0.0128
-
-
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
         PPHolonomicDriveController(new PIDConstants(0.9, 0, 0.000025),

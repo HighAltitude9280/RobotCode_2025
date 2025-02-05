@@ -40,8 +40,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   ArrayList<HighSwerveModule> modules;
   private SwerveDrivePoseEstimator swerveDrivePoseEstimator;
 
-
-  //TODO: cambiar isFieldOriented
+  // TODO: cambiar isFieldOriented
   private boolean isFieldOriented = false;
   private boolean isOnCompetitiveField = false;
 
@@ -170,7 +169,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public Rotation2d getRotation2dCCWPositive() {
-    //TODO: si es asi?
+    // TODO: si es asi?
     return Rotation2d.fromDegrees(-getHeadingCCWPositive());
   }
 
@@ -182,8 +181,8 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     // 3. Scale input to teleop max speed
     if (cleanUpMode = true) {
-      speed *= HighAltitudeConstants.SWERVE_DRIVE_CLEANUP_MODE_SPEED_METERS_PER_SECOND;
-      strafe *= HighAltitudeConstants.SWERVE_DRIVE_CLEANUP_MODE_SPEED_METERS_PER_SECOND;
+      speed *= HighAltitudeConstants.SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND;
+      strafe *= HighAltitudeConstants.SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND;
       turn *= 8.0;
     } else {
       speed *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
@@ -272,7 +271,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     frontRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     backLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    //System.out.println("qpd Toilet");
+    // System.out.println("qpd Toilet");
   }
 
   public void setModulesMPS(double mps) {
@@ -280,7 +279,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     frontRight.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
     backLeft.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
     backRight.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
-    //System.out.println("qpd Toilet");
+    // System.out.println("qpd Toilet");
   }
 
   // Odometry
