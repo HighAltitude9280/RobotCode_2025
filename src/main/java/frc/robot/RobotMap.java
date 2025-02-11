@@ -74,4 +74,26 @@ public class RobotMap {
     public static final int SWERVE_BACK_RIGHT_ENCODED_TALON_PORT = 37;
     public static final double SWERVE_BACK_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES = 0.055419921875;
     public static final boolean SWERVE_BACK_RIGHT_ENCODED_TALON_INVERTED = false;
+
+    ////////////////////////// lIFT //////////////////////////
+
+    public static final int[] LIFT_MOTOR_PORTS = { 21, 22 };
+    public static final int[] LIFT_INVERTED_MOTORS_PORTS = {};
+    public static final TypeOfMotor[] LIFT_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS,
+            TypeOfMotor.SPARK_MAX_BRUSHLESS };
+    public static final boolean LIFT_ENCODER_IS_INVERTED = false;
+
+    ////////////////////////// GRIPPER //////////////////////////
+
+    public static final int[] GRIPPER_MOTOR_PORTS = { 31 };
+    public static final int[] GRIPPER_INVERTED_MOTORS_PORTS = {};
+    public static final TypeOfMotor[] GRIPPER_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
+    public static final boolean GRIPPER_ENCODER_IS_INVERTED = false;
+
+    ////////////////////////// WRIST //////////////////////////
+    public static final int[] WRIST_MOTOR_PORTS = { 41 };
+    public static final int[] WRIST_INVERTED_MOTORS_PORTS = {};
+    public static final TypeOfMotor[] WRIST_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
+    public static final boolean WRIST_ENCODER_IS_INVERTED = false;
+
 }

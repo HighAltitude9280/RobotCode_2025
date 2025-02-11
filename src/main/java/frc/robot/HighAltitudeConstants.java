@@ -18,6 +18,18 @@ import frc.robot.resources.Human_Drivers.HumanDrivers;
 /** Add your docs here. */
 public class HighAltitudeConstants {
 
+        ////////////////////////// LIFT //////////////////////////
+        public static final double LIFT_UP_SPEED = 0.2;
+        public static final double LIFT_DOWN_SPEED = -0.2;
+
+        ////////////////////////// GRIPPER //////////////////////////
+        public static final double GRIPPER_OUT_SPEED = 0.6;
+        public static final double GRIPPER_IN_SPEED = -0.6;
+
+        ////////////////////////// GRIPPER PIVOT //////////////////////////
+        public static final double WRIST_UP_SPEED = 0.4;
+        public static final double WRIST_DOWN_SPEED = -0.4;
+
         ////////////////////////// SWERVE //////////////////////////
 
         public static final double MAX_VOLTAGE = 12;
@@ -178,7 +190,6 @@ public class HighAltitudeConstants {
         PPHolonomicDriveController(new PIDConstants(0.9, 0, 0.000025),
                         new PIDConstants(2.0, 0, 0));
 
-                        
         //// SpeedReduction constants
 
         public static final double SWERVE_TURN_BRAKE_DISTANCE = 32; // 32.0;

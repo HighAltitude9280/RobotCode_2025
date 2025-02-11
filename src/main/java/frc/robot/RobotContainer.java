@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.resources.components.Navx;
+import frc.robot.subsystems.extensor.Lift;
+import frc.robot.subsystems.extensor.Wrist;
+import frc.robot.subsystems.manipulator.Gripper;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
 import frc.robot.subsystems.vision.Vision;
 
@@ -19,6 +22,9 @@ public class RobotContainer {
     private Navx navx;
     private SwerveDriveTrain swerveDriveTrain;
     private Vision vision;
+    private Lift lift;
+    private Gripper gripper;
+    private Wrist wrist;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -26,6 +32,9 @@ public class RobotContainer {
         navx = new Navx();
         swerveDriveTrain = new SwerveDriveTrain();
         vision = new Vision();
+        lift = new Lift();
+        gripper = new Gripper();
+        wrist = new Wrist();
     }
 
     public Navx getNavx() {
@@ -38,6 +47,18 @@ public class RobotContainer {
 
     public SwerveDriveTrain getSwerveDriveTrain() {
         return swerveDriveTrain;
+    }
+
+    public Lift getLift() {
+        return lift;
+    }
+
+    public Gripper getGripper() {
+        return gripper;
+    }
+
+    public Wrist getWrist() {
+        return wrist;
     }
 
     public void ConfigureButtonBindings() {
@@ -59,7 +80,6 @@ public class RobotContainer {
         }
 
         // swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
-        // climber.setDefaultCommand(new MaintainClimberPosition());
     }
 
     public Command getAutonomousCommand() {
