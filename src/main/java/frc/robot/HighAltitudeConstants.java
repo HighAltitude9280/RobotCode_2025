@@ -23,12 +23,12 @@ public class HighAltitudeConstants {
         public static final double LIFT_DOWN_SPEED = -0.2;
 
         ////////////////////////// GRIPPER //////////////////////////
-        public static final double GRIPPER_OUT_SPEED = 0.6;
-        public static final double GRIPPER_IN_SPEED = -0.6;
+        public static final double GRIPPER_OUT_SPEED = 0.3;
+        public static final double GRIPPER_IN_SPEED = -0.3;
 
         ////////////////////////// GRIPPER PIVOT //////////////////////////
-        public static final double WRIST_UP_SPEED = 0.4;
-        public static final double WRIST_DOWN_SPEED = -0.4;
+        public static final double WRIST_UP_SPEED = 0.1;
+        public static final double WRIST_DOWN_SPEED = -0.1;
 
         ////////////////////////// SWERVE //////////////////////////
 

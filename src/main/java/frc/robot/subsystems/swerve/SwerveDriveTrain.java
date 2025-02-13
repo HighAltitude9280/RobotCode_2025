@@ -283,7 +283,6 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   // Odometry
-
   public void updateOdometry() {
     swerveDrivePoseEstimator.update(
         getRotation2dCCWPositive(),
@@ -295,21 +294,25 @@ public class SwerveDriveTrain extends SubsystemBase {
     field.setRobotPose(getPose());
   }
 
-  public void updateOdometryWithVision() {
-    for (Optional<EstimatedRobotPose> pos : Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose())) {
-      if (pos == null || pos.isEmpty())
-        continue;
-      var pose = pos.get();
-      swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-          pose.timestampSeconds);
-    }
-  }
-
-  public void addVisionMeasurement(Pose2d visionMeasurement, double timeStampSeconds) {
-    swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
-        timeStampSeconds);
-  }
-
+  /*
+   * //TODO: fix this
+   * public void updateOdometryWithVision() {
+   * for (Optional<EstimatedRobotPose> pos :
+   * Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose())) {
+   * if (pos == null || pos.isEmpty())
+   * continue;
+   * var pose = pos.get();
+   * swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+   * pose.timestampSeconds);
+   * }
+   * }
+   * 
+   * public void addVisionMeasurement(Pose2d visionMeasurement, double
+   * timeStampSeconds) {
+   * swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
+   * timeStampSeconds);
+   * }
+   */
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
   }
@@ -496,11 +499,11 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    updateOdometryWithVision();
+    // updateOdometryWithVision(); TODO: fix this
     putAllInfoInSmartDashboard();
   }
 
-  /*
+  /* //TODO: esto lo borramos alv, no?
    * public void updateEncoders() {
    * frontLeft.updateEncoders();
    * frontRight.updateEncoders();

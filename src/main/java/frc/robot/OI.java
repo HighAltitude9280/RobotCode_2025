@@ -75,7 +75,7 @@ public class OI {
         }
         switch (HighAltitudeConstants.CURRENT_COPILOT) {
 
-            case DefaultUser:
+            case Joakin:
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
                 copilot.whileTrue(ButtonType.POV_N, new LiftUp());

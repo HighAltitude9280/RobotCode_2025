@@ -75,6 +75,9 @@ public class RobotContainer {
         }
 
         switch (HighAltitudeConstants.CURRENT_COPILOT) {
+            case Joakin:
+                break;
+
             default:
                 break;
         }

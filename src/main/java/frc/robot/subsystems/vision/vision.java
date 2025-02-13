@@ -6,7 +6,6 @@ package frc.robot.subsystems.vision;
 
 import org.photonvision.targeting.PhotonPipelineResult;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,13 +71,15 @@ public class Vision extends SubsystemBase {
 
     poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         camBack);
-
-    // Initialize pose1 and pose2 after poseEstimators are created
-    pose1 = poseEstimatorBack.update(resultBack);
-    pose2 = poseEstimatorFront.update(resultFront);
-
-    resultBack = poseCamBack.getLatestResult();
-    resultFront = poseCamFront.getLatestResult();
+    /*
+     * //TODO: FIX THIS
+     * // Initialize pose1 and pose2 after poseEstimators are created
+     * pose1 = poseEstimatorBack.update(resultBack);
+     * pose2 = poseEstimatorFront.update(resultFront);
+     * 
+     * resultBack = poseCamBack.getLatestResult();
+     * resultFront = poseCamFront.getLatestResult();
+     */
   }
 
   public ArrayList<Optional<EstimatedRobotPose>> getEstimatedPosition() {
@@ -129,11 +130,19 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    resultFront = poseCamFront.getLatestResult();
-    resultBack = poseCamBack.getLatestResult();
-
-    pose1 = poseEstimatorBack.update(resultBack);
-    pose2 = poseEstimatorFront.update(resultFront);
-    alignmentResults = alignmentCam.getAllUnreadResults();
+    /*
+     * //TODO: fix this
+     * if (poseEstimatorBack != null) {
+     * // resultFront = poseCamFront.getLatestResult();
+     * pose1 = poseEstimatorBack.update(resultBack);
+     * }
+     * if (poseEstimatorFront != null) {
+     * // resultBack = poseCamBack.getLatestResult();
+     * pose2 = poseEstimatorFront.update(resultFront);
+     * }
+     * if (alignmentCam != null) {
+     * alignmentResults = alignmentCam.getAllUnreadResults();
+     * }
+     */
   }
 }
