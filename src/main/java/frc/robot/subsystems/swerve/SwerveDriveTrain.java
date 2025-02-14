@@ -161,7 +161,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public double getHeadingCCWPositive() {
-    return Robot.getRobotContainer().getNavx().getYaw();
+    return -Robot.getRobotContainer().getNavx().getYaw();
   }
 
   public Rotation2d getRotation2d() {
@@ -169,8 +169,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public Rotation2d getRotation2dCCWPositive() {
-    // TODO: si es asi?
-    return Rotation2d.fromDegrees(-getHeadingCCWPositive());
+    return Rotation2d.fromDegrees(getHeadingCCWPositive());
   }
 
   public void defaultDrive(double speed, double strafe, double turn) {
@@ -294,25 +293,25 @@ public class SwerveDriveTrain extends SubsystemBase {
     field.setRobotPose(getPose());
   }
 
-  /*
-   * //TODO: fix this
-   * public void updateOdometryWithVision() {
-   * for (Optional<EstimatedRobotPose> pos :
-   * Robot.getRobotContainer().getVision().getEstimatedGlobalPose(getPose())) {
-   * if (pos == null || pos.isEmpty())
-   * continue;
-   * var pose = pos.get();
-   * swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-   * pose.timestampSeconds);
-   * }
-   * }
-   * 
-   * public void addVisionMeasurement(Pose2d visionMeasurement, double
-   * timeStampSeconds) {
-   * swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
-   * timeStampSeconds);
-   * }
-   */
+  public void updateOdometryWithVision() 
+  {
+    for (var pos : Robot.getRobotContainer().getVision().getEstimatedGlobalPose()) 
+    {
+      if (pos == null || pos.isEmpty())
+        continue;
+
+      var pose = pos.get();
+      swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+        pose.timestampSeconds);
+    }
+  }
+  
+  public void addVisionMeasurement(Pose2d visionMeasurement, double
+  timeStampSeconds) {
+  swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
+  timeStampSeconds);
+  }
+  
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
   }
@@ -499,7 +498,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    // updateOdometryWithVision(); TODO: fix this
+    updateOdometryWithVision(); 
     putAllInfoInSmartDashboard();
   }
 

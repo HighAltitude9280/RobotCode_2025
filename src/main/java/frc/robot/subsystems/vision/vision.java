@@ -17,7 +17,6 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -25,12 +24,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
   PhotonCamera poseCamFront, poseCamBack, alignmentCam;
-  PhotonPipelineResult resultFront, resultBack;
 
   PhotonPoseEstimator poseEstimatorFront, poseEstimatorBack;
 
-  private Optional<EstimatedRobotPose> pose1;
-  private Optional<EstimatedRobotPose> pose2;
 
   List<PhotonPipelineResult> alignmentResults;
 
@@ -71,37 +67,28 @@ public class Vision extends SubsystemBase {
 
     poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         camBack);
-    /*
-     * //TODO: FIX THIS
-     * // Initialize pose1 and pose2 after poseEstimators are created
-     * pose1 = poseEstimatorBack.update(resultBack);
-     * pose2 = poseEstimatorFront.update(resultFront);
-     * 
-     * resultBack = poseCamBack.getLatestResult();
-     * resultFront = poseCamFront.getLatestResult();
-     */
+
   }
 
-  public ArrayList<Optional<EstimatedRobotPose>> getEstimatedPosition() {
-    ArrayList<Optional<EstimatedRobotPose>> result = new ArrayList<>();
-    result.add(pose1);
-    result.add(pose2);
-    return result;
-  }
+  public ArrayList<Optional<EstimatedRobotPose>> getEstimatedGlobalPose() 
+  {
+    Optional<EstimatedRobotPose> pose1 = Optional.empty();
+    Optional<EstimatedRobotPose> pose2 = Optional.empty();
 
-  public ArrayList<Optional<EstimatedRobotPose>> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
-    // Check if prevEstimatedRobotPose is null
-    if (prevEstimatedRobotPose == null) {
-      // Handle the null case, e.g., log a warning or return an empty list
-      return new ArrayList<>(List.of(pose1, pose2)); // Return current poses without updating
+    for (var change : poseCamFront.getAllUnreadResults()) 
+    {
+      pose1 = poseEstimatorFront.update(change);
+    }
+    for (var change : poseCamBack.getAllUnreadResults()) 
+    {
+      pose1 = poseEstimatorBack.update(change);
     }
 
-    poseEstimatorFront.setReferencePose(prevEstimatedRobotPose);
-    poseEstimatorBack.setReferencePose(prevEstimatedRobotPose);
-    ArrayList<Optional<EstimatedRobotPose>> result = new ArrayList<>();
-    result.add(pose1);
-    result.add(pose2);
-    return result;
+    var res = new ArrayList<Optional<EstimatedRobotPose>>();
+    res.add(pose1);
+    res.add(pose2);
+
+    return res;
   }
 
   public boolean alignmentCamHasTargets() {
