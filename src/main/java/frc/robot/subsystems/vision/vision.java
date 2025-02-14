@@ -115,21 +115,5 @@ public class Vision extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    /*
-     * //TODO: fix this
-     * if (poseEstimatorBack != null) {
-     * // resultFront = poseCamFront.getLatestResult();
-     * pose1 = poseEstimatorBack.update(resultBack);
-     * }
-     * if (poseEstimatorFront != null) {
-     * // resultBack = poseCamBack.getLatestResult();
-     * pose2 = poseEstimatorFront.update(resultFront);
-     * }
-     * if (alignmentCam != null) {
-     * alignmentResults = alignmentCam.getAllUnreadResults();
-     * }
-     */
-  }
+  public void periodic() {}
 }
