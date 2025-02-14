@@ -2,7 +2,9 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.swerve.autonomous.vision;
+package frc.robot.commands.swerve.autonomous.reef;
+
+import com.fasterxml.jackson.annotation.Nulls;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,8 +18,13 @@ public class AlignWithTargetVision extends Command {
   boolean isFinished = false;
 
   int targetID;
-  double targetAngle;
+  double targetAngle = Double.NaN;
   double targetYaw;
+
+  REEF_SIDE side;
+
+  REEF_POSITION pos = null;
+  boolean left;
 
   double maxTurnPower, maxSpeedPower, maxStrafePower;
 
@@ -35,19 +42,9 @@ public class AlignWithTargetVision extends Command {
       double maxStrafePower) {
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
 
-    var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-      this.targetID = HighAltitudeConstants.RED_APRILTAG_IDS[position.getID()];
-      this.targetAngle = HighAltitudeConstants.PATHFINDING_REEF_POS[position.getID()].getRotation().getDegrees();
-    } else {
-      this.targetID = HighAltitudeConstants.BLUE_APRILTAG_IDS[position.getID()];
-      this.targetAngle = HighAltitudeConstants.PATHFINDING_REEF_POS[position.getID()].getRotation().getDegrees();
-    }
-    if (left) {
-      targetYaw = HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_LEFT;
-    } else {
-      targetYaw = HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_RIGHT;
-    }
+    this.pos = position;
+    this.left = left;
+
     this.maxTurnPower = maxTurnPower;
     this.maxSpeedPower = maxSpeedPower;
     this.maxStrafePower = maxStrafePower;
@@ -66,14 +63,45 @@ public class AlignWithTargetVision extends Command {
    * @param maxStrafePower Max strafe power.
    */
   public AlignWithTargetVision(REEF_SIDE side, double maxTurnPower, double maxSpeedPower,
-      double maxStrafePower) {
-    this(side.getPosition(Robot.isFrontMode()), Robot.isLeftMode(),
-        maxTurnPower, maxSpeedPower, maxStrafePower);
+      double maxStrafePower) 
+  {
+    this.side = side;
+    this.maxTurnPower = maxTurnPower;
+    this.maxSpeedPower = maxSpeedPower;
+    this.maxStrafePower = maxStrafePower;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() 
+  {
+    if(pos == null)
+    {
+      pos = side.getPosition(Robot.isFrontMode());
+      left = Robot.isLeftMode();
+    }
+
+    var alliance = DriverStation.getAlliance();
+
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) 
+    {
+      this.targetID = HighAltitudeConstants.RED_APRILTAG_IDS[pos.getID()];
+      this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[pos.getID()].getRotation().getDegrees();
+    } 
+    else 
+    {
+      this.targetID = HighAltitudeConstants.BLUE_APRILTAG_IDS[pos.getID()];
+      this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[pos.getID()].getRotation().getDegrees();
+    }
+
+    if (left) 
+    {
+      targetYaw = HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_LEFT;
+    } 
+    else 
+    {
+      targetYaw = HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_RIGHT;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

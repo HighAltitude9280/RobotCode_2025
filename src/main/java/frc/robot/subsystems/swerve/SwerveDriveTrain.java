@@ -10,9 +10,7 @@ import frc.robot.RobotMap;
 import frc.robot.resources.math.Math;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
-import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
@@ -306,12 +304,6 @@ public class SwerveDriveTrain extends SubsystemBase {
     }
   }
   
-  public void addVisionMeasurement(Pose2d visionMeasurement, double
-  timeStampSeconds) {
-  swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement,
-  timeStampSeconds);
-  }
-  
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
   }
@@ -367,7 +359,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     }
   }
 
-  public Command pathfindToPose(Pose2d targetPose) {
+  public static Command pathfindToPose(Pose2d targetPose) {
     PathConstraints constraints = new PathConstraints(
         HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
         HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
@@ -377,7 +369,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     return AutoBuilder.pathfindToPose(targetPose, constraints);
   }
 
-  public Command pathfindThenPath(PathPlannerPath path) {
+  public static Command pathfindThenPath(PathPlannerPath path) {
 
     PathConstraints constraints = new PathConstraints(
         HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
@@ -502,14 +494,6 @@ public class SwerveDriveTrain extends SubsystemBase {
     putAllInfoInSmartDashboard();
   }
 
-  /* //TODO: esto lo borramos alv, no?
-   * public void updateEncoders() {
-   * frontLeft.updateEncoders();
-   * frontRight.updateEncoders();
-   * backLeft.updateEncoders();
-   * backRight.updateEncoders();
-   * }
-   */
   public void putAllInfoInSmartDashboard() {
 
     frontLeft.putProcessedValues("FL");

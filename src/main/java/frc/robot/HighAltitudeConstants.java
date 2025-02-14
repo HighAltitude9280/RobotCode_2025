@@ -8,9 +8,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.resources.Human_Drivers.HumanDrivers;
@@ -229,12 +227,11 @@ public class HighAltitudeConstants {
         public static final double PATHFINDING_MAX_ANGULAR_SPEED = Math.PI / 2;
         public static final double PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION = Math.PI;
 
-        // Reef positions for pathfinding, in meteres, measured as blue alliance
-        // (automatically mirrored).
+        // Reef positions for pathfinding, in meteres
 
         // Note that this array should be in the same order as the enum
         // i.e. PATHFINDING_REEF_POS[REEF_POSITION.BC] should correspond to BC.
-        public static final Pose2d[] PATHFINDING_REEF_POS = {
+        public static final Pose2d[] PATHFINDING_BLUE_REEF_POS = {
                         // Back (closer to the driver station)
                         new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60)),
                         new Pose2d(2.963, 4.015, Rotation2d.fromDegrees(0)),
@@ -244,6 +241,16 @@ public class HighAltitudeConstants {
                         new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180)),
                         new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120))
         };
+        public static final Pose2d[] PATHFINDING_RED_REEF_POS = {
+                // Back (closer to the driver station)
+                new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120)),
+                new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)),
+                new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)),
+                // Front (opposite to the driver station)
+                new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)),
+                new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)),
+                new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60))
+};
 
         public static final int[] BLUE_APRILTAG_IDS = { 19, 18, 17, 22, 21, 20 };
         public static final int[] RED_APRILTAG_IDS = { 6, 7, 8, 9, 10, 11 };
