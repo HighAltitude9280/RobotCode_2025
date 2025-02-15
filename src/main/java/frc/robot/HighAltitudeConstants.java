@@ -21,12 +21,28 @@ public class HighAltitudeConstants {
         public static final double LIFT_DOWN_SPEED = -0.2;
 
         ////////////////////////// GRIPPER //////////////////////////
-        public static final double GRIPPER_OUT_SPEED = 0.3;
+        public static final double GRIPPER_OUT_SPEED = 0.4;
         public static final double GRIPPER_IN_SPEED = -0.3;
 
-        ////////////////////////// GRIPPER PIVOT //////////////////////////
+        ////////////////////////// WRIST //////////////////////////
+        // TODO: Wrist Constants
         public static final double WRIST_UP_SPEED = 0.1;
         public static final double WRIST_DOWN_SPEED = -0.1;
+
+        public static final double WRIST_DRIVE_SPEED = 0.1;
+
+        public static final double WRIST_kP = 0.0;
+        public static final double WRIST_kI = 0.0;
+        public static final double WRIST_kD = 0.0;
+
+        public static final double WRIST_DEGREES_PER_PULSE = 0;
+        public static final double WRIST_RATIO = 12.0 / 32.0;
+        public static final double WRIST_NEO_ENCODER_UNITS_PER_REV = 1.0;
+        public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV = WRIST_RATIO
+                        / WRIST_NEO_ENCODER_UNITS_PER_REV;
+        public static final double WRIST_ARRIVE_OFFSET = 0;
+
+        public static final double WRIST_ZERO_ANGLE = 30.0;
 
         ////////////////////////// SWERVE //////////////////////////
 
@@ -103,7 +119,7 @@ public class HighAltitudeConstants {
 
         // FEEDFORWARD //
         public static final double SWERVE_DRIVE_kS = 0;
-        public static final double SWERVE_DRIVE_kV = 2.0;
+        public static final double SWERVE_DRIVE_kV = 1.5;
 
         // The reported encoder position after one revolution, check encoder
         // specifications.
@@ -242,15 +258,15 @@ public class HighAltitudeConstants {
                         new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120))
         };
         public static final Pose2d[] PATHFINDING_RED_REEF_POS = {
-                // Back (closer to the driver station)
-                new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120)),
-                new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)),
-                new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)),
-                // Front (opposite to the driver station)
-                new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)),
-                new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)),
-                new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60))
-};
+                        // Back (closer to the driver station)
+                        new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120)),
+                        new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)),
+                        new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)),
+                        // Front (opposite to the driver station)
+                        new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)),
+                        new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)),
+                        new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60))
+        };
 
         public static final int[] BLUE_APRILTAG_IDS = { 19, 18, 17, 22, 21, 20 };
         public static final int[] RED_APRILTAG_IDS = { 6, 7, 8, 9, 10, 11 };

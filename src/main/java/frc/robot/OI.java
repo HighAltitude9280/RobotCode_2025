@@ -13,6 +13,7 @@ import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
 import frc.robot.commands.swerve.test.TestDrivePIDFFSwerve;
 import frc.robot.commands.swerve.test.TestSwerve;
+import frc.robot.commands.wrist.WristMantainTo;
 import frc.robot.commands.wrist.manual.WristDown;
 import frc.robot.commands.wrist.manual.WristUp;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
@@ -36,9 +37,9 @@ public class OI {
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.2);
-                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.2);
-                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.2);
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
@@ -53,6 +54,8 @@ public class OI {
                 pilot.whileTrue(ButtonType.POV_E, new WristDown());
                 pilot.whileTrue(ButtonType.POV_W, new WristUp());
 
+                pilot.onTrue(ButtonType.A, new WristMantainTo(90, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+
             case JoakinButChambing:
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
@@ -66,8 +69,8 @@ public class OI {
                 pilot.onTrue(ButtonType.X, new ResetOdometryZeros());
 
                 pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
-                pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(0.5));
-                pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-0.5));
+                // pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(0.5));
+                // pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-0.5));
                 pilot.whileTrue(ButtonType.B, new TestSwerve());
             default:
                 break;
@@ -108,7 +111,7 @@ public class OI {
                 return pilot.getAxis(AxisType.LEFT_Y);
 
             case Joakin:
-                return pilot.getAxis(AxisType.LEFT_Y);
+                return pilot.getAxis(AxisType.LEFT_Y) * 0.88;
 
             default:
                 return pilot.getAxis(AxisType.LEFT_Y);
@@ -124,7 +127,7 @@ public class OI {
                 return pilot.getAxis(AxisType.LEFT_X);
 
             case Joakin:
-                return pilot.getAxis(AxisType.LEFT_X);
+                return pilot.getAxis(AxisType.LEFT_X) * 0.88;
 
             default:
                 return pilot.getAxis(AxisType.LEFT_X);
@@ -139,7 +142,7 @@ public class OI {
                 return pilot.getAxis(AxisType.RIGHT_X);
 
             case Joakin:
-                return pilot.getAxis(AxisType.RIGHT_X);
+                return pilot.getAxis(AxisType.RIGHT_X) * 0.8;
 
             default:
                 return pilot.getAxis(AxisType.RIGHT_X);
