@@ -8,21 +8,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class WristMantainTo extends Command {
+public class WristMantainTarget extends Command {
   /** Creates a new WristMantainTo. */
 
   double maxPower, target;
 
-  public WristMantainTo(double maxPower) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public WristMantainTarget(double maxPower) {
     addRequirements(Robot.getRobotContainer().getWrist());
 
     this.target = Double.NaN;
     this.maxPower = maxPower;
   }
 
-  public WristMantainTo(double angleTarget, double maxPower) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public WristMantainTarget(double angleTarget, double maxPower) {
     addRequirements(Robot.getRobotContainer().getWrist());
 
     this.maxPower = maxPower;
@@ -33,7 +31,7 @@ public class WristMantainTo extends Command {
   @Override
   public void initialize() {
     if (!Double.isNaN(target))
-      Robot.getRobotContainer().getWrist().setAngleTarget(target);
+      Robot.getRobotContainer().getWrist().setTarget(target);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

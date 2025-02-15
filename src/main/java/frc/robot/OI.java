@@ -13,7 +13,7 @@ import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
 import frc.robot.commands.swerve.test.TestDrivePIDFFSwerve;
 import frc.robot.commands.swerve.test.TestSwerve;
-import frc.robot.commands.wrist.WristMantainTo;
+import frc.robot.commands.wrist.WristMantainTarget;
 import frc.robot.commands.wrist.manual.WristDown;
 import frc.robot.commands.wrist.manual.WristUp;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
@@ -54,7 +54,7 @@ public class OI {
                 pilot.whileTrue(ButtonType.POV_E, new WristDown());
                 pilot.whileTrue(ButtonType.POV_W, new WristUp());
 
-                pilot.onTrue(ButtonType.A, new WristMantainTo(90, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                pilot.onTrue(ButtonType.A, new WristMantainTarget(90, HighAltitudeConstants.WRIST_DRIVE_SPEED));
 
             case JoakinButChambing:
 

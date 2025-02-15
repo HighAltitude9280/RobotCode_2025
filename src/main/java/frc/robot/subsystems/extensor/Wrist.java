@@ -17,9 +17,11 @@ public class Wrist extends SubsystemBase {
   HighAltitudeMotorGroup wristMotors;
   double wristEncoderPosition, wristPositionDegrees, wristPositionRawEncoder;
 
-  private double encoderTarget = 0.0;
+  private double target = 0.0;
 
   private PIDController pidController;
+
+  private boolean onTarget = false;
 
   /** Creates a new Wrist. */
   public Wrist() {
@@ -44,42 +46,43 @@ public class Wrist extends SubsystemBase {
   }
 
   public double getWristPosDegrees() {
-    return HighAltitudeConstants.WRIST_ZERO_ANGLE
-        + (RobotMap.WRIST_ENCODER_IS_INVERTED ? 1.0 : 1.0) * getWristEncoderPosition()
-            * HighAltitudeConstants.WRIST_DEGREES_PER_PULSE;
+    return (RobotMap.WRIST_ENCODER_IS_INVERTED ? 1.0 : 1.0) * getWristEncoderPosition()
+            * HighAltitudeConstants.WRIST_DEGREES_PER_PULSE - HighAltitudeConstants.WRIST_ZERO_ANGLE;
   }
 
   public double getWristEncoderPosition() {
     return wristMotors.getEncoderPosition();
   }
 
-  public double getEncoderTarget() {
-    return encoderTarget;
+  private double getTarget() {
+    return target;
   }
 
-  public void setAngleTarget(double targetDegrees) {
-    this.encoderTarget = angleToEncoder(targetDegrees);
+  /**
+   * Sets the target of the wrist.
+   * 
+   * @param target the target angle in degrees
+   */
+  public void setTarget(double target) {
+    this.target = target;
   }
 
-  public double angleToEncoder(double angleDegrees) {
-    return (RobotMap.WRIST_ENCODER_IS_INVERTED ? -1.0 : 1.0) * (angleDegrees - HighAltitudeConstants.WRIST_ZERO_ANGLE)
-        / HighAltitudeConstants.WRIST_DEGREES_PER_PULSE;
-  }
+  public void mantainTarget(double maxPower) {
 
-  public boolean mantainTarget(double maxPower) {
-
-    double power = pidController.calculate(getWristEncoderPosition(), getEncoderTarget());
+    double power = pidController.calculate(getWristPosDegrees(), getTarget());
     power = Math.clamp(power * maxPower, -maxPower, maxPower);
     driveWrist(power);
 
-    double sigma = getEncoderTarget() - getWristEncoderPosition();
-    return Math.abs(sigma) < HighAltitudeConstants.WRIST_ARRIVE_OFFSET;
+    double delta = getTarget() - getWristEncoderPosition();
+    this.onTarget = Math.abs(delta) < HighAltitudeConstants.WRIST_ARRIVE_OFFSET;
   }
+
+  public boolean onTarget(){return this.onTarget;}
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Wrist Encoder Target", getEncoderTarget());
+    SmartDashboard.putNumber("Wrist Encoder Target", getTarget());
     SmartDashboard.putNumber("Wrist Encoder Position", getWristEncoderPosition());
 
     SmartDashboard.putNumber("Wrist Encoder Angle", getWristPosDegrees());

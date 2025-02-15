@@ -14,14 +14,12 @@ public class WristSetAngleTarget extends InstantCommand {
   double target;
 
   public WristSetAngleTarget(double target) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.getRobotContainer().getWrist());
     this.target = target;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.getRobotContainer().getWrist().setAngleTarget(this.target);
+    Robot.getRobotContainer().getWrist().setTarget(this.target);
   }
 }

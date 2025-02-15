@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
+import frc.robot.commands.wrist.WristMantainTarget;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.extensor.Lift;
 import frc.robot.subsystems.extensor.Wrist;
@@ -64,6 +65,10 @@ public class RobotContainer {
     public void ConfigureButtonBindings() {
         OI.getInstance().ConfigureButtonBindings();
         swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
+
+        // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee el default command).
+        wrist.setDefaultCommand(new WristMantainTarget(HighAltitudeConstants.WRIST_DRIVE_SPEED));
+
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case Joakin:
