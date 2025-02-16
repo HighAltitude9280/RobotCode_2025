@@ -18,7 +18,12 @@ public class HighAltitudeConstants {
 
         ////////////////////////// LIFT //////////////////////////
         public static final double LIFT_UP_SPEED = 0.2;
-        public static final double LIFT_DOWN_SPEED = -0.2;
+        public static final double LIFT_DOWN_SPEED = -0.1;
+
+        public static final double LIFT_kS = 0.0;
+        public static final double LIFT_kA = 0.0;
+        public static final double LIFT_kG = 0.05;
+        public static final double LIFT_kV = 0.0;
 
         ////////////////////////// GRIPPER //////////////////////////
         public static final double GRIPPER_OUT_SPEED = 0.4;
@@ -29,20 +34,20 @@ public class HighAltitudeConstants {
         public static final double WRIST_UP_SPEED = 0.1;
         public static final double WRIST_DOWN_SPEED = -0.1;
 
-        public static final double WRIST_DRIVE_SPEED = 0.1;
+        public static final double WRIST_DRIVE_SPEED = 0.15;
 
-        public static final double WRIST_kP = 0.0;
+        public static final double WRIST_kP = 0.1;
         public static final double WRIST_kI = 0.0;
         public static final double WRIST_kD = 0.0;
 
-        public static final double WRIST_DEGREES_PER_PULSE = 0;
-        public static final double WRIST_RATIO = 12.0 / 32.0;
+        public static final double WRIST_RATIO = (1.0 * 12.0) / (15.0 * 32.0);
         public static final double WRIST_NEO_ENCODER_UNITS_PER_REV = 1.0;
         public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV = WRIST_RATIO
                         / WRIST_NEO_ENCODER_UNITS_PER_REV;
-        public static final double WRIST_ARRIVE_OFFSET = 0;
+        public static final double WRIST_ARRIVE_OFFSET = 2.0;
+        public static final double WRIST_DEGREES_PER_PULSE = 360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
 
-        public static final double WRIST_ZERO_ANGLE = 30.0;
+        public static final double WRIST_ZERO_ANGLE = 0.0;
 
         ////////////////////////// SWERVE //////////////////////////
 
@@ -196,9 +201,9 @@ public class HighAltitudeConstants {
 
         // FEEDBACK //
 
-        public static final double SWERVE_DIRECTION_kP = 12; // 0.128
+        public static final double SWERVE_DIRECTION_kP = 5; // 12
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
-        public static final double SWERVE_DIRECTION_kD = 0.1; // 0.0128
+        public static final double SWERVE_DIRECTION_kD = 0.05; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
         PPHolonomicDriveController(new PIDConstants(0.9, 0, 0.000025),

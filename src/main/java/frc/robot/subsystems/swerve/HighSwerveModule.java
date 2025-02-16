@@ -34,7 +34,6 @@ public class HighSwerveModule {
   private double directionPIDVelocitySetPoint = 0;
 
   private double directionOutput;
-
   /// DRIVE ///
   private HighAltitudeMotor driveMotor;
 

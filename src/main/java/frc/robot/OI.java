@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.gripper.manual.GripperIn;
 import frc.robot.commands.gripper.manual.GripperOut;
+import frc.robot.commands.lift.feedforward.LiftFeedForward;
 import frc.robot.commands.lift.manual.LiftDown;
 import frc.robot.commands.lift.manual.LiftUp;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
@@ -45,7 +46,7 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-                pilot.whileTrue(ButtonType.POV_N, new LiftUp());
+                pilot.whileTrue(ButtonType.POV_N, new LiftFeedForward(0.0, 0.0));
                 pilot.whileTrue(ButtonType.POV_S, new LiftDown());
 
                 pilot.whileTrue(ButtonType.LB, new GripperIn());
@@ -53,8 +54,6 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_E, new WristDown());
                 pilot.whileTrue(ButtonType.POV_W, new WristUp());
-
-                pilot.onTrue(ButtonType.A, new WristMantainTarget(90, HighAltitudeConstants.WRIST_DRIVE_SPEED));
 
             case JoakinButChambing:
 
@@ -87,8 +86,14 @@ public class OI {
                 copilot.whileTrue(ButtonType.LB, new GripperIn());
                 copilot.whileTrue(ButtonType.RB, new GripperOut());
 
-                copilot.whileTrue(ButtonType.POV_E, new WristDown());
-                copilot.whileTrue(ButtonType.POV_W, new WristUp());
+                copilot.whileTrue(ButtonType.Y, new LiftFeedForward(0.0, 0.0));
+
+                copilot.onTrue(ButtonType.A, new WristMantainTarget(30, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                copilot.whileTrue(ButtonType.A, new GripperIn());
+
+                copilot.onTrue(ButtonType.X, new WristMantainTarget(60, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                copilot.onTrue(ButtonType.B, new WristMantainTarget(160, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+
                 break;
             default:
                 break;

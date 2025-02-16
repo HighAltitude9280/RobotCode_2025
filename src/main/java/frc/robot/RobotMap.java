@@ -92,7 +92,7 @@ public class RobotMap {
 
     ////////////////////////// WRIST //////////////////////////
     public static final int[] WRIST_MOTOR_PORTS = { 41 };
-    public static final int[] WRIST_INVERTED_MOTORS_PORTS = {};
+    public static final int[] WRIST_INVERTED_MOTORS_PORTS = {41};
     public static final TypeOfMotor[] WRIST_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
     public static final boolean WRIST_ENCODER_IS_INVERTED = false;
 
