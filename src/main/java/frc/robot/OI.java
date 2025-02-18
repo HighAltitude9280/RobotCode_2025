@@ -6,9 +6,12 @@ package frc.robot;
 
 import frc.robot.commands.gripper.manual.GripperIn;
 import frc.robot.commands.gripper.manual.GripperOut;
+import frc.robot.commands.lift.LiftMantainTarget;
+import frc.robot.commands.lift.LiftSetMetersTarget;
 import frc.robot.commands.lift.feedforward.LiftFeedForward;
 import frc.robot.commands.lift.manual.LiftDown;
 import frc.robot.commands.lift.manual.LiftUp;
+import frc.robot.commands.modes.WhileHeldPrecisionMode;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
@@ -38,22 +41,18 @@ public class OI {
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
-                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
-                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.06);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.06);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.06);
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-                pilot.whileTrue(ButtonType.POV_N, new LiftFeedForward(0.0, 0.0));
-                pilot.whileTrue(ButtonType.POV_S, new LiftDown());
-
                 pilot.whileTrue(ButtonType.LB, new GripperIn());
                 pilot.whileTrue(ButtonType.RB, new GripperOut());
 
-                pilot.whileTrue(ButtonType.POV_E, new WristDown());
-                pilot.whileTrue(ButtonType.POV_W, new WristUp());
+                pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
             case JoakinButChambing:
 
@@ -77,22 +76,25 @@ public class OI {
         }
         switch (HighAltitudeConstants.CURRENT_COPILOT) {
 
-            case Joakin:
+            case Carlos:
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
-                copilot.whileTrue(ButtonType.POV_N, new LiftUp());
-                copilot.whileTrue(ButtonType.POV_S, new LiftDown());
 
                 copilot.whileTrue(ButtonType.LB, new GripperIn());
                 copilot.whileTrue(ButtonType.RB, new GripperOut());
 
-                copilot.whileTrue(ButtonType.Y, new LiftFeedForward(0.0, 0.0));
+                // copilot.whileTrue(ButtonType.Y, new LiftFeedForward(0.0, 0.0));
 
-                copilot.onTrue(ButtonType.A, new WristMantainTarget(30, HighAltitudeConstants.WRIST_DRIVE_SPEED));
-                copilot.whileTrue(ButtonType.A, new GripperIn());
+                copilot.onTrue(ButtonType.A, new WristMantainTarget(29.5, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                copilot.whileTrue(ButtonType.A, new LiftSetMetersTarget(0.001));
 
-                copilot.onTrue(ButtonType.X, new WristMantainTarget(60, HighAltitudeConstants.WRIST_DRIVE_SPEED));
-                copilot.onTrue(ButtonType.B, new WristMantainTarget(160, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                copilot.onTrue(ButtonType.X, new WristMantainTarget(60, HighAltitudeConstants.WRIST_DRIVE_SPEED)); // 60
+                copilot.onTrue(ButtonType.B, new WristMantainTarget(160, HighAltitudeConstants.WRIST_DRIVE_SPEED)); // 160
+
+                copilot.whileTrue(ButtonType.POV_W, new LiftSetMetersTarget(0.77));
+                copilot.whileTrue(ButtonType.POV_S, new LiftSetMetersTarget(0.10));
+                copilot.whileTrue(ButtonType.POV_N, new LiftSetMetersTarget(0.35));
+                copilot.whileTrue(ButtonType.POV_E, new LiftSetMetersTarget(0.5));
 
                 break;
             default:
@@ -116,7 +118,7 @@ public class OI {
                 return pilot.getAxis(AxisType.LEFT_Y);
 
             case Joakin:
-                return pilot.getAxis(AxisType.LEFT_Y) * 0.88;
+                return pilot.getAxis(AxisType.LEFT_Y);
 
             default:
                 return pilot.getAxis(AxisType.LEFT_Y);
@@ -132,7 +134,7 @@ public class OI {
                 return pilot.getAxis(AxisType.LEFT_X);
 
             case Joakin:
-                return pilot.getAxis(AxisType.LEFT_X) * 0.88;
+                return pilot.getAxis(AxisType.LEFT_X);
 
             default:
                 return pilot.getAxis(AxisType.LEFT_X);
@@ -147,7 +149,7 @@ public class OI {
                 return pilot.getAxis(AxisType.RIGHT_X);
 
             case Joakin:
-                return pilot.getAxis(AxisType.RIGHT_X) * 0.8;
+                return pilot.getAxis(AxisType.RIGHT_X);
 
             default:
                 return pilot.getAxis(AxisType.RIGHT_X);

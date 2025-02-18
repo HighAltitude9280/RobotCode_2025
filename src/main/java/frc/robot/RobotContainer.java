@@ -4,13 +4,19 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.led.CANdle;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.LEDCommands;
+import frc.robot.commands.SetLEDColor;
+import frc.robot.commands.lift.LiftMantainTarget;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.commands.wrist.WristMantainTarget;
 import frc.robot.resources.components.Navx;
+import frc.robot.subsystems.CANdleSubsystem;
 import frc.robot.subsystems.extensor.Lift;
 import frc.robot.subsystems.extensor.Wrist;
 import frc.robot.subsystems.manipulator.Gripper;
@@ -26,6 +32,10 @@ public class RobotContainer {
     private Lift lift;
     private Gripper gripper;
     private Wrist wrist;
+    private CANdleSubsystem candleSubsystem;
+
+    private boolean precisionModeOn = false;
+    private boolean overrideEncoders = false;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -36,6 +46,7 @@ public class RobotContainer {
         lift = new Lift();
         gripper = new Gripper();
         wrist = new Wrist();
+        candleSubsystem = new CANdleSubsystem();
     }
 
     public Navx getNavx() {
@@ -62,12 +73,36 @@ public class RobotContainer {
         return wrist;
     }
 
+    public CANdleSubsystem getCaNdleSubsystem() {
+        return candleSubsystem;
+    }
+
+    public void setOverrideEncoders(boolean override) {
+        overrideEncoders = override;
+    }
+
+    public boolean getOverrideEncoders() {
+        return overrideEncoders;
+    }
+
+    public void setPrecisionMode(boolean precisionMode) {
+        precisionModeOn = precisionMode;
+    }
+
+    public boolean getPrecisionMode() {
+        return precisionModeOn;
+    }
+
     public void ConfigureButtonBindings() {
         OI.getInstance().ConfigureButtonBindings();
         swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
 
-        // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee el default command).
+        candleSubsystem.setDefaultCommand(new SetLEDColor());
+
+        // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee
+        // el default command).
         wrist.setDefaultCommand(new WristMantainTarget(HighAltitudeConstants.WRIST_DRIVE_SPEED));
+        lift.setDefaultCommand(new LiftMantainTarget(4));
 
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 

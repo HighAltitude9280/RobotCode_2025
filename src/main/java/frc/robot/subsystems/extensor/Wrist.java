@@ -17,7 +17,7 @@ public class Wrist extends SubsystemBase {
   HighAltitudeMotorGroup wristMotors;
   double wristEncoderPosition, wristPositionDegrees, wristPositionRawEncoder;
 
-  private double target = 0.0;
+  private double target = 29.5;
 
   private PIDController pidController;
 
@@ -47,7 +47,7 @@ public class Wrist extends SubsystemBase {
 
   public double getWristPosDegrees() {
     return (RobotMap.WRIST_ENCODER_IS_INVERTED ? 1.0 : 1.0) * getWristEncoderPosition()
-            * HighAltitudeConstants.WRIST_DEGREES_PER_PULSE - HighAltitudeConstants.WRIST_ZERO_ANGLE;
+        * HighAltitudeConstants.WRIST_DEGREES_PER_PULSE - HighAltitudeConstants.WRIST_ZERO_ANGLE;
   }
 
   public double getWristEncoderPosition() {
@@ -79,7 +79,9 @@ public class Wrist extends SubsystemBase {
 
   // Explica q
 
-  public boolean onTarget(){return this.onTarget;}
+  public boolean onTarget() {
+    return this.onTarget;
+  }
 
   @Override
   public void periodic() {

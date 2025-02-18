@@ -11,6 +11,7 @@ import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
 public class DefaultSwerveDriveNew extends Command {
   /** Creates a new DefaultSwerveDriveNew. */
+
   public DefaultSwerveDriveNew() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
@@ -31,21 +32,20 @@ public class DefaultSwerveDriveNew extends Command {
 
     double speed, strafe, turn;
 
-    if (swerveDriveTrain.getIsOnCompetitiveField() == true) {
+    if (Robot.getRobotContainer().getPrecisionMode() == false) {
 
       // 1. Read input
 
-      speed  = -OI.getInstance().getDefaultSwerveDriveSpeed();
-      strafe = -OI.getInstance().getDefaultSwerveDriveStrafe();
-      turn = -OI.getInstance().getDefaultSwerveDriveTurn();
+      speed = OI.getInstance().getDefaultSwerveDriveSpeed() * 0.88;
+      strafe = OI.getInstance().getDefaultSwerveDriveStrafe() * 0.88;
+      turn = OI.getInstance().getDefaultSwerveDriveTurn() * 0.8;
 
     } else {
 
       // 1. Read input
-
-      speed = OI.getInstance().getDefaultSwerveDriveSpeed();
-      strafe = OI.getInstance().getDefaultSwerveDriveStrafe();
-      turn = OI.getInstance().getDefaultSwerveDriveTurn();
+      speed = OI.getInstance().getDefaultSwerveDriveSpeed() * 0.3;
+      strafe = OI.getInstance().getDefaultSwerveDriveStrafe() * 0.3;
+      turn = OI.getInstance().getDefaultSwerveDriveTurn() * 0.2;
 
     }
 

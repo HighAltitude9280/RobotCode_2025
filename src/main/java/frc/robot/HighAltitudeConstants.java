@@ -20,10 +20,40 @@ public class HighAltitudeConstants {
         public static final double LIFT_UP_SPEED = 0.2;
         public static final double LIFT_DOWN_SPEED = -0.1;
 
-        public static final double LIFT_kS = 0.0;
+        /*
+         * Necesitas la gráfica de velocidad del encoder del Lift
+         * 
+         * PASO 1:
+         * 1. PID en 0
+         * 2. kS dejarla en 0
+         * 3. Tunear kV hasta que la velocidad esté en target
+         * 
+         * PASO 2:
+         * 4. Ya no mueves el feedforward
+         * 5. Poner la kP lo más grande que pueda sin que se pase del target
+         * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
+         * que quede smooth
+         */
+        public static final double LIFT_kS = 0.09;
         public static final double LIFT_kA = 0.0;
-        public static final double LIFT_kG = 0.05;
-        public static final double LIFT_kV = 0.0;
+        public static final double LIFT_kG = 0.055;
+        public static final double LIFT_kV = 0.1;
+
+        public static final double LIFT_kP = 0.11;
+        public static final double LIFT_kI = 0.0;
+        public static final double LIFT_kD = 0.1;
+
+        public static final double LIFT_MAX_VELOCITY = 0.5; // en m/s
+        public static final double LIFT_MAX_ACCELERATION = 0.5; // en m/s^2
+
+        public static final double LIFT_ARRIVE_OFFSET = 0.0125;
+
+        public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
+        public static final double LIFT_RATIO = 14.0 / 70.0;
+        public static final double LIFT_SPROCKET_REVS_PER_PULSE = LIFT_REV_PER_NEO_PULSE * LIFT_RATIO;
+        public static final double LIFT_INCHES_PER_SPROCKET_REV = 4.5;
+        public static final double LIFT_METERS_PER_PULSE = LIFT_INCHES_PER_SPROCKET_REV
+                        * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         ////////////////////////// GRIPPER //////////////////////////
         public static final double GRIPPER_OUT_SPEED = 0.4;
@@ -239,7 +269,7 @@ public class HighAltitudeConstants {
         //////////////////////// DRIVERS ////////////////////////
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Joakin;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         ////////////////////////////// Pathfinding ////////////////////////}
 
