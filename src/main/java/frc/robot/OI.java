@@ -80,21 +80,21 @@ public class OI {
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
-                copilot.whileTrue(ButtonType.LB, new GripperIn());
-                copilot.whileTrue(ButtonType.RB, new GripperOut());
+                copilot.whileTrue(ButtonType.LB, new GripperIn()); // saca alga y mete embudo al REEF
+                copilot.whileTrue(ButtonType.RB, new GripperOut()); //agarra alga, regresa coral al embudo en zero pos
 
                 // copilot.whileTrue(ButtonType.Y, new LiftFeedForward(0.0, 0.0));
 
-                copilot.onTrue(ButtonType.A, new WristMantainTarget(29.5, HighAltitudeConstants.WRIST_DRIVE_SPEED));
-                copilot.whileTrue(ButtonType.A, new LiftSetMetersTarget(0.001));
+                copilot.onTrue(ButtonType.A, new WristMantainTarget(29.5, HighAltitudeConstants.WRIST_DRIVE_SPEED));  //Intake Wrist
+                copilot.whileTrue(ButtonType.A, new LiftSetMetersTarget(0.001)); //Cero
 
-                copilot.onTrue(ButtonType.X, new WristMantainTarget(60, HighAltitudeConstants.WRIST_DRIVE_SPEED)); // 60
-                copilot.onTrue(ButtonType.B, new WristMantainTarget(160, HighAltitudeConstants.WRIST_DRIVE_SPEED)); // 160
+                copilot.onTrue(ButtonType.X, new WristMantainTarget(60, HighAltitudeConstants.WRIST_DRIVE_SPEED)); // 60 para L4 dunk
+                copilot.onTrue(ButtonType.B, new WristMantainTarget(160, HighAltitudeConstants.WRIST_DRIVE_SPEED)); // 160 para Alga
 
-                copilot.whileTrue(ButtonType.POV_W, new LiftSetMetersTarget(0.77));
-                copilot.whileTrue(ButtonType.POV_S, new LiftSetMetersTarget(0.10));
-                copilot.whileTrue(ButtonType.POV_N, new LiftSetMetersTarget(0.35));
-                copilot.whileTrue(ButtonType.POV_E, new LiftSetMetersTarget(0.5));
+                copilot.whileTrue(ButtonType.POV_W, new LiftSetMetersTarget(0.77)); //L4 
+                copilot.whileTrue(ButtonType.POV_S, new LiftSetMetersTarget(0.10)); //L2
+                copilot.whileTrue(ButtonType.POV_N, new LiftSetMetersTarget(0.35)); //L3
+                copilot.whileTrue(ButtonType.POV_E, new LiftSetMetersTarget(0.5)); //Alga Arriba disque
 
                 break;
             default:
