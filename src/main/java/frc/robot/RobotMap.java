@@ -83,6 +83,12 @@ public class RobotMap {
             TypeOfMotor.SPARK_MAX_BRUSHLESS };
     public static final boolean LIFT_ENCODER_IS_INVERTED = false;
 
+    public static final boolean LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE = false;
+    public static final int LIFT_TOP_LIMIT_SWITCH_PORT = 0;
+
+    public static final boolean LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE = false;
+    public static final int LIFT_BOTTOM_LIMIT_SWITCH_PORT = 0;
+
     ////////////////////////// GRIPPER //////////////////////////
 
     public static final int[] GRIPPER_MOTOR_PORTS = { 31 };
