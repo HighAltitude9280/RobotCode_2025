@@ -21,14 +21,16 @@ public class Robot extends TimedRobot {
 
   // Branch selection modes.
   private static boolean leftMode = true;
-  public static boolean isLeftMode() {
-    return leftMode;
-  }
+  public static void setLeftMode(boolean leftMode) { Robot.leftMode = leftMode; }
+  public static boolean isLeftMode() { return leftMode; }
 
   private static boolean frontMode = true;
-  public static boolean isFrontMode() {
-    return frontMode;
-  }
+  public static void setFrontMode(boolean frontMode) { Robot.frontMode = frontMode; }
+  public static boolean isFrontMode() { return frontMode; }
+
+  private static boolean coralMode = true;
+  public static void setCoralMode(boolean coralMode) { Robot.coralMode = coralMode; }
+  public static boolean isCoralMode(){ return coralMode;}
 
   /**
    * This function is run when the robot is first started up and should be used

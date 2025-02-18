@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.lift;
+package frc.robot.commands.modes;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
@@ -10,16 +10,17 @@ import frc.robot.Robot;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class LiftSetMetersTarget extends InstantCommand {
-  double target;
-
-  public LiftSetMetersTarget(double targetMeters) {
-    this.target = targetMeters;
+public class SetFrontMode extends InstantCommand {
+  boolean frontMode;
+  public SetFrontMode(boolean frontMode) 
+  {
+    this.frontMode = frontMode;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    Robot.getRobotContainer().getLift().setTarget(target);
+  public void initialize() 
+  {
+    Robot.setFrontMode(frontMode);
   }
 }
