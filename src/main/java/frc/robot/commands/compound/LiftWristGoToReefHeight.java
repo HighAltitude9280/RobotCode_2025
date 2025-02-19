@@ -11,7 +11,7 @@ import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class LiftWristGoToReefHeight extends Command {
-  
+
   REEF_HEIGHT height;
   boolean goingUp;
 
@@ -20,53 +20,47 @@ public class LiftWristGoToReefHeight extends Command {
 
   boolean isFinished = false;
 
-  public LiftWristGoToReefHeight(REEF_HEIGHT height) 
-  {
-    this.height = height; 
+  public LiftWristGoToReefHeight(REEF_HEIGHT height) {
+    this.height = height;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
-    
-    if(Robot.isCoralMode())
-    {
+  public void initialize() {
+
+    if (Robot.isCoralMode()) {
       liftTarget = HighAltitudeConstants.LIFT_CORAL_POSITIONS[height.getID()];
       wristTarget = HighAltitudeConstants.WRIST_CORAL_POSITIONS[height.getID()];
-    }
-    else
-    {
+    } else {
       liftTarget = HighAltitudeConstants.LIFT_ALGAE_POSITIONS[height.getID()];
       wristTarget = HighAltitudeConstants.WRIST_ALGAE_POSITIONS[height.getID()];
     }
     goingUp = liftTarget < Robot.getRobotContainer().getLift().getLiftPosMeters();
 
-    if(goingUp) Robot.getRobotContainer().getLift().setTarget(liftTarget);
-    else Robot.getRobotContainer().getWrist().setTarget(wristTarget);
+    if (goingUp)
+      Robot.getRobotContainer().getLift().setTarget(liftTarget);
+    else
+      Robot.getRobotContainer().getWrist().setTarget(wristTarget);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
-    if(goingUp && Robot.getRobotContainer().getLift().onTarget())
-    {
-        Robot.getRobotContainer().getWrist().setTarget(wristTarget);
-        return;
-    }
-    else if(Robot.getRobotContainer().getWrist().onTarget())
-    {
+  public void execute() {
+    if (goingUp && Robot.getRobotContainer().getLift().onTarget()) {
+      Robot.getRobotContainer().getWrist().setTarget(wristTarget);
+      // return;
+    } else if (Robot.getRobotContainer().getWrist().onTarget()) {
       Robot.getRobotContainer().getLift().setTarget(liftTarget);
-      return;
+      // return;
     }
-    
+
     isFinished = Robot.getRobotContainer().getLift().onTarget() && Robot.getRobotContainer().getWrist().onTarget();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

@@ -16,21 +16,21 @@ import frc.robot.resources.Human_Drivers.HumanDrivers;
 /** Add your docs here. */
 public class HighAltitudeConstants {
 
-
         /**
-         * Enum used to indicate the height to grab/leave game pieces. 
+         * Enum used to indicate the height to grab/leave game pieces.
          * Bottom corresponds to L1 for coral or processor for algae.
          * Top corresponds to L4 for coral or net for algae.
          */
-        public enum REEF_HEIGHT
-        {
+        public enum REEF_HEIGHT {
                 BOTTOM(0), L2(1), L3(2), TOP(3);
 
                 private int id;
-                public int getID(){return id;}
 
-                private REEF_HEIGHT(int id)
-                {
+                public int getID() {
+                        return id;
+                }
+
+                private REEF_HEIGHT(int id) {
                         this.id = id;
                 }
         }
@@ -65,7 +65,7 @@ public class HighAltitudeConstants {
         public static final double LIFT_MAX_VELOCITY = 0.5; // en m/s
         public static final double LIFT_MAX_ACCELERATION = 0.5; // en m/s^2
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.0125;
+        public static final double LIFT_ARRIVE_OFFSET = 0.05;
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
@@ -73,15 +73,13 @@ public class HighAltitudeConstants {
         public static final double LIFT_INCHES_PER_SPROCKET_REV = 4.5;
         public static final double LIFT_METERS_PER_PULSE = LIFT_INCHES_PER_SPROCKET_REV
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
-        
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = {0, 0.5, 1, 1.5};
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.1, 0.35, 0.7 };
         // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] LIFT_ALGAE_POSITIONS = {0, 0.5, 1, 1.5};
+        public static final double[] LIFT_ALGAE_POSITIONS = { 0.0, 0.35, 0.5, 0.7 };
 
-        public static final double LIFT_ALGAE_INTAKE_POSITION = 0;
-
+        public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 
         ////////////////////////// GRIPPER //////////////////////////
         public static final double GRIPPER_OUT_SPEED = 0.4;
@@ -96,25 +94,26 @@ public class HighAltitudeConstants {
 
         public static final double WRIST_kP = 0.1;
         public static final double WRIST_kI = 0.0;
-        public static final double WRIST_kD = 0.0;
+        public static final double WRIST_kD = 0.001;
 
         public static final double WRIST_RATIO = (1.0 * 12.0) / (15.0 * 32.0);
         public static final double WRIST_NEO_ENCODER_UNITS_PER_REV = 1.0;
         public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV = WRIST_RATIO
                         / WRIST_NEO_ENCODER_UNITS_PER_REV;
-        public static final double WRIST_ARRIVE_OFFSET = 2.0;
+        public static final double WRIST_ARRIVE_OFFSET = 4.0;
         public static final double WRIST_DEGREES_PER_PULSE = 360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
 
         public static final double WRIST_ZERO_ANGLE = 0.0;
-        
-        // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = {0, 0, 0, 30};
-        // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] WRIST_ALGAE_POSITIONS = {160, 160, 160, 120};
-        
-        public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
-        // After grabbing algae, wrist should return to this position to keep in inside FP.
+        // In the same order as the enum: L1, L2, L3, L4
+        public static final double[] WRIST_CORAL_POSITIONS = { 30, 30, 30, 42 };
+        // In the same order as the enum: Processor, L2, L3, Net
+        public static final double[] WRIST_ALGAE_POSITIONS = { 160, 160, 160, 120 };
+
+        public static final double WRIST_ALGAE_INTAKE_POSITION = 170;
+
+        // After grabbing algae, wrist should return to this position to keep in inside
+        // FP.
         public static final double WRIST_ALGAE_SAFE_POSITION = 60;
 
         ////////////////////////// SWERVE //////////////////////////

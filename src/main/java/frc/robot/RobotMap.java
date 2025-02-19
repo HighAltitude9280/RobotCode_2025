@@ -83,11 +83,11 @@ public class RobotMap {
             TypeOfMotor.SPARK_MAX_BRUSHLESS };
     public static final boolean LIFT_ENCODER_IS_INVERTED = false;
 
-    public static final boolean LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE = false;
-    public static final int LIFT_TOP_LIMIT_SWITCH_PORT = 0;
+    public static final boolean LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE = true;
+    public static final int LIFT_TOP_LIMIT_SWITCH_PORT = 9;
 
-    public static final boolean LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE = false;
-    public static final int LIFT_BOTTOM_LIMIT_SWITCH_PORT = 0;
+    public static final boolean LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE = true;
+    public static final int LIFT_BOTTOM_LIMIT_SWITCH_PORT = 8;
 
     ////////////////////////// GRIPPER //////////////////////////
 
@@ -96,9 +96,13 @@ public class RobotMap {
     public static final TypeOfMotor[] GRIPPER_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
     public static final boolean GRIPPER_ENCODER_IS_INVERTED = false;
 
+    public static final boolean GRIPPER_DIGITAL_INPUT_IS_AVAILABLE = false;
+    public static final int GRIPPER_DIGITAL_INPUT_PORT = 7;
+    public static final boolean GRIPPER_I2C_PORT_IS_AVAILABLE = true;
+
     ////////////////////////// WRIST //////////////////////////
     public static final int[] WRIST_MOTOR_PORTS = { 41 };
-    public static final int[] WRIST_INVERTED_MOTORS_PORTS = {41};
+    public static final int[] WRIST_INVERTED_MOTORS_PORTS = { 41 };
     public static final TypeOfMotor[] WRIST_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
     public static final boolean WRIST_ENCODER_IS_INVERTED = false;
 

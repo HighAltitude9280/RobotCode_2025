@@ -17,7 +17,7 @@ public class Wrist extends SubsystemBase {
   HighAltitudeMotorGroup wristMotors;
   double wristEncoderPosition, wristPositionDegrees, wristPositionRawEncoder;
 
-  private double target = 29.5;
+  private double target = 30;
 
   private PIDController pidController;
 
@@ -90,5 +90,6 @@ public class Wrist extends SubsystemBase {
     SmartDashboard.putNumber("Wrist Encoder Position", getWristEncoderPosition());
 
     SmartDashboard.putNumber("Wrist Encoder Angle", getWristPosDegrees());
+    SmartDashboard.putBoolean("Wrist OnTarget", onTarget);
   }
 }

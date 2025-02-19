@@ -10,19 +10,23 @@ import frc.robot.Robot;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetCoralMode extends InstantCommand 
-{
-  private boolean coraMode;
+public class SetCoralMode extends InstantCommand {
+  private boolean coralMode;
 
-  public SetCoralMode(boolean coralMode) 
-  {
-    this.coraMode = coralMode;
+  public SetCoralMode(boolean coralMode) {
+    addRequirements(Robot.getRobotContainer().getCaNdleSubsystem());
+    this.coralMode = coralMode;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
-    Robot.setCoralMode(coraMode);
+  public void initialize() {
+    Robot.setCoralMode(coralMode);
+    if (coralMode)
+      Robot.getRobotContainer().getCaNdleSubsystem().setLEDColor(255, 127, 80);
+
+    else {
+      Robot.getRobotContainer().getCaNdleSubsystem().setLEDColor(0, 200, 100);
+    }
   }
 }

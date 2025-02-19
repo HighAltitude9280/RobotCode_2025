@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.subsystems.CANdleSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -28,5 +27,7 @@ public class SetLEDColor extends InstantCommand {
       Robot.getRobotContainer().getCaNdleSubsystem().startRainbowAnimation();
 
     }
+    Robot.getRobotContainer().getCaNdleSubsystem().startRainbowAnimation();
+
   }
 }

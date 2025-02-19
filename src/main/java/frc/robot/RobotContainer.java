@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.led.CANdle;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -96,8 +95,6 @@ public class RobotContainer {
     public void ConfigureButtonBindings() {
         OI.getInstance().ConfigureButtonBindings();
         swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
-
-        candleSubsystem.setDefaultCommand(new SetLEDColor());
 
         // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee
         // el default command).

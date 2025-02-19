@@ -9,11 +9,11 @@ import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.Gripper;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GripperIn extends Command {
+public class IntakeAlgae extends Command {
   Gripper gripper;
 
-  /** Creates a new GripperIn. */
-  public GripperIn() {
+  /** Creates a new GripperOut. */
+  public IntakeAlgae() {
     gripper = Robot.getRobotContainer().getGripper();
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -28,7 +28,7 @@ public class GripperIn extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gripper.gripperIn();
+    gripper.gripperOut();
   }
 
   // Called once the command ends or is interrupted.

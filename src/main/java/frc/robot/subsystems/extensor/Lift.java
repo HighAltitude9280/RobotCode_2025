@@ -14,13 +14,13 @@ import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 import frc.robot.resources.math.Math;
+import pabeles.concurrency.IntOperatorTask.Max;
 
 public class Lift extends SubsystemBase {
   private HighAltitudeMotorGroup liftMotors;
 
   private final ElevatorFeedforward liftFeedforward;
   private final ProfiledPIDController liftProfiledPIDController;
-
 
   private double liftOutput;
   private double currentTarget = 0;
@@ -45,40 +45,40 @@ public class Lift extends SubsystemBase {
         HighAltitudeConstants.LIFT_kD, new TrapezoidProfile.Constraints(HighAltitudeConstants.LIFT_MAX_VELOCITY,
             HighAltitudeConstants.LIFT_MAX_ACCELERATION));
 
-    if(RobotMap.LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE) 
-      topLimitSwitch= new DigitalInput(RobotMap.LIFT_TOP_LIMIT_SWITCH_PORT);
-    if(RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) 
-      bottomLimitSwitch= new DigitalInput(RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_PORT);
-
+    if (RobotMap.LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE)
+      topLimitSwitch = new DigitalInput(RobotMap.LIFT_TOP_LIMIT_SWITCH_PORT);
+    if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE)
+      bottomLimitSwitch = new DigitalInput(RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_PORT);
 
     resetEncoders();
   }
 
-  public void driveLift(double speed) 
-  {
-    if(!getTopLimitSwitch() && !getBottomLimitSwitch())
-      liftMotors.setAll(speed);
+  public void driveLift(double speed) {
+    if (getBottomLimitSwitch()) {
+      liftMotors.resetEncoder();
+      liftMotors.setAll(Math.max(0, speed));
+    } else if (getTopLimitSwitch()) {
+      liftMotors.setAll(Math.min(speed, 0));
+    }
   }
 
   public double getLiftEncoderPosition() {
     return liftMotors.getEncoderPosition();
   }
 
-  private void resetEncoders()
-  {
+  private void resetEncoders() {
     liftMotors.resetEncoder();
   }
 
-  public boolean getTopLimitSwitch()
-  {
-    if(RobotMap.LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE) 
-      return topLimitSwitch.get(); 
+  public boolean getTopLimitSwitch() {
+    if (RobotMap.LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE)
+      return topLimitSwitch.get();
     return false;
   }
-  public boolean getBottomLimitSwitch()
-  {
-    if(RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE) 
-      return bottomLimitSwitch.get(); 
+
+  public boolean getBottomLimitSwitch() {
+    if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE)
+      return bottomLimitSwitch.get();
     return false;
   }
 
@@ -128,9 +128,13 @@ public class Lift extends SubsystemBase {
     this.currentTarget = target;
   }
 
-  public double getTarget() { return currentTarget; }
+  public double getTarget() {
+    return currentTarget;
+  }
 
-  public boolean onTarget(){ return this.onTarget; }
+  public boolean onTarget() {
+    return this.onTarget;
+  }
 
   public void setHeight(double velocity, double acceleration) {
     double ffOutput = liftFeedforward.calculate(velocity, acceleration);
@@ -167,7 +171,9 @@ public class Lift extends SubsystemBase {
 
     SmartDashboard.putNumber("Lift Velocity Target", getLiftPIDController().getSetpoint().velocity);
 
-    if(RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch()) resetEncoders();;
+    if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
+      resetEncoders();
+    ;
 
   }
 }
