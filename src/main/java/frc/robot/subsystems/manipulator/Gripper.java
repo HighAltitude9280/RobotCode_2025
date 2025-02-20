@@ -24,10 +24,10 @@ public class Gripper extends SubsystemBase {
   // Sensor de color
   ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
-
+  boolean coralInGripper;
   // Definir el color "blanco del coral"
-  private final Color coralWhite = new Color(0.93, 0.84, 0.75); // Ajusta estos valores
-  private final double tolerance = 0.05; // Ajusta según pruebas
+  private final Color coralWhite = new Color(0.30, 0.45, 0.25); // Ajusta estos valores
+  private final double tolerance = 0.02; // Ajusta según pruebas
 
   /** Creates a new Gripper. */
   public Gripper() {
@@ -77,7 +77,8 @@ public class Gripper extends SubsystemBase {
           Math.abs(detectedColor.green - coralWhite.green) < tolerance &&
           Math.abs(detectedColor.blue - coralWhite.blue) < tolerance;
 
-      return isCoralWhite;
+      coralInGripper = isCoralWhite;
+      return coralInGripper;
     }
     return false; // Retorna false si el sensor no está disponible
   }
@@ -92,10 +93,8 @@ public class Gripper extends SubsystemBase {
       SmartDashboard.putNumber("Color Sensor Blue", detectedColor.blue);
       SmartDashboard.putString("Detected Color RGB", String.format("R: %.2f, G: %.2f, B: %.2f",
           detectedColor.red, detectedColor.green, detectedColor.blue));
+      SmartDashboard.putBoolean("CoralInGripper", coralInGripper);
     }
 
-    if (getColorSensorInput()) {
-      System.out.println("¡Color Blanco Coral Detectado en el Gripper!");
-    }
   }
 }

@@ -17,7 +17,7 @@ public class Wrist extends SubsystemBase {
   HighAltitudeMotorGroup wristMotors;
   double wristEncoderPosition, wristPositionDegrees, wristPositionRawEncoder;
 
-  private double target = 30;
+  private double target = 0;
 
   private PIDController pidController;
 

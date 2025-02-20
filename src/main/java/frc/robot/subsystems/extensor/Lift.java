@@ -170,6 +170,7 @@ public class Lift extends SubsystemBase {
     SmartDashboard.putNumber("Lift Setpoint Position", getLiftPIDController().getSetpoint().position);
 
     SmartDashboard.putNumber("Lift Velocity Target", getLiftPIDController().getSetpoint().velocity);
+    SmartDashboard.putBoolean("Lift OnTarget", onTarget);
 
     if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
       resetEncoders();

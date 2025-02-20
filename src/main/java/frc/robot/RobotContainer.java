@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -98,6 +97,7 @@ public class RobotContainer {
 
         // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee
         // el default command).
+
         wrist.setDefaultCommand(new WristMantainTarget(HighAltitudeConstants.WRIST_DRIVE_SPEED));
         lift.setDefaultCommand(new LiftMantainTarget(4));
 

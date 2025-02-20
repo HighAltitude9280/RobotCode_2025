@@ -4,13 +4,20 @@
 
 package frc.robot.commands.compound;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
+import frc.robot.subsystems.extensor.Lift;
+import frc.robot.subsystems.extensor.Wrist;
+import frc.robot.subsystems.manipulator.Gripper;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class LiftWristGoToReefHeight extends Command {
+
+  Lift lift;
+  Wrist wrist;
 
   REEF_HEIGHT height;
   boolean goingUp;
@@ -27,15 +34,19 @@ public class LiftWristGoToReefHeight extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    wrist = Robot.getRobotContainer().getWrist();
+    lift = Robot.getRobotContainer().getLift();
+    addRequirements(wrist, lift);
 
     if (Robot.isCoralMode()) {
       liftTarget = HighAltitudeConstants.LIFT_CORAL_POSITIONS[height.getID()];
       wristTarget = HighAltitudeConstants.WRIST_CORAL_POSITIONS[height.getID()];
+
     } else {
       liftTarget = HighAltitudeConstants.LIFT_ALGAE_POSITIONS[height.getID()];
       wristTarget = HighAltitudeConstants.WRIST_ALGAE_POSITIONS[height.getID()];
     }
-    goingUp = liftTarget < Robot.getRobotContainer().getLift().getLiftPosMeters();
+    goingUp = liftTarget > Robot.getRobotContainer().getLift().getLiftPosMeters();
 
     if (goingUp)
       Robot.getRobotContainer().getLift().setTarget(liftTarget);
@@ -53,7 +64,9 @@ public class LiftWristGoToReefHeight extends Command {
       Robot.getRobotContainer().getLift().setTarget(liftTarget);
       // return;
     }
-
+    lift.controlPosition(4);
+    wrist.mantainTarget(HighAltitudeConstants.WRIST_DRIVE_SPEED);
+    SmartDashboard.putBoolean("wGoingUp", goingUp);
     isFinished = Robot.getRobotContainer().getLift().onTarget() && Robot.getRobotContainer().getWrist().onTarget();
   }
 
