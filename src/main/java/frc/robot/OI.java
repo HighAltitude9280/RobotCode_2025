@@ -5,25 +5,27 @@
 package frc.robot;
 
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
-import frc.robot.commands.SetFlameModeHighAltitude;
-import frc.robot.commands.SetLEDColor;
-import frc.robot.commands.compound.LiftWristGoToReefHeight;
+import frc.robot.commands.compound.CoralModeLiftWrist;
+import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.LiftWristIntakeAlgae;
-import frc.robot.commands.gripper.manual.ScoreGamePiece;
-import frc.robot.commands.gripper.IntakeUntilCoral;
-import frc.robot.commands.gripper.manual.IntakeAlgae;
-import frc.robot.commands.lift.control.LiftMantainTarget;
-import frc.robot.commands.lift.control.LiftSetMetersTarget;
+import frc.robot.commands.compound.ScoreCoralLiftDown;
+import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
+import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
+import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
+import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
+import frc.robot.commands.extensor.lift.control.LiftSetMetersTarget;
+import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
+import frc.robot.commands.extensor.wrist.control.WristSetAngleTarget;
+import frc.robot.commands.extensor.wrist.manual.WristDown;
+import frc.robot.commands.extensor.wrist.manual.WristUp;
+import frc.robot.commands.leds.SetFlameModeHighAltitude;
+import frc.robot.commands.leds.SetLEDColor;
 import frc.robot.commands.modes.SetCoralMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
 import frc.robot.commands.swerve.test.TestSwerve;
-import frc.robot.commands.wrist.control.WristMantainTarget;
-import frc.robot.commands.wrist.control.WristSetAngleTarget;
-import frc.robot.commands.wrist.manual.WristDown;
-import frc.robot.commands.wrist.manual.WristUp;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
@@ -87,32 +89,37 @@ public class OI {
                 copilot.whileTrue(ButtonType.LB, new ScoreGamePiece()); // Score Game Piece
                 copilot.whileTrue(ButtonType.RB, new IntakeAlgae()); // Intake Algae / Reverse Coral
 
-                copilot.onTrue(ButtonType.A, new LiftWristGoToReefHeight(REEF_HEIGHT.BOTTOM)); // L1 / Processor
-                copilot.onTrue(ButtonType.B, new LiftWristGoToReefHeight(REEF_HEIGHT.L2)); // L2 / Algae Removal 1
-                copilot.onTrue(ButtonType.X, new LiftWristGoToReefHeight(REEF_HEIGHT.L3)); // L2 / Algae Removal 2
-                copilot.onTrue(ButtonType.Y, new LiftWristGoToReefHeight(REEF_HEIGHT.TOP));// L4 / NET
+                copilot.onTrue(ButtonType.A, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
+                copilot.onFalse(ButtonType.A, new ScoreCoralLiftDown());
 
-                copilot.onTrue(ButtonType.RT, new LiftSetMetersTarget(0.41));
-                copilot.onTrue(ButtonType.POV_E, new WristSetAngleTarget(145));
-                copilot.onTrue(ButtonType.POV_W, new WristSetAngleTarget(0));
+                copilot.onTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
+                copilot.onFalse(ButtonType.B, new ScoreCoralLiftDown());
 
-                copilot.onTrue(ButtonType.BACK, new SetCoralMode(false)); // Algae Mode
-                copilot.onTrue(ButtonType.START, new SetCoralMode(true)); // Coral Mode
+                copilot.onTrue(ButtonType.X, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+                copilot.onFalse(ButtonType.X, new ScoreCoralLiftDown());
+
+                copilot.onTrue(ButtonType.Y, new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
+                copilot.onFalse(ButtonType.Y, new ScoreCoralLiftDown());
+
+                copilot.onTrue(ButtonType.BACK, new CoralModeLiftWrist(false)); // Algae Mode
+                copilot.onTrue(ButtonType.START, new CoralModeLiftWrist(true)); // Coral Mode
+
+                copilot.onTrue(ButtonType.LT, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM)); // Intake Position
+                copilot.whileTrue(ButtonType.LT, new IntakeUntilCoral()); // Intake until Coral
 
                 /*
-                 * copilot.onTrue(ButtonType.A, new LiftSetMetersTarget(0.2)); // L1 / Processor
-                 * copilot.onTrue(ButtonType.B, new LiftSetMetersTarget(0.4)); // L2 / Algae
-                 * Removal 1
-                 * copilot.onTrue(ButtonType.X, new LiftSetMetersTarget(0.45)); // L2 / Algae
-                 * Removal 2
-                 * copilot.onTrue(ButtonType.Y, new LiftSetMetersTarget(0.5)); // L4 / NET
+                 * copilot.onTrue(ButtonType.A, new
+                 * LiftWristGoToReefHeight(REEF_HEIGHT.BOTTOM)); // L1 / Processor
+                 * copilot.onTrue(ButtonType.B, new LiftWristGoToReefHeight(REEF_HEIGHT.L2)); //
+                 * L2 / Algae Removal 1
+                 * copilot.onTrue(ButtonType.X, new LiftWristGoToReefHeight(REEF_HEIGHT.L3)); //
+                 * L2 / Algae Removal 2
+                 * copilot.onTrue(ButtonType.Y, new LiftWristGoToReefHeight(REEF_HEIGHT.TOP));//
+                 * L4 / NET
                  */
 
                 // copilot.whileTrue(ButtonType.POV_E, new WristDown());
                 // copilot.whileTrue(ButtonType.POV_W, new WristUp());
-
-                copilot.onTrue(ButtonType.LT, new LiftWristGoToReefHeight(REEF_HEIGHT.BOTTOM)); // Intake Position
-                copilot.whileTrue(ButtonType.LT, new IntakeUntilCoral()); // Intake until Coral
 
                 /*
                  * copilot.onTrue(ButtonType.RT, new LiftWristIntakeAlgae()); // L1 / Processor

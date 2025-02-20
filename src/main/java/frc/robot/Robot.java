@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.leds.SetLEDColor;
+import frc.robot.commands.modes.SetCoralMode;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -21,16 +23,34 @@ public class Robot extends TimedRobot {
 
   // Branch selection modes.
   private static boolean leftMode = true;
-  public static void setLeftMode(boolean leftMode) { Robot.leftMode = leftMode; }
-  public static boolean isLeftMode() { return leftMode; }
+
+  public static void setLeftMode(boolean leftMode) {
+    Robot.leftMode = leftMode;
+  }
+
+  public static boolean isLeftMode() {
+    return leftMode;
+  }
 
   private static boolean frontMode = true;
-  public static void setFrontMode(boolean frontMode) { Robot.frontMode = frontMode; }
-  public static boolean isFrontMode() { return frontMode; }
+
+  public static void setFrontMode(boolean frontMode) {
+    Robot.frontMode = frontMode;
+  }
+
+  public static boolean isFrontMode() {
+    return frontMode;
+  }
 
   private static boolean coralMode = true;
-  public static void setCoralMode(boolean coralMode) { Robot.coralMode = coralMode; }
-  public static boolean isCoralMode(){ return coralMode;}
+
+  public static void setCoralMode(boolean coralMode) {
+    Robot.coralMode = coralMode;
+  }
+
+  public static boolean isCoralMode() {
+    return coralMode;
+  }
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -42,6 +62,10 @@ public class Robot extends TimedRobot {
     getRobotContainer().ConfigureButtonBindings();
     getRobotContainer().generateAutos();
 
+  }
+
+  @Override
+  public void robotInit() {
   }
 
   /**
@@ -109,6 +133,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     // getRobotContainer().getSwerveDriveTrain().setModulesBrakeMode(true);
+    (new SetCoralMode(true)).schedule();
   }
 
   /** This function is called periodically during operator control. */
@@ -120,6 +145,8 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
+    // getRobotContainer().getCaNdleSubsystem().startFireAnimation(); TODO: Barrera
+    // chamba
   }
 
   /** This function is called periodically when disabled. */

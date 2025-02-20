@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.LEDCommands;
-import frc.robot.commands.SetLEDColor;
-import frc.robot.commands.lift.control.LiftMantainTarget;
+import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
+import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
+import frc.robot.commands.leds.LEDCommands;
+import frc.robot.commands.leds.SetLEDColor;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
-import frc.robot.commands.wrist.control.WristMantainTarget;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.CANdleSubsystem;
 import frc.robot.subsystems.extensor.Lift;
@@ -98,8 +98,8 @@ public class RobotContainer {
         // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee
         // el default command).
 
-        wrist.setDefaultCommand(new WristMantainTarget(HighAltitudeConstants.WRIST_DRIVE_SPEED));
-        lift.setDefaultCommand(new LiftMantainTarget(4));
+        wrist.setDefaultCommand(new WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
+        lift.setDefaultCommand(new LiftDefaultCommand(4));
 
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 

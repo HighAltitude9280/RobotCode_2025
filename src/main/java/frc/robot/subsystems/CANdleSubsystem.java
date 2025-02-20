@@ -28,15 +28,15 @@ public class CANdleSubsystem extends SubsystemBase {
     CANdleConfiguration config = new CANdleConfiguration();
     config.statusLedOffWhenActive = true; // Apaga el LED de estado cuando está activo
     config.stripType = CANdle.LEDStripType.RGB; // Tipo de LED (RGB o RGBW)
-    config.brightnessScalar = 0.5; // Brillo (0.0 a 1.0)
+    config.brightnessScalar = 0.1; // Brillo (0.0 a 1.0)
 
     candle.configAllSettings(config);
 
     // Inicializar animación arcoíris
-    rainbowAnimation = new RainbowAnimation(1.0, 0.5, 64); // Velocidad, Brillo, Número de LEDs
+    rainbowAnimation = new RainbowAnimation(0.1, 0.5, 22); // Velocidad, Brillo, Número de LEDs
 
     // Crear animación de fuego
-    fireAnimation = new FireAnimation();
+    fireAnimation = new FireAnimation(0.1, 0.25, 120, 1, 1);
     // 🔥 Velocidad, Intensidad, LEDs, Sparking, Reverse Direction
     random = new Random();
   }
@@ -53,6 +53,7 @@ public class CANdleSubsystem extends SubsystemBase {
 
   // Método para activar la animación de fuego verde
   public void startFireAnimation() {
+
     candle.animate(fireAnimation);
   }
 
