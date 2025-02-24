@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
-import frc.robot.commands.leds.LEDCommands;
 import frc.robot.commands.leds.SetLEDColor;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.resources.components.Navx;

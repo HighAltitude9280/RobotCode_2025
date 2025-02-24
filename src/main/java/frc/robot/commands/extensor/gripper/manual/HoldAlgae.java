@@ -5,21 +5,20 @@
 package frc.robot.commands.extensor.gripper.manual;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.Gripper;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ScoreGamePiece extends Command {
+public class HoldAlgae extends Command {
   Gripper gripper;
-  double speed;
 
-  /** Creates a new GripperIn. */
-  public ScoreGamePiece(double speed) {
+  /** Creates a new GripperOut. */
+  public HoldAlgae() {
     gripper = Robot.getRobotContainer().getGripper();
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(gripper);
-    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +29,7 @@ public class ScoreGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gripper.driveGripper(speed);
+    gripper.gripperOut(HighAltitudeConstants.GRIPPER_HOLD_SPEED);
   }
 
   // Called once the command ends or is interrupted.

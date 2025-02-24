@@ -5,7 +5,6 @@
 package frc.robot.commands.compound;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.commands.extensor.lift.control.LiftGoToTarget;

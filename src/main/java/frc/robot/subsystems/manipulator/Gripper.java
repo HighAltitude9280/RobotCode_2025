@@ -53,8 +53,8 @@ public class Gripper extends SubsystemBase {
     gripperMotors.setAll(HighAltitudeConstants.GRIPPER_IN_SPEED);
   }
 
-  public void gripperOut() {
-    gripperMotors.setAll(HighAltitudeConstants.GRIPPER_OUT_SPEED);
+  public void gripperOut(double speed) {
+    gripperMotors.setAll(speed);
   }
 
   public void stopGripper() {

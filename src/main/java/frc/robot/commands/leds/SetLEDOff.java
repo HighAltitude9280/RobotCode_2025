@@ -10,16 +10,15 @@ import frc.robot.Robot;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetFlameModeHighAltitude extends InstantCommand {
-  public SetFlameModeHighAltitude() {
+public class SetLEDOff extends InstantCommand {
+  public SetLEDOff() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.getRobotContainer().getCaNdleSubsystem());
-
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.getRobotContainer().getCaNdleSubsystem().startFireAnimation();
+    Robot.getRobotContainer().getCaNdleSubsystem().turnOff();
   }
 }

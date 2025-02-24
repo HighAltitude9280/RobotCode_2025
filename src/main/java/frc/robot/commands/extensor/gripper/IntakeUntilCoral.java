@@ -5,12 +5,14 @@
 package frc.robot.commands.extensor.gripper;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.Gripper;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeUntilCoral extends Command {
   Gripper gripper;
+  double speed;
 
   /** Creates a new IntakeUntilCoral. */
   public IntakeUntilCoral() {
@@ -18,12 +20,13 @@ public class IntakeUntilCoral extends Command {
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(gripper);
+    speed = HighAltitudeConstants.GRIPPER_INTAKE_SPEED;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    gripper.gripperIn();
+    gripper.driveGripper(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

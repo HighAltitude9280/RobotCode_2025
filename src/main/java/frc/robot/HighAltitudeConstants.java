@@ -75,7 +75,7 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.15, 0.35, 0.72 };
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.15, 0.35, 0.73 };
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.27, 0.47, 0.65 };
 
@@ -86,8 +86,10 @@ public class HighAltitudeConstants {
         public static final double LIFT_MAX_POWER = 4;
 
         ////////////////////////// GRIPPER //////////////////////////
-        public static final double GRIPPER_OUT_SPEED = 0.5;
-        public static final double GRIPPER_IN_SPEED = -0.2;
+        public static final double GRIPPER_OUT_SPEED = 0.3;
+        public static final double GRIPPER_IN_SPEED = -0.4;
+        public static final double GRIPPER_INTAKE_SPEED = -0.3;
+        public static final double GRIPPER_HOLD_SPEED = 0.05;
 
         ////////////////////////// WRIST //////////////////////////
         // TODO: Wrist Constants
@@ -110,7 +112,7 @@ public class HighAltitudeConstants {
         public static final double WRIST_ZERO_ANGLE = 0.0;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 15 };
+        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 25 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
         public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };

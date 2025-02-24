@@ -5,6 +5,7 @@
 package frc.robot.commands.extensor.gripper.manual;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.Gripper;
 
@@ -28,7 +29,7 @@ public class IntakeAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gripper.gripperOut();
+    gripper.gripperOut(HighAltitudeConstants.GRIPPER_OUT_SPEED);
   }
 
   // Called once the command ends or is interrupted.

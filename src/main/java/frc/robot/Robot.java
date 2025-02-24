@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     // getRobotContainer().getSwerveDriveTrain().setModulesBrakeMode(true);
-    (new SetCoralMode(true)).schedule();
+    // TODO: (new SetCoralMode(true)).schedule();
   }
 
   /** This function is called periodically during operator control. */
