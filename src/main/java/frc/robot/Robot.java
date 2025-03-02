@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.HighAltitudeConstants.REEF_SIDE;
 import frc.robot.commands.leds.SetLEDColor;
 import frc.robot.commands.modes.SetCoralMode;
 
@@ -23,34 +24,20 @@ public class Robot extends TimedRobot {
 
   // Branch selection modes.
   private static boolean leftMode = true;
-
-  public static void setLeftMode(boolean leftMode) {
-    Robot.leftMode = leftMode;
-  }
-
-  public static boolean isLeftMode() {
-    return leftMode;
-  }
+  public static void setLeftMode(boolean leftMode) { Robot.leftMode = leftMode; }
+  public static boolean isLeftMode() { return leftMode; }
 
   private static boolean frontMode = true;
-
-  public static void setFrontMode(boolean frontMode) {
-    Robot.frontMode = frontMode;
-  }
-
-  public static boolean isFrontMode() {
-    return frontMode;
-  }
+  public static void setFrontMode(boolean frontMode) { Robot.frontMode = frontMode; }
+  public static boolean isFrontMode() { return frontMode; }
 
   private static boolean coralMode = true;
+  public static void setCoralMode(boolean coralMode) { Robot.coralMode = coralMode; }
+  public static boolean isCoralMode() { return coralMode; }
 
-  public static void setCoralMode(boolean coralMode) {
-    Robot.coralMode = coralMode;
-  }
-
-  public static boolean isCoralMode() {
-    return coralMode;
-  }
+  private static REEF_SIDE reef_mode = REEF_SIDE.CENTER;
+  public static REEF_SIDE getReefMode(){ return reef_mode;}
+  public static void setReefMode(REEF_SIDE mode){reef_mode = mode;}
 
   /**
    * This function is run when the robot is first started up and should be used

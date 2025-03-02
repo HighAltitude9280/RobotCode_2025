@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -350,6 +353,7 @@ public class HighAltitudeConstants {
 
         public static final int[] BLUE_APRILTAG_IDS = { 19, 18, 17, 22, 21, 20 };
         public static final int[] RED_APRILTAG_IDS = { 6, 7, 8, 9, 10, 11 };
+        
 
         public enum REEF_POSITION {
                 BL(0), BC(1), BR(2), FR(3), FC(4), FL(5);

@@ -21,12 +21,14 @@ public class AlignWithTargetVision extends Command {
   double targetAngle = Double.NaN;
   double targetYaw;
 
-  REEF_SIDE side;
+  REEF_SIDE side = null;
 
   REEF_POSITION pos = null;
   boolean left;
 
   double maxTurnPower, maxSpeedPower, maxStrafePower;
+
+  boolean autoDetectTarget = false;
 
   /**
    * Command to align the robot using vision to the desired reef branch.
@@ -71,27 +73,80 @@ public class AlignWithTargetVision extends Command {
     this.maxStrafePower = maxStrafePower;
   }
 
+  /**
+   * Command to align the robot using vision to a branch, based on
+   * the robot mode (left/right), automatically detecting the reef 
+   * position based on the apriltag id.
+   * 
+   * Note that this command automatically accounts for the alliance.
+   * 
+   * @param maxTurnPower   Max turning power.
+   * @param maxSpeedPower  Max speed power.
+   * @param maxStrafePower Max strafe power.
+   */
+  public AlignWithTargetVision(double maxTurnPower, double maxSpeedPower,
+      double maxStrafePower) 
+  {
+    this.maxTurnPower = maxTurnPower;
+    this.maxSpeedPower = maxSpeedPower;
+    this.maxStrafePower = maxStrafePower;
+  }
+
+
+
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
     if(pos == null)
     {
-      pos = side.getPosition(Robot.isFrontMode());
       left = Robot.isLeftMode();
+      if(side != null)
+        pos = side.getPosition(Robot.isFrontMode());
+      else
+        this.targetID = Robot.getRobotContainer().getVision().getTargetID();
     }
 
     var alliance = DriverStation.getAlliance();
 
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) 
     {
-      this.targetID = HighAltitudeConstants.RED_APRILTAG_IDS[pos.getID()];
-      this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[pos.getID()].getRotation().getDegrees();
+      if(pos == null && targetID != -1)
+      {
+        for(int i = 0 ; i < HighAltitudeConstants.RED_APRILTAG_IDS.length ; i++)
+        {
+          if(targetID == HighAltitudeConstants.RED_APRILTAG_IDS[i])
+          {
+            this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[i].getRotation().getDegrees();
+            break;
+          }
+        }
+      }
+      else
+      {
+        this.targetID = HighAltitudeConstants.RED_APRILTAG_IDS[pos.getID()];
+        this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[pos.getID()].getRotation().getDegrees();
+      } 
     } 
     else 
     {
-      this.targetID = HighAltitudeConstants.BLUE_APRILTAG_IDS[pos.getID()];
-      this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[pos.getID()].getRotation().getDegrees();
+      if(pos == null && targetID != -1)
+      {
+        for(int i = 0 ; i < HighAltitudeConstants.BLUE_APRILTAG_IDS.length ; i++)
+        {
+          if(targetID == HighAltitudeConstants.BLUE_APRILTAG_IDS[i])
+          {
+            this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[i].getRotation().getDegrees();
+            break;
+          }
+        }
+      }
+      else
+      {
+        this.targetID = HighAltitudeConstants.BLUE_APRILTAG_IDS[pos.getID()];
+        this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[pos.getID()].getRotation().getDegrees();
+      } 
     }
 
     if (left) 
@@ -106,7 +161,42 @@ public class AlignWithTargetVision extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() 
+  {
+
+    if(targetID == -1)
+    {
+      targetID = Robot.getRobotContainer().getVision().getTargetID();
+      if(targetID != -1)
+      {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) 
+        {
+          for(int i = 0 ; i < HighAltitudeConstants.RED_APRILTAG_IDS.length ; i++)
+          {
+            if(targetID == HighAltitudeConstants.RED_APRILTAG_IDS[i])
+            {
+              this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[i].getRotation().getDegrees();
+              break;
+            }
+          }
+        }
+        else
+        {
+          for(int i = 0 ; i < HighAltitudeConstants.BLUE_APRILTAG_IDS.length ; i++)
+          {
+            if(targetID == HighAltitudeConstants.BLUE_APRILTAG_IDS[i])
+            {
+              this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[i].getRotation().getDegrees();
+              break;
+            }
+          }
+        }
+      }
+      else
+       return;
+    }
+
     double yaw = Robot.getRobotContainer().getVision().getTargetYaw(targetID);
     double area = Robot.getRobotContainer().getVision().getTargetSize(targetID);
 

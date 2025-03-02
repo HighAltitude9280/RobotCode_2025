@@ -17,7 +17,7 @@ public class PathplanToReef extends InstantCommand
 {
   REEF_POSITION pos = null;
 
-  REEF_SIDE side;
+  REEF_SIDE side = null;
 
   public PathplanToReef(REEF_POSITION pos) 
   {
@@ -27,13 +27,21 @@ public class PathplanToReef extends InstantCommand
   {
     this.side = side;
   }
+  public PathplanToReef()
+  {}
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
     if(pos == null)
+    {
+      if(side == null)  
+        side = Robot.getReefMode();
+    
       pos = side.getPosition(Robot.isFrontMode());
+      
+    }
 
     Pose2d targetPose;
     var alliance = DriverStation.getAlliance();

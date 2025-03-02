@@ -28,7 +28,7 @@ public class Vision extends SubsystemBase {
   PhotonPoseEstimator poseEstimatorFront, poseEstimatorBack;
 
 
-  List<PhotonPipelineResult> alignmentResults;
+  List<PhotonPipelineResult> alignmentResults, frontResults, backResults;
 
   /** Creates a new vision. */
   public Vision() {
@@ -75,13 +75,13 @@ public class Vision extends SubsystemBase {
     Optional<EstimatedRobotPose> pose1 = Optional.empty();
     Optional<EstimatedRobotPose> pose2 = Optional.empty();
 
-    for (var change : poseCamFront.getAllUnreadResults()) 
+    for (var change : frontResults) 
     {
       pose1 = poseEstimatorFront.update(change);
     }
-    for (var change : poseCamBack.getAllUnreadResults()) 
+    for (var change : backResults) 
     {
-      pose1 = poseEstimatorBack.update(change);
+      pose2 = poseEstimatorBack.update(change);
     }
 
     var res = new ArrayList<Optional<EstimatedRobotPose>>();
@@ -97,15 +97,30 @@ public class Vision extends SubsystemBase {
   }
 
   public double getTargetYaw(int id) {
+    if(alignmentResults == null || alignmentResults.isEmpty()) 
+      return Double.NaN;
+
     for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
       if (target.getFiducialId() == id) {
         return target.getYaw();
       }
     }
+
     return Double.NaN;
   }
 
+  public double getTargetYaw()
+  {
+    if(alignmentResults == null || alignmentResults.isEmpty()) 
+      return Double.NaN;
+
+    return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().yaw;
+  }
+
   public double getTargetSize(int id) {
+    if(alignmentResults == null || alignmentResults.isEmpty()) 
+      return Double.NaN;
+
     for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
       if (target.getFiducialId() == id) {
         return target.getArea();
@@ -113,7 +128,26 @@ public class Vision extends SubsystemBase {
     }
     return Double.NaN;
   }
+  public double getTargetSize()
+  {
+    if(alignmentResults == null || alignmentResults.isEmpty()) 
+      return Double.NaN;
+
+    return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().area;
+  }
+  public int getTargetID()
+  {
+    if(alignmentResults == null || alignmentResults.isEmpty()) 
+      return -1;
+
+    return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().fiducialId;
+  }
 
   @Override
-  public void periodic() {}
+  public void periodic() 
+  {
+    alignmentResults = alignmentCam.getAllUnreadResults();
+    frontResults = poseCamFront.getAllUnreadResults();
+    backResults = poseCamBack.getAllUnreadResults();
+  }
 }
