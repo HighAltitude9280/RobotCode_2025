@@ -6,14 +6,17 @@ package frc.robot.subsystems.swerve;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 
+import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.HighAltitudeConstants;
+import frc.robot.Robot;
 import frc.robot.resources.components.speedController.HighAltitudeMotor;
 import frc.robot.resources.components.speedController.HighAltitudeMotor.TypeOfMotor;
 import frc.robot.resources.math.Math;
@@ -44,6 +47,9 @@ public class HighSwerveModule {
 
   private boolean isTalonEncoderReversed;
   private CANcoder absoluteEncoderController;
+
+  private double lastTimeStamp;
+  private double prevSpeed = 0;
 
   public HighSwerveModule(int driveMotorPort, TypeOfMotor driveTypeOfMotor,
       boolean isDriveMotorReversed, boolean isDriveEncoderReversed,
@@ -83,6 +89,8 @@ public class HighSwerveModule {
     driveMotor = new HighAltitudeMotor(driveMotorPort, driveTypeOfMotor);
     driveMotor.setInverted(isDriveMotorReversed);
     driveMotor.setBrakeMode(true);
+
+    lastTimeStamp = MathSharedStore.getTimestamp();
   }
 
   ///// CANCODER /////
@@ -164,19 +172,26 @@ public class HighSwerveModule {
   // STATE SETTER
 
   public void setState(SwerveModuleState state) {
-    /*
-     * if (Math.abs(state.speedMetersPerSecond) < 0.01) {
-     * stop();
-     * return;
-     * }
-     */
-
     state.optimize(getState().angle);
 
     controlSwerveDirection(state.angle.getRadians());
+
+    double liftPos = Robot.getRobotContainer().getLift().getLiftPosMeters();
+    if (HighAltitudeConstants.ENABLE_DYNAMIC_ACCELERATION_LIMITER && liftPos > HighAltitudeConstants.DAL_MIN_HEIGHT) 
+    {
+      double maxAcceleration = HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND *
+          (1 - HighAltitudeConstants.DAL_HEIGHT_MULTIPLIER * (liftPos - HighAltitudeConstants.DAL_MIN_HEIGHT));
+      
+      controlSwerveSpeed(state.speedMetersPerSecond, maxAcceleration);
+    }
     controlSwerveSpeed(state.speedMetersPerSecond);
   }
 
+  /**
+   * Sets the speed of the swerve module.
+   * 
+   * @param mps The desired speed, in m/s
+   */
   public void controlSwerveSpeed(double mps) {
     double feedforward = driveFeedforward.calculate(mps);
 
@@ -187,6 +202,25 @@ public class HighSwerveModule {
     driveOutput = Math.clamp(driveOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
 
     driveMotor.setVoltage(driveOutput);
+    prevSpeed = mps;
+  }
+
+  /**
+   * Set the speed of the swerve module while ensuring the
+   * acceleration does not exceed the specified limit.
+   * 
+   * @param mps             The desired speed, in m/s
+   * @param maxAcceleration The maximum acceleration, in m/s^2
+   */
+  public void controlSwerveSpeed(double mps, double maxAcceleration) {
+    double currentTime = MathSharedStore.getTimestamp();
+    double elapsedTime = currentTime - lastTimeStamp;
+
+    double filtered_mps = prevSpeed +
+        Math.clamp(mps - prevSpeed, -maxAcceleration * elapsedTime, maxAcceleration * elapsedTime);
+
+    lastTimeStamp = currentTime;
+    controlSwerveSpeed(filtered_mps);
   }
 
   /**

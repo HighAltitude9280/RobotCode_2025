@@ -123,7 +123,7 @@ public class AlignWithTargetVision extends Command {
           }
         }
       }
-      else
+      else if(pos != null)
       {
         this.targetID = HighAltitudeConstants.RED_APRILTAG_IDS[pos.getID()];
         this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[pos.getID()].getRotation().getDegrees();
@@ -142,7 +142,7 @@ public class AlignWithTargetVision extends Command {
           }
         }
       }
-      else
+      else if(pos != null)
       {
         this.targetID = HighAltitudeConstants.BLUE_APRILTAG_IDS[pos.getID()];
         this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[pos.getID()].getRotation().getDegrees();

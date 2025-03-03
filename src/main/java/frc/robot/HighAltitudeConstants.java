@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pathplanner.lib.auto.AutoBuilder.TriFunction;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -292,7 +293,21 @@ public class HighAltitudeConstants {
         public static final double SWERVE_TURN_BRAKE_DISTANCE = 32; // 32.0;
         public static final double SWERVE_TURN_ARRIVE_OFFSET = 3; // 3.0;
 
-        //// VISION
+        //// Dynamic acceleration limiter
+
+        public static final boolean ENABLE_DYNAMIC_ACCELERATION_LIMITER = true;
+
+        // The height threshold above which the drivetrain acceleration will be limited.
+        public static final double DAL_MIN_HEIGHT = 0.8;
+
+        // Factor used to reduce acceleration as height increases beyond the minimum
+        // threshold.
+        // The acceleration percentage is adjusted based on (1 - (height -
+        // DAL_MIN_HEIGHT) * DAL_HEIGHT_MULTIPLIER)
+        // So the higher this constant, the higher the DAL effect.
+        public static final double DAL_HEIGHT_MULTIPLIER = 0.5;
+
+        //////////////////////////// VISION //////////////////////////////
 
         // TODO: CONFIGURE THESE CONSTANTS
         public static final double VISION_YAW_OFFSET_TARGET_LEFT = 15;
@@ -353,7 +368,6 @@ public class HighAltitudeConstants {
 
         public static final int[] BLUE_APRILTAG_IDS = { 19, 18, 17, 22, 21, 20 };
         public static final int[] RED_APRILTAG_IDS = { 6, 7, 8, 9, 10, 11 };
-        
 
         public enum REEF_POSITION {
                 BL(0), BC(1), BR(2), FR(3), FC(4), FL(5);
