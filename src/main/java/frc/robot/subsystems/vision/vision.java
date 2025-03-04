@@ -27,7 +27,6 @@ public class Vision extends SubsystemBase {
 
   PhotonPoseEstimator poseEstimatorFront, poseEstimatorBack;
 
-
   List<PhotonPipelineResult> alignmentResults, frontResults, backResults;
 
   /** Creates a new vision. */
@@ -36,7 +35,7 @@ public class Vision extends SubsystemBase {
     poseCamFront = new PhotonCamera("ArducamFront");
     poseCamBack = new PhotonCamera("ArducamBack");
 
-    alignmentCam = new PhotonCamera("limelight");
+    alignmentCam = new PhotonCamera("Limelight3");
 
     // Translation 3d use this doc to know the position on your robot.
     // https://docs.wpilib.org/es/stable/docs/software/basic-programming/coordinate-system.html
@@ -70,24 +69,21 @@ public class Vision extends SubsystemBase {
 
   }
 
-  public ArrayList<Optional<EstimatedRobotPose>> getEstimatedGlobalPose() 
-  {
+  public ArrayList<Optional<EstimatedRobotPose>> getEstimatedGlobalPose() {
     var res = new ArrayList<Optional<EstimatedRobotPose>>();
     Optional<EstimatedRobotPose> pose1 = Optional.empty();
     Optional<EstimatedRobotPose> pose2 = Optional.empty();
-    
-    for (var change : frontResults) 
-    {
+
+    for (var change : frontResults) {
       pose1 = poseEstimatorFront.update(change);
     }
-    for (var change : backResults) 
-    {
+    for (var change : backResults) {
       pose2 = poseEstimatorBack.update(change);
     }
-    
+
     res.add(pose1);
     res.add(pose2);
-    
+
     return res;
   }
 
@@ -97,7 +93,7 @@ public class Vision extends SubsystemBase {
   }
 
   public double getTargetYaw(int id) {
-    if(alignmentResults == null || alignmentResults.isEmpty()) 
+    if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
 
     for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
@@ -109,16 +105,15 @@ public class Vision extends SubsystemBase {
     return Double.NaN;
   }
 
-  public double getTargetYaw()
-  {
-    if(alignmentResults == null || alignmentResults.isEmpty()) 
+  public double getTargetYaw() {
+    if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
 
     return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().yaw;
   }
 
   public double getTargetSize(int id) {
-    if(alignmentResults == null || alignmentResults.isEmpty()) 
+    if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
 
     for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
@@ -128,24 +123,23 @@ public class Vision extends SubsystemBase {
     }
     return Double.NaN;
   }
-  public double getTargetSize()
-  {
-    if(alignmentResults == null || alignmentResults.isEmpty()) 
+
+  public double getTargetSize() {
+    if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
 
     return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().area;
   }
-  public int getTargetID()
-  {
-    if(alignmentResults == null || alignmentResults.isEmpty()) 
+
+  public int getTargetID() {
+    if (alignmentResults == null || alignmentResults.isEmpty())
       return -1;
 
     return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().fiducialId;
   }
 
   @Override
-  public void periodic() 
-  {
+  public void periodic() {
     alignmentResults = alignmentCam.getAllUnreadResults();
     frontResults = poseCamFront.getAllUnreadResults();
     backResults = poseCamBack.getAllUnreadResults();
