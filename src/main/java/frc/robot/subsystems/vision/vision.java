@@ -72,9 +72,10 @@ public class Vision extends SubsystemBase {
 
   public ArrayList<Optional<EstimatedRobotPose>> getEstimatedGlobalPose() 
   {
+    var res = new ArrayList<Optional<EstimatedRobotPose>>();
     Optional<EstimatedRobotPose> pose1 = Optional.empty();
     Optional<EstimatedRobotPose> pose2 = Optional.empty();
-
+    
     for (var change : frontResults) 
     {
       pose1 = poseEstimatorFront.update(change);
@@ -83,11 +84,10 @@ public class Vision extends SubsystemBase {
     {
       pose2 = poseEstimatorBack.update(change);
     }
-
-    var res = new ArrayList<Optional<EstimatedRobotPose>>();
+    
     res.add(pose1);
     res.add(pose2);
-
+    
     return res;
   }
 

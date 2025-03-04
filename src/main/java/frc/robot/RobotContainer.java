@@ -37,9 +37,9 @@ public class RobotContainer {
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
+        vision = new Vision();
         navx = new Navx();
         swerveDriveTrain = new SwerveDriveTrain();
-        vision = new Vision();
         lift = new Lift();
         gripper = new Gripper();
         wrist = new Wrist();
