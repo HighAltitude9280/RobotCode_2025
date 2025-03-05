@@ -13,6 +13,7 @@ import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
 import frc.robot.commands.leds.SetFlameModeHighAltitude;
 import frc.robot.commands.leds.SetLEDOff;
+import frc.robot.commands.modes.SetCoralMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
@@ -95,8 +96,8 @@ public class OI {
                 copilot.onTrue(ButtonType.Y, new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
                 copilot.onFalse(ButtonType.Y, new ScoreGamePieceLiftDown());
 
-                copilot.onTrue(ButtonType.BACK, new CoralModeLiftWrist(false)); // Algae Mode
-                copilot.onTrue(ButtonType.START, new CoralModeLiftWrist(true)); // Coral Mode
+                copilot.onTrue(ButtonType.BACK, new SetCoralMode(false)); // Algae Mode
+                copilot.onTrue(ButtonType.START, new SetCoralMode(true)); // Coral Mode
 
                 copilot.onTrue(ButtonType.LT, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM)); // Intake Position
                 copilot.whileTrue(ButtonType.LT, new IntakeUntilCoral()); // Intake until Coral
@@ -121,6 +122,20 @@ public class OI {
                  * copilot.onTrue(ButtonType.RT, new LiftWristIntakeAlgae()); // L1 / Processor
                  * copilot.whileTrue(ButtonType.RT, new IntakeAlgae());
                  */
+
+                break;
+
+            case ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE:
+
+                copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+
+                copilot.onTrue(ButtonType.BACK, new CoralModeLiftWrist(false)); // Algae Mode
+                copilot.onTrue(ButtonType.START, new CoralModeLiftWrist(true)); // Coral Mode
+
+                copilot.whileTrue(ButtonType.LB, new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED)); // Score
+                                                                                                              // Game
+                                                                                                              // Piece
+                copilot.whileTrue(ButtonType.RB, new IntakeAlgae()); // Intake Algae / Reverse Coral
 
                 break;
             default:
