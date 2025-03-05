@@ -48,7 +48,7 @@ public class HighSwerveModule {
   private boolean isTalonEncoderReversed;
   private CANcoder absoluteEncoderController;
 
-  private double lastTimeStamp;
+  private double lastTimeStamp = 0;
   private double prevSpeed = 0;
 
   public HighSwerveModule(int driveMotorPort, TypeOfMotor driveTypeOfMotor,
@@ -177,11 +177,10 @@ public class HighSwerveModule {
     controlSwerveDirection(state.angle.getRadians());
 
     double liftPos = Robot.getRobotContainer().getLift().getLiftPosMeters();
-    if (HighAltitudeConstants.ENABLE_DYNAMIC_ACCELERATION_LIMITER && liftPos > HighAltitudeConstants.DAL_MIN_HEIGHT) 
-    {
+    if (HighAltitudeConstants.ENABLE_DYNAMIC_ACCELERATION_LIMITER && liftPos > HighAltitudeConstants.DAL_MIN_HEIGHT) {
       double maxAcceleration = HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND *
           (1 - HighAltitudeConstants.DAL_HEIGHT_MULTIPLIER * (liftPos - HighAltitudeConstants.DAL_MIN_HEIGHT));
-      
+
       controlSwerveSpeed(state.speedMetersPerSecond, maxAcceleration);
     }
     controlSwerveSpeed(state.speedMetersPerSecond);
@@ -261,6 +260,18 @@ public class HighSwerveModule {
     directionMotor.set(0);
   }
 
+  public double getDriveAcceleration() {
+    double currentTime = MathSharedStore.getTimestamp();
+    double elapsedTime = currentTime - lastTimeStamp;
+
+    double deltaSpeed = getDriveVelocity() - prevSpeed;
+
+    double driveAcceleration = deltaSpeed / elapsedTime;
+    prevSpeed = getDriveVelocity();
+    lastTimeStamp = currentTime;
+    return driveAcceleration;
+  }
+
   // Smartdashboard prints for debugging.
 
   public void putProcessedValues(String identifier) {
@@ -274,7 +285,7 @@ public class HighSwerveModule {
     // This is what you should print:
     // 1. Velocity of the DriveMotorEnc
     SmartDashboard.putNumber(identifier + "DriveVelocity", getDriveVelocity());
-
+/* 
     // 2. Graphic of the CANCoder Angle
     SmartDashboard.putNumber(identifier + "CANCoder Angle", getAbsoluteEncoderRAD());
 
@@ -292,6 +303,8 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "Direction Output", directionOutput);
 
     SmartDashboard.putNumber(identifier + "Direction ERROR", directionPIDAngleTarget - getAbsoluteEncoderRAD());
+  */
+    SmartDashboard.putNumber(identifier + "Drive Acceleration", getDriveAcceleration());
   }
 
   public void putEncoderValuesInvertedApplied(String identifier) {

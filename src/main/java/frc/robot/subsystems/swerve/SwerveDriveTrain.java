@@ -492,6 +492,8 @@ public class SwerveDriveTrain extends SubsystemBase {
     updateOdometry();
     updateOdometryWithVision(); 
     putAllInfoInSmartDashboard();
+    SmartDashboard.putNumber("GetXPose", getPose().getX());
+    SmartDashboard.putNumber("GetYPose", getPose().getY());
   }
 
   public void putAllInfoInSmartDashboard() {

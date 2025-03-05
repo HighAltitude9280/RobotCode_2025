@@ -79,7 +79,7 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.15, 0.325, 0.75 };
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.15, 0.325, 0.73 }; // TODO: fix this
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.27, 0.47, 0.65 };
 
@@ -168,7 +168,7 @@ public class HighAltitudeConstants {
         // Arbitrary. Higher numbers will cause the swerve to react more violently to
         // joysitck inputs and may not be ideal. Lower numbers will cause the swerve to
         // have a very slow reaction to joystick inputs, and may not be ideal.
-        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 20.0;
+        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 80.0; // 20.0
         public static final double SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = 20.0;
 
         // Other
