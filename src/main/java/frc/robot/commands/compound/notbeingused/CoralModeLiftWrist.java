@@ -2,11 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.compound;
+package frc.robot.commands.compound.notbeingused;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
+import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.extensor.lift.control.LiftGoToTarget;
 import frc.robot.commands.extensor.wrist.control.WristGoToTarget;
 import frc.robot.commands.modes.SetCoralMode;

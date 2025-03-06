@@ -144,9 +144,12 @@ public class Vision extends SubsystemBase {
     alignmentResults = alignmentCam.getAllUnreadResults();
     frontResults = poseCamFront.getAllUnreadResults();
     backResults = poseCamBack.getAllUnreadResults();
+    putDataInDashboard();
   }
 
-  public void putDataInDashboard(){
-    SmartDashboard.putNumber( "Limelight Target Area", getTargetSize());
+  public void putDataInDashboard() {
+    SmartDashboard.putNumber("Limelight Target Area", getTargetSize());
+    SmartDashboard.putNumber("Limelight Target Yaw", getTargetYaw());
+    SmartDashboard.putNumber("Limelight Target ID", getTargetID());
   }
 }

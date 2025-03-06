@@ -5,9 +5,9 @@
 package frc.robot;
 
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
-import frc.robot.commands.compound.CoralModeLiftWrist;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.ScoreGamePieceLiftDown;
+import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
 import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
