@@ -65,8 +65,7 @@ public class AlignWithTargetVision extends Command {
    * @param maxStrafePower Max strafe power.
    */
   public AlignWithTargetVision(REEF_SIDE side, double maxTurnPower, double maxSpeedPower,
-      double maxStrafePower) 
-  {
+      double maxStrafePower) {
     this.side = side;
     this.maxTurnPower = maxTurnPower;
     this.maxSpeedPower = maxSpeedPower;
@@ -75,7 +74,7 @@ public class AlignWithTargetVision extends Command {
 
   /**
    * Command to align the robot using vision to a branch, based on
-   * the robot mode (left/right), automatically detecting the reef 
+   * the robot mode (left/right), automatically detecting the reef
    * position based on the apriltag id.
    * 
    * Note that this command automatically accounts for the alliance.
@@ -85,24 +84,19 @@ public class AlignWithTargetVision extends Command {
    * @param maxStrafePower Max strafe power.
    */
   public AlignWithTargetVision(double maxTurnPower, double maxSpeedPower,
-      double maxStrafePower) 
-  {
+      double maxStrafePower) {
     this.maxTurnPower = maxTurnPower;
     this.maxSpeedPower = maxSpeedPower;
     this.maxStrafePower = maxStrafePower;
   }
 
-
-
-
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
-    if(pos == null)
-    {
+  public void initialize() {
+    Robot.getRobotContainer().getSwerveDriveTrain().setIsFieldOriented(false);
+    if (pos == null) {
       left = Robot.isLeftMode();
-      if(side != null)
+      if (side != null)
         pos = side.getPosition(Robot.isFrontMode());
       else
         this.targetID = Robot.getRobotContainer().getVision().getTargetID();
@@ -110,91 +104,64 @@ public class AlignWithTargetVision extends Command {
 
     var alliance = DriverStation.getAlliance();
 
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) 
-    {
-      if(pos == null && targetID != -1)
-      {
-        for(int i = 0 ; i < HighAltitudeConstants.RED_APRILTAG_IDS.length ; i++)
-        {
-          if(targetID == HighAltitudeConstants.RED_APRILTAG_IDS[i])
-          {
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      if (pos == null && targetID != -1) {
+        for (int i = 0; i < HighAltitudeConstants.RED_APRILTAG_IDS.length; i++) {
+          if (targetID == HighAltitudeConstants.RED_APRILTAG_IDS[i]) {
             this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[i].getRotation().getDegrees();
             break;
           }
         }
-      }
-      else if(pos != null)
-      {
+      } else if (pos != null) {
         this.targetID = HighAltitudeConstants.RED_APRILTAG_IDS[pos.getID()];
         this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[pos.getID()].getRotation().getDegrees();
-      } 
-    } 
-    else 
-    {
-      if(pos == null && targetID != -1)
-      {
-        for(int i = 0 ; i < HighAltitudeConstants.BLUE_APRILTAG_IDS.length ; i++)
-        {
-          if(targetID == HighAltitudeConstants.BLUE_APRILTAG_IDS[i])
-          {
+      }
+    } else {
+      if (pos == null && targetID != -1) {
+        for (int i = 0; i < HighAltitudeConstants.BLUE_APRILTAG_IDS.length; i++) {
+          if (targetID == HighAltitudeConstants.BLUE_APRILTAG_IDS[i]) {
             this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[i].getRotation().getDegrees();
             break;
           }
         }
-      }
-      else if(pos != null)
-      {
+      } else if (pos != null) {
         this.targetID = HighAltitudeConstants.BLUE_APRILTAG_IDS[pos.getID()];
         this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[pos.getID()].getRotation().getDegrees();
-      } 
+      }
     }
 
-    if (left) 
-    {
+    if (left) {
       targetYaw = HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_LEFT;
-    } 
-    else 
-    {
+    } else {
       targetYaw = HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_RIGHT;
     }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
+  public void execute() {
 
-    if(targetID == -1)
-    {
+    if (targetID == -1) {
       targetID = Robot.getRobotContainer().getVision().getTargetID();
-      if(targetID != -1)
-      {
+      if (targetID != -1) {
         var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) 
-        {
-          for(int i = 0 ; i < HighAltitudeConstants.RED_APRILTAG_IDS.length ; i++)
-          {
-            if(targetID == HighAltitudeConstants.RED_APRILTAG_IDS[i])
-            {
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+          for (int i = 0; i < HighAltitudeConstants.RED_APRILTAG_IDS.length; i++) {
+            if (targetID == HighAltitudeConstants.RED_APRILTAG_IDS[i]) {
               this.targetAngle = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[i].getRotation().getDegrees();
               break;
             }
           }
-        }
-        else
-        {
-          for(int i = 0 ; i < HighAltitudeConstants.BLUE_APRILTAG_IDS.length ; i++)
-          {
-            if(targetID == HighAltitudeConstants.BLUE_APRILTAG_IDS[i])
-            {
+        } else {
+          for (int i = 0; i < HighAltitudeConstants.BLUE_APRILTAG_IDS.length; i++) {
+            if (targetID == HighAltitudeConstants.BLUE_APRILTAG_IDS[i]) {
               this.targetAngle = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[i].getRotation().getDegrees();
               break;
             }
           }
         }
-      }
-      else
-       return;
+      } else
+        return;
     }
 
     double yaw = Robot.getRobotContainer().getVision().getTargetYaw(targetID);
@@ -211,6 +178,7 @@ public class AlignWithTargetVision extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.getRobotContainer().getSwerveDriveTrain().stopModules();
+    Robot.getRobotContainer().getSwerveDriveTrain().setIsFieldOriented(true);
   }
 
   // Returns true when the command should end.

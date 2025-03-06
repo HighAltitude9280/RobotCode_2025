@@ -79,7 +79,7 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.15, 0.325, 0.73 }; // TODO: fix this
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.1675, 0.35, 0.73 }; // TODO: fix this
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.27, 0.47, 0.65 };
 
@@ -92,7 +92,7 @@ public class HighAltitudeConstants {
         ////////////////////////// GRIPPER //////////////////////////
         public static final double GRIPPER_OUT_SPEED = 0.3;
         public static final double GRIPPER_IN_SPEED = -0.4;
-        public static final double GRIPPER_INTAKE_SPEED = -0.3;
+        public static final double GRIPPER_INTAKE_SPEED = -0.2;
         public static final double GRIPPER_HOLD_SPEED = 0.05;
 
         ////////////////////////// WRIST //////////////////////////
@@ -116,7 +116,7 @@ public class HighAltitudeConstants {
         public static final double WRIST_ZERO_ANGLE = 0.0;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 25 };
+        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 32.5 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
         public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
@@ -168,7 +168,7 @@ public class HighAltitudeConstants {
         // Arbitrary. Higher numbers will cause the swerve to react more violently to
         // joysitck inputs and may not be ideal. Lower numbers will cause the swerve to
         // have a very slow reaction to joystick inputs, and may not be ideal.
-        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 80.0; // 20.0
+        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 30.0; // 20.0
         public static final double SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = 20.0;
 
         // Other
@@ -197,13 +197,13 @@ public class HighAltitudeConstants {
          */
 
         // FEEDBACK //
-        public static final double SWERVE_DRIVE_kP = 0.0;
+        public static final double SWERVE_DRIVE_kP = 0.125;
         public static final double SWERVE_DRIVE_kI = 0.0;
         public static final double SWERVE_DRIVE_kD = 0.0;
 
         // FEEDFORWARD //
         public static final double SWERVE_DRIVE_kS = 0;
-        public static final double SWERVE_DRIVE_kV = 1.5;
+        public static final double SWERVE_DRIVE_kV = 2.05;
 
         // The reported encoder position after one revolution, check encoder
         // specifications.
@@ -282,7 +282,7 @@ public class HighAltitudeConstants {
 
         public static final double SWERVE_DIRECTION_kP = 5; // 12
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
-        public static final double SWERVE_DIRECTION_kD = 0.05; // 0.0128
+        public static final double SWERVE_DIRECTION_kD = 0.075; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
         PPHolonomicDriveController(new PIDConstants(0.9, 0, 0.000025),
@@ -310,6 +310,7 @@ public class HighAltitudeConstants {
         //////////////////////////// VISION //////////////////////////////
 
         // TODO: CONFIGURE THESE CONSTANTS
+
         public static final double VISION_YAW_OFFSET_TARGET_LEFT = 15;
         public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -15;
 
@@ -333,6 +334,10 @@ public class HighAltitudeConstants {
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
+
+        //////////////////////// CLIMBER ////////////////////////
+        public static final double CLIMBER_FOLD_SPEED = 0.1;
+        public static final double CLIMBER_EXTEND_SPEED = -0.1;
 
         ////////////////////////////// Pathfinding ////////////////////////}
 

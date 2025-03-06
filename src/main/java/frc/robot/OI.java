@@ -15,9 +15,11 @@ import frc.robot.commands.leds.SetFlameModeHighAltitude;
 import frc.robot.commands.leds.SetLEDOff;
 import frc.robot.commands.modes.SetCoralMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
+import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
+import frc.robot.commands.swerve.test.TestDrivePIDFFSwerve;
 import frc.robot.commands.swerve.test.TestSwerve;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
@@ -53,22 +55,32 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
+                pilot.whileTrueCombo(new AlignWithTargetVision(HighAltitudeConstants.VISION_TURN_MAX_POWER,
+                        HighAltitudeConstants.VISION_SPEED_MAX_POWER,
+                        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.RT, ButtonType.LT);
+
             case JoakinButChambing:
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.2);
-                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.2);
-                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.2);
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.06);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.06);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.06);
+
+                pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrue(ButtonType.X, new ResetOdometryZeros());
 
-                pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
-                // pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(0.5));
-                // pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-0.5));
-                pilot.whileTrue(ButtonType.B, new TestSwerve());
+                // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
+                pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(4));
+                pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-4));
+                pilot.whileTrueCombo(new AlignWithTargetVision(HighAltitudeConstants.VISION_TURN_MAX_POWER,
+                        HighAltitudeConstants.VISION_SPEED_MAX_POWER,
+                        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.RT, ButtonType.LT);
+
+                // pilot.whileTrue(ButtonType.B, new TestSwerve());
             default:
                 break;
 

@@ -39,6 +39,7 @@ public class HighSwerveModule {
   private double directionOutput;
   /// DRIVE ///
   private HighAltitudeMotor driveMotor;
+  private boolean isDriveEncoderReversed;
 
   private PIDController drivePIDController;
   private SimpleMotorFeedforward driveFeedforward;
@@ -89,6 +90,7 @@ public class HighSwerveModule {
     driveMotor = new HighAltitudeMotor(driveMotorPort, driveTypeOfMotor);
     driveMotor.setInverted(isDriveMotorReversed);
     driveMotor.setBrakeMode(true);
+    this.isDriveEncoderReversed = isDriveEncoderReversed;
 
     lastTimeStamp = MathSharedStore.getTimestamp();
   }
@@ -123,21 +125,23 @@ public class HighSwerveModule {
   }
 
   public double getDriveEncoder() {
-    return driveMotor.getEncPosition();
+    return driveMotor.getEncPosition() * (isDriveEncoderReversed ? -1.0 : 1.0);
   }
 
   /**
    * @return drive encoder distance in meters.
    */
   public double getDriveDistance() {
-    return driveMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REV;
+    return driveMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REV
+        * (isDriveEncoderReversed ? -1.0 : 1.0);
   }
 
   /**
    * @return drive encoder velocity in meters per second.
    */
   public double getDriveVelocity() {
-    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_PER_VELOCITY_UNITS;
+    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_PER_VELOCITY_UNITS
+        * (isDriveEncoderReversed ? -1.0 : 1.0);
   }
 
   public double getDirectionEncoder() {
@@ -285,26 +289,33 @@ public class HighSwerveModule {
     // This is what you should print:
     // 1. Velocity of the DriveMotorEnc
     SmartDashboard.putNumber(identifier + "DriveVelocity", getDriveVelocity());
-/* 
+
     // 2. Graphic of the CANCoder Angle
     SmartDashboard.putNumber(identifier + "CANCoder Angle", getAbsoluteEncoderRAD());
-
-    // 3. Graphic of the CANCoder Velocity
-    SmartDashboard.putNumber(identifier + "CANCoder Velocity", getEncoderVelocity());
-
-    // 5. Setpoint of the ProfiledPIDController Angle
-    SmartDashboard.putNumber(identifier + "Direction Angle Target", directionPIDAngleTarget);
-
-    SmartDashboard.putNumber(identifier + "Direction Angle SetPoint", directionPIDAngleSetPoint);
-
-    // 6. Setpoint of the ProfiledPIDController Velocity
-    SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint", directionPIDVelocitySetPoint);
-
-    SmartDashboard.putNumber(identifier + "Direction Output", directionOutput);
-
-    SmartDashboard.putNumber(identifier + "Direction ERROR", directionPIDAngleTarget - getAbsoluteEncoderRAD());
-  */
+    /*
+     * // 3. Graphic of the CANCoder Velocity
+     * SmartDashboard.putNumber(identifier + "CANCoder Velocity",
+     * getEncoderVelocity());
+     * 
+     * // 5. Setpoint of the ProfiledPIDController Angle
+     * SmartDashboard.putNumber(identifier + "Direction Angle Target",
+     * directionPIDAngleTarget);
+     * 
+     * SmartDashboard.putNumber(identifier + "Direction Angle SetPoint",
+     * directionPIDAngleSetPoint);
+     * 
+     * // 6. Setpoint of the ProfiledPIDController Velocity
+     * SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint",
+     * directionPIDVelocitySetPoint);
+     * 
+     * SmartDashboard.putNumber(identifier + "Direction Output", directionOutput);
+     * 
+     * SmartDashboard.putNumber(identifier + "Direction ERROR",
+     * directionPIDAngleTarget - getAbsoluteEncoderRAD());
+     */
     SmartDashboard.putNumber(identifier + "Drive Acceleration", getDriveAcceleration());
+    SmartDashboard.putNumber(identifier + "Meters Position", getPosition().distanceMeters);
+
   }
 
   public void putEncoderValuesInvertedApplied(String identifier) {

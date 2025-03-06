@@ -11,7 +11,6 @@ import frc.robot.resources.math.Math;
 
 import java.util.ArrayList;
 
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
@@ -291,19 +290,17 @@ public class SwerveDriveTrain extends SubsystemBase {
     field.setRobotPose(getPose());
   }
 
-  public void updateOdometryWithVision() 
-  {
-    for (var pos : Robot.getRobotContainer().getVision().getEstimatedGlobalPose()) 
-    {
+  public void updateOdometryWithVision() {
+    for (var pos : Robot.getRobotContainer().getVision().getEstimatedGlobalPose()) {
       if (pos == null || pos.isEmpty())
         continue;
 
       var pose = pos.get();
       swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-        pose.timestampSeconds);
+          pose.timestampSeconds);
     }
   }
-  
+
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
   }
@@ -490,23 +487,24 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    updateOdometryWithVision(); 
+    updateOdometryWithVision();
     putAllInfoInSmartDashboard();
     SmartDashboard.putNumber("GetXPose", getPose().getX());
     SmartDashboard.putNumber("GetYPose", getPose().getY());
+    SmartDashboard.putNumber("GetDegrees", getPose().getRotation().getDegrees());
   }
 
   public void putAllInfoInSmartDashboard() {
 
-    frontLeft.putProcessedValues("FL");
-    frontRight.putProcessedValues("FR");
-    backRight.putProcessedValues("BR");
-    backLeft.putProcessedValues("BL");
+    // frontLeft.putProcessedValues("FL");
+    // frontRight.putProcessedValues("FR");
+    // backRight.putProcessedValues("BR");
+    // backLeft.putProcessedValues("BL");
 
-    frontLeft.putEncoderValuesInvertedApplied("FL");
-    frontRight.putEncoderValuesInvertedApplied("FR");
-    backLeft.putEncoderValuesInvertedApplied("BL");
-    backRight.putEncoderValuesInvertedApplied("BR");
+    // frontLeft.putEncoderValuesInvertedApplied("FL");
+    // frontRight.putEncoderValuesInvertedApplied("FR");
+    // backLeft.putEncoderValuesInvertedApplied("BL");
+    // backRight.putEncoderValuesInvertedApplied("BR");
 
     frontLeft.putControlTunningValues("FL");
     frontRight.putControlTunningValues("FR");

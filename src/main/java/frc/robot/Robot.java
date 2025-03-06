@@ -24,20 +24,44 @@ public class Robot extends TimedRobot {
 
   // Branch selection modes.
   private static boolean leftMode = true;
-  public static void setLeftMode(boolean leftMode) { Robot.leftMode = leftMode; }
-  public static boolean isLeftMode() { return leftMode; }
+
+  public static void setLeftMode(boolean leftMode) {
+    Robot.leftMode = leftMode;
+  }
+
+  public static boolean isLeftMode() {
+    return leftMode;
+  }
 
   private static boolean frontMode = true;
-  public static void setFrontMode(boolean frontMode) { Robot.frontMode = frontMode; }
-  public static boolean isFrontMode() { return frontMode; }
+
+  public static void setFrontMode(boolean frontMode) {
+    Robot.frontMode = frontMode;
+  }
+
+  public static boolean isFrontMode() {
+    return frontMode;
+  }
 
   private static boolean coralMode = true;
-  public static void setCoralMode(boolean coralMode) { Robot.coralMode = coralMode; }
-  public static boolean isCoralMode() { return coralMode; }
+
+  public static void setCoralMode(boolean coralMode) {
+    Robot.coralMode = coralMode;
+  }
+
+  public static boolean isCoralMode() {
+    return coralMode;
+  }
 
   private static REEF_SIDE reef_mode = REEF_SIDE.CENTER;
-  public static REEF_SIDE getReefMode(){ return reef_mode;}
-  public static void setReefMode(REEF_SIDE mode){reef_mode = mode;}
+
+  public static REEF_SIDE getReefMode() {
+    return reef_mode;
+  }
+
+  public static void setReefMode(REEF_SIDE mode) {
+    reef_mode = mode;
+  }
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -53,6 +77,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    setCoralMode(coralMode);
   }
 
   /**
