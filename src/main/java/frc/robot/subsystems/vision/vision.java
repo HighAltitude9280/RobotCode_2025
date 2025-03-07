@@ -110,7 +110,13 @@ public class Vision extends SubsystemBase {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
     else
-      return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().yaw;
+    {
+      var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
+      if(target == null)
+        return Double.NaN;
+        
+      return target.yaw;
+    }
   }
 
   public double getTargetSize(int id) {
@@ -129,14 +135,25 @@ public class Vision extends SubsystemBase {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
     else
-      return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().area;
+    {
+      var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
+      if(target == null)
+        return Double.NaN;
+      return target.area;
+    }
   }
 
   public int getTargetID() {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return -1;
     else
-      return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().fiducialId;
+    {
+      var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
+      if(target == null)
+        return -1;
+
+      return target.fiducialId;
+    }
   }
 
   @Override
@@ -144,7 +161,7 @@ public class Vision extends SubsystemBase {
     alignmentResults = alignmentCam.getAllUnreadResults();
     frontResults = poseCamFront.getAllUnreadResults();
     backResults = poseCamBack.getAllUnreadResults();
-    // putDataInDashboard();
+    putDataInDashboard();
   }
 
   public void putDataInDashboard() {
