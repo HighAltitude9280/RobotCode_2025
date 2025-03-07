@@ -5,8 +5,11 @@
 package frc.robot;
 
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
+import frc.robot.commands.cancel.PathCancelCommand;
+import frc.robot.commands.cancel.SubsystemsCancelCommand;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
-import frc.robot.commands.compound.ScoreGamePieceLiftDown;
+import frc.robot.commands.compound.CoralOrAlgaeLiftDown;
+import frc.robot.commands.compound.KeepAlgaeSafe;
 import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
 import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
@@ -15,6 +18,7 @@ import frc.robot.commands.leds.SetFlameModeHighAltitude;
 import frc.robot.commands.leds.SetLEDOff;
 import frc.robot.commands.modes.SetCoralMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
+import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
@@ -76,9 +80,9 @@ public class OI {
                 // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
                 pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(4));
                 pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-4));
-                pilot.whileTrueCombo(new AlignWithTargetVision(HighAltitudeConstants.VISION_TURN_MAX_POWER,
-                        HighAltitudeConstants.VISION_SPEED_MAX_POWER,
-                        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.RT, ButtonType.LT);
+
+                pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT, ButtonType.LT);
+                pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
 
                 // pilot.whileTrue(ButtonType.B, new TestSwerve());
             default:
@@ -96,17 +100,17 @@ public class OI {
                                                                                                               // Piece
                 copilot.whileTrue(ButtonType.RB, new IntakeAlgae()); // Intake Algae / Reverse Coral
 
-                copilot.onTrue(ButtonType.A, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
-                copilot.onFalse(ButtonType.A, new ScoreGamePieceLiftDown());
+                copilot.onTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
+                copilot.onFalse(ButtonType.B, new CoralOrAlgaeLiftDown());
 
-                copilot.onTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
-                copilot.onFalse(ButtonType.B, new ScoreGamePieceLiftDown());
+                copilot.onTrue(ButtonType.A, new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
+                copilot.onFalse(ButtonType.A, new CoralOrAlgaeLiftDown());
 
                 copilot.onTrue(ButtonType.X, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
-                copilot.onFalse(ButtonType.X, new ScoreGamePieceLiftDown());
+                copilot.onFalse(ButtonType.X, new CoralOrAlgaeLiftDown());
 
                 copilot.onTrue(ButtonType.Y, new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
-                copilot.onFalse(ButtonType.Y, new ScoreGamePieceLiftDown());
+                copilot.onFalse(ButtonType.Y, new CoralOrAlgaeLiftDown());
 
                 copilot.onTrue(ButtonType.BACK, new SetCoralMode(false)); // Algae Mode
                 copilot.onTrue(ButtonType.START, new SetCoralMode(true)); // Coral Mode
@@ -114,8 +118,8 @@ public class OI {
                 copilot.onTrue(ButtonType.LT, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM)); // Intake Position
                 copilot.whileTrue(ButtonType.LT, new IntakeUntilCoral()); // Intake until Coral
 
-                copilot.whileTrue(ButtonType.POV_S, new SetFlameModeHighAltitude());
-                copilot.whileTrue(ButtonType.POV_N, new SetLEDOff());
+                copilot.whileTrueCombo(new SubsystemsCancelCommand(), ButtonType.RT, ButtonType.RB);
+
                 /*
                  * copilot.onTrue(ButtonType.A, new
                  * LiftWristGoToReefHeight(REEF_HEIGHT.BOTTOM)); // L1 / Processor
@@ -125,6 +129,8 @@ public class OI {
                  * L2 / Algae Removal 2
                  * copilot.onTrue(ButtonType.Y, new LiftWristGoToReefHeight(REEF_HEIGHT.TOP));//
                  * L4 / NET
+                 * copilot.whileTrue(ButtonType.POV_S, new SetFlameModeHighAltitude());
+                 * copilot.whileTrue(ButtonType.POV_N, new SetLEDOff());
                  */
 
                 // copilot.whileTrue(ButtonType.POV_E, new WristDown());

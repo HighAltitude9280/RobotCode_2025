@@ -17,6 +17,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -40,11 +41,13 @@ public class SwerveDriveTrain extends SubsystemBase {
   // TODO: cambiar isFieldOriented
   private boolean isFieldOriented = false;
   private boolean isOnCompetitiveField = false;
+  private PIDController distancePIDController;
 
   private Field2d field = new Field2d();
 
   private SlewRateLimiter speedLimiter, strafeLimiter, turnLimiter;
   public boolean cleanUpMode = false;
+  private double targetMeters;
 
   public SwerveDriveTrain() {
     frontLeft = new HighSwerveModule(
@@ -134,6 +137,9 @@ public class SwerveDriveTrain extends SubsystemBase {
           return false;
         },
         this);
+
+    distancePIDController = new PIDController(HighAltitudeConstants.SWERVE_DISTANCE_kP, 0,
+        HighAltitudeConstants.SWERVE_DISTANCE_kD);
 
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
@@ -270,18 +276,56 @@ public class SwerveDriveTrain extends SubsystemBase {
     // System.out.println("qpd Toilet");
   }
 
-  public void setModulesMPS(double mps) {
-    frontLeft.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
-    frontRight.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
-    backLeft.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
-    backRight.setState(new SwerveModuleState(mps, Rotation2d.fromDegrees(0)));
+  public void setModulesStates(double mps, double angleTargetRads) {
+    frontLeft.setState(new SwerveModuleState(mps, Rotation2d.fromRadians(angleTargetRads)));
+    frontRight.setState(new SwerveModuleState(mps, Rotation2d.fromRadians(angleTargetRads)));
+    backLeft.setState(new SwerveModuleState(mps, Rotation2d.fromRadians(angleTargetRads)));
+    backRight.setState(new SwerveModuleState(mps, Rotation2d.fromRadians(angleTargetRads)));
     // System.out.println("qpd Toilet");
   }
 
-  public boolean turnWheels(double angleTarget) {
+  public boolean turnWheels(double angleTargetRads) {
     boolean onTarget = false;
 
+    setModulesStates(0, angleTargetRads);
+
+    boolean FL = (Math.abs(angleTargetRads
+        - (frontLeft.getAbsoluteEncoderRAD() - java.lang.Math.floor(frontLeft.getAbsoluteEncoderRAD() / Math.PI)
+            * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
+
+    boolean FR = (Math.abs(angleTargetRads
+        - (frontRight.getAbsoluteEncoderRAD() - java.lang.Math.floor(frontRight.getAbsoluteEncoderRAD() / Math.PI)
+            * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
+
+    boolean BL = (Math.abs(angleTargetRads
+        - (backLeft.getAbsoluteEncoderRAD() - java.lang.Math.floor(backLeft.getAbsoluteEncoderRAD() / Math.PI)
+            * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
+
+    boolean BR = (Math.abs(angleTargetRads
+        - (backRight.getAbsoluteEncoderRAD() - java.lang.Math.floor(backRight.getAbsoluteEncoderRAD() / Math.PI)
+            * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
+
+    onTarget = FL && FR && BL && BR;
+
     return onTarget;
+  }
+
+  public void setMetersTarget(double targetMeters) {
+    this.targetMeters = frontLeft.getDriveDistance() + targetMeters;
+  }
+
+  private double getMetersTarget() {
+    return targetMeters;
+  }
+
+  public boolean moveMeters(double maxSpeed, double angleTarget) {
+    double speed = distancePIDController.calculate(targetMeters, frontLeft.getDriveDistance());
+    speed = maxSpeed * Math.clamp(speed / maxSpeed, -1, 1);
+    setModulesStates(speed, angleTarget);
+
+    double delta = getMetersTarget() - frontLeft.getDriveDistance();
+
+    return Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET;
   }
 
   // Odometry

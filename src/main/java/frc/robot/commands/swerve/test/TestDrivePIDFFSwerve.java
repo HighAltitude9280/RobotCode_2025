@@ -10,6 +10,7 @@ import frc.robot.Robot;
 public class TestDrivePIDFFSwerve extends Command {
 
   double mps = 0;
+
   public TestDrivePIDFFSwerve(double mps) {
     this.mps = mps;
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
@@ -23,7 +24,7 @@ public class TestDrivePIDFFSwerve extends Command {
 
   @Override
   public void execute() {
-    Robot.getRobotContainer().getSwerveDriveTrain().setModulesMPS(mps);
+    Robot.getRobotContainer().getSwerveDriveTrain().setModulesStates(mps, 0);
   }
 
   // Called once the command ends or is interrupted.

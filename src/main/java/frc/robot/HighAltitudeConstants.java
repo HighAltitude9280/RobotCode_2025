@@ -291,7 +291,11 @@ public class HighAltitudeConstants {
         //// SpeedReduction constants
 
         public static final double SWERVE_TURN_BRAKE_DISTANCE = 32; // 32.0;
+
         public static final double SWERVE_TURN_ARRIVE_OFFSET = 3; // 3.0;
+
+        public static final double SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET = 3 * (Math.PI / 180);
+        // degrees to radians
 
         //// Dynamic acceleration limiter
 
@@ -306,6 +310,10 @@ public class HighAltitudeConstants {
         // DAL_MIN_HEIGHT) * DAL_HEIGHT_MULTIPLIER)
         // So the higher this constant, the higher the DAL effect.
         public static final double DAL_HEIGHT_MULTIPLIER = 0.5;
+
+        public static final double SWERVE_DISTANCE_kP = 0;
+        public static final double SWERVE_DISTANCE_kD = 0;
+        public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0;
 
         //////////////////////////// VISION //////////////////////////////
 
@@ -329,6 +337,7 @@ public class HighAltitudeConstants {
         public static final double VISION_TURN_MAX_POWER = 0.1;
         public static final double VISION_STRAFE_MAX_POWER = 0.1;
         public static final double VISION_SPEED_MAX_POWER = 0.1;
+        public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.5;
 
         //////////////////////// DRIVERS ////////////////////////
 
