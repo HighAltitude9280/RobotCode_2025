@@ -95,7 +95,7 @@ public class Lift extends SubsystemBase {
     return liftProfiledPIDController;
   }
 
-  public void controlPosition(double metersTarget, double maxVoltage) {
+  public void controlPosition(double metersTarget, double maxVoltage, double arriveOffset) {
     double pidVal = liftProfiledPIDController.calculate(getLiftPosMeters(), metersTarget);
     double targetSpeed = liftProfiledPIDController.getSetpoint().velocity;
 
@@ -109,14 +109,15 @@ public class Lift extends SubsystemBase {
     liftMotors.setAll(liftOutput);
 
     double delta = getTarget() - getLiftPosMeters();
-    this.onTarget = Math.abs(delta) < HighAltitudeConstants.LIFT_ARRIVE_OFFSET;
+    
+    this.onTarget = Math.abs(delta) < arriveOffset;
 
     this.liftOutput = liftOutput;
 
   }
 
-  public void controlPosition(double maxVoltage) {
-    controlPosition(currentTarget, maxVoltage);
+  public void controlPosition(double maxVoltage, double arriveOffset) {
+    controlPosition(currentTarget, maxVoltage, arriveOffset);
   }
 
   /**

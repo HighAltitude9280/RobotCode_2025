@@ -54,10 +54,14 @@ public class LiftWristGoToTargetHeight extends InstantCommand {
     goingUp = liftTarget > Robot.getRobotContainer().getLift().getLiftPosMeters();
 
     if (goingUp)
-      (new SequentialCommandGroup(new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget),
+      (new SequentialCommandGroup(
+          new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget,
+              HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
           new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED))).schedule();
     else
       (new SequentialCommandGroup(new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED),
-          new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget))).schedule();
+          new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget,
+              HighAltitudeConstants.LIFT_ARRIVE_OFFSET)))
+          .schedule();
   }
 }

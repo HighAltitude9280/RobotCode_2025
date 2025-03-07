@@ -11,22 +11,24 @@ import frc.robot.Robot;
 public class LiftGoToTarget extends Command {
   /** Creates a new LiftMantainTarget. */
 
-  double maxPower, target;
+  double maxPower, target, arriveOffset;
 
-  public LiftGoToTarget(double maxPower) {
+  public LiftGoToTarget(double maxPower, double arriveOffset) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.getRobotContainer().getLift());
 
     this.target = Double.NaN;
     this.maxPower = maxPower;
+    this.arriveOffset = arriveOffset;
   }
 
-  public LiftGoToTarget(double maxPower, double targetMeters) {
+  public LiftGoToTarget(double maxPower, double targetMeters, double arriveOffset) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.getRobotContainer().getLift());
 
     this.target = targetMeters;
     this.maxPower = maxPower;
+    this.arriveOffset = arriveOffset;
   }
 
   // Called when the command is initially scheduled.
@@ -39,7 +41,7 @@ public class LiftGoToTarget extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.getRobotContainer().getLift().controlPosition(maxPower);
+    Robot.getRobotContainer().getLift().controlPosition(maxPower, arriveOffset);
   }
 
   // Called once the command ends or is interrupted.

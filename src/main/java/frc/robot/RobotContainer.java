@@ -105,7 +105,8 @@ public class RobotContainer {
         // el default command).
 
         wrist.setDefaultCommand(new WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
-        lift.setDefaultCommand(new LiftDefaultCommand(4));
+        lift.setDefaultCommand(
+                new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
 
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 

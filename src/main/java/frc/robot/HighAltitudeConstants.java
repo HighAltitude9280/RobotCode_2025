@@ -62,14 +62,15 @@ public class HighAltitudeConstants {
         public static final double LIFT_kG = 0.055; // 0.055
         public static final double LIFT_kV = 0.5; // 0.5
 
-        public static final double LIFT_kP = 1.5; // 1.5
+        //TODO: fix que se azota XD
+        public static final double LIFT_kP = 0.5; // 1.5 
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.1; // 0.1
+        public static final double LIFT_kD = 0.25; // 0.1 
 
         public static final double LIFT_MAX_VELOCITY = 0.65; // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 1.3; // en m/s^2 // 1.5
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.05;
+        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.05
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
@@ -79,9 +80,9 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.1675, 0.35, 0.73 }; // TODO: fix this
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.01, 0.1975, 0.38, 0.7 }; // TODO: fix this
         // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.27, 0.47, 0.65 };
+        public static final double[] LIFT_ALGAE_POSITIONS = { 0.15, 0.33, 0.52, 0.68 };
 
         public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 

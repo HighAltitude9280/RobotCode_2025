@@ -6,22 +6,31 @@ package frc.robot.commands.compound;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
+import frc.robot.subsystems.extensor.Lift;
+import frc.robot.subsystems.extensor.Wrist;
+import frc.robot.subsystems.manipulator.Gripper;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CoralOrAlgaeLiftDown extends InstantCommand {
-  boolean coralMode;
+  Lift lift;
+  Wrist wrist;
+  Gripper gripper;
 
   public CoralOrAlgaeLiftDown() {
-    coralMode = Robot.isCoralMode();
+    lift = Robot.getRobotContainer().getLift();
+    wrist = Robot.getRobotContainer().getWrist();
+    gripper = Robot.getRobotContainer().getGripper();
     // Use addRequirements() here to declare subsystem dependencies
+    addRequirements(lift, wrist);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (coralMode)
+
+    if (Robot.isCoralMode())
       new ScoreGamePieceLiftDown().schedule();
     else {
       new KeepAlgaeSafe().schedule();

@@ -96,12 +96,12 @@ public class Vision extends SubsystemBase {
   public double getTargetYaw(int id) {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
-
-    for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
-      if (target.getFiducialId() == id) {
-        return target.getYaw();
+    else
+      for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
+        if (target.getFiducialId() == id) {
+          return target.getYaw();
+        }
       }
-    }
 
     return Double.NaN;
   }
@@ -109,34 +109,34 @@ public class Vision extends SubsystemBase {
   public double getTargetYaw() {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
-
-    return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().yaw;
+    else
+      return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().yaw;
   }
 
   public double getTargetSize(int id) {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
-
-    for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
-      if (target.getFiducialId() == id) {
-        return target.getArea();
+    else
+      for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
+        if (target.getFiducialId() == id) {
+          return target.getArea();
+        }
       }
-    }
     return Double.NaN;
   }
 
   public double getTargetSize() {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
-
-    return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().area;
+    else
+      return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().area;
   }
 
   public int getTargetID() {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return -1;
-
-    return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().fiducialId;
+    else
+      return alignmentResults.get(alignmentResults.size() - 1).getBestTarget().fiducialId;
   }
 
   @Override
@@ -144,7 +144,7 @@ public class Vision extends SubsystemBase {
     alignmentResults = alignmentCam.getAllUnreadResults();
     frontResults = poseCamFront.getAllUnreadResults();
     backResults = poseCamBack.getAllUnreadResults();
-    putDataInDashboard();
+    // putDataInDashboard();
   }
 
   public void putDataInDashboard() {

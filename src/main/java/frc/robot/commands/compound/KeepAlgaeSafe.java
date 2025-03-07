@@ -4,7 +4,9 @@
 
 package frc.robot.commands.compound;
 
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.commands.extensor.gripper.manual.HoldAlgae;
 
@@ -17,7 +19,6 @@ public class KeepAlgaeSafe extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new HoldAlgae(),
         new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
   }
 }
