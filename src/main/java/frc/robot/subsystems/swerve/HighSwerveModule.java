@@ -279,7 +279,7 @@ public class HighSwerveModule {
   // Smartdashboard prints for debugging.
 
   public void putProcessedValues(String identifier) {
-    SmartDashboard.putNumber(identifier + "DrivePos", getDriveDistance());
+    SmartDashboard.putNumber(identifier + "getDriveDistanceMeters", getDriveDistance());
     SmartDashboard.putNumber(identifier + "DirPos", getDirection());
     SmartDashboard.putNumber(identifier + "AbsPos", getAbsoluteEncoderRAD());
     SmartDashboard.putNumber(identifier + "AbsRawPos", absoluteEncoderController.getPosition().getValueAsDouble());
@@ -314,7 +314,9 @@ public class HighSwerveModule {
      * directionPIDAngleTarget - getAbsoluteEncoderRAD());
      */
     SmartDashboard.putNumber(identifier + "Drive Acceleration", getDriveAcceleration());
+
     SmartDashboard.putNumber(identifier + "Meters Position", getPosition().distanceMeters);
+    SmartDashboard.putNumber(identifier + "Drive Distance Meters", getDriveDistance());
 
   }
 

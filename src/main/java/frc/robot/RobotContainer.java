@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.autonomous.AutoLeave;
+import frc.robot.commands.autonomous.LeaveAndL4;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
 import frc.robot.commands.leds.SetLEDColor;
@@ -140,6 +142,8 @@ public class RobotContainer {
     public void generateAutos() {
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
+        m_chooser.addOption("AutoLeave", new AutoLeave(2, 0.7));
+        m_chooser.addOption("Leave and L4", new LeaveAndL4());
 
     }
 }

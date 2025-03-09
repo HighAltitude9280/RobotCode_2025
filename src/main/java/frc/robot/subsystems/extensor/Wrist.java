@@ -75,6 +75,8 @@ public class Wrist extends SubsystemBase {
 
     double delta = getTarget() - getWristPosDegrees();
     this.onTarget = Math.abs(delta) < HighAltitudeConstants.WRIST_ARRIVE_OFFSET;
+    if (onTarget)
+      power = 0.0;
   }
 
   // Explica q

@@ -34,7 +34,7 @@ public class SubsystemsCancelCommand extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    new LiftWristGoToTargetHeight(HighAltitudeConstants.REEF_HEIGHT.BOTTOM);
-    new ParallelRaceGroup(new WaitCommand(1), new StopGripper());
+    new LiftWristGoToTargetHeight(HighAltitudeConstants.REEF_HEIGHT.BOTTOM).schedule();
+    new ParallelRaceGroup(new WaitCommand(1), new StopGripper()).schedule();
   }
 }

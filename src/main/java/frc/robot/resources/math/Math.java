@@ -148,6 +148,7 @@ public class Math {
             result += 360;
         }
 
+        System.out.println(angle);
         return normalizeAngle(result);
 
     }

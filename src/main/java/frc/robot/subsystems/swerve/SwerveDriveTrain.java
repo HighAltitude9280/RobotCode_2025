@@ -325,6 +325,9 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     double delta = getMetersTarget() - frontLeft.getDriveDistance();
 
+    if (Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET)
+      stopModules();
+      
     return Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET;
   }
 
@@ -522,6 +525,9 @@ public class SwerveDriveTrain extends SubsystemBase {
     strafePower = strafeOnTarget ? 0 : strafePower;
 
     defaultDrive(speedPower, strafePower, turnPower);
+
+    System.out.println(turnPower);
+
     return turnOnTarget && speedOnTarget && strafeOnTarget;
 
   }
@@ -537,11 +543,9 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    updateOdometryWithVision();
+    // updateOdometryWithVision();
     putAllInfoInSmartDashboard();
-    SmartDashboard.putNumber("GetXPose", getPose().getX());
-    SmartDashboard.putNumber("GetYPose", getPose().getY());
-    SmartDashboard.putNumber("GetDegrees", getPose().getRotation().getDegrees());
+
   }
 
   public void putAllInfoInSmartDashboard() {
@@ -562,5 +566,12 @@ public class SwerveDriveTrain extends SubsystemBase {
     backRight.putControlTunningValues("BR");
 
     SmartDashboard.putBoolean("IsFieldOriented?", getIsFieldOriented());
+
+    SmartDashboard.putNumber("GetXPose", getPose().getX());
+    SmartDashboard.putNumber("GetYPose", getPose().getY());
+
+    SmartDashboard.putNumber("GetDegrees", getPose().getRotation().getDegrees());
+
+    SmartDashboard.putNumber("GetMetersTarget", getMetersTarget());
   }
 }

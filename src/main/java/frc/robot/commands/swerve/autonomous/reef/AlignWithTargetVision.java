@@ -7,6 +7,7 @@ package frc.robot.commands.swerve.autonomous.reef;
 import com.fasterxml.jackson.annotation.Nulls;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
@@ -170,10 +171,16 @@ public class AlignWithTargetVision extends Command {
     yaw = yaw == Double.NaN ? targetYaw : yaw;
     area = area == Double.NaN ? HighAltitudeConstants.VISION_AREA_TARGET : area;
 
+    System.out.println("TargetAngle:" + targetAngle);
     isFinished = Robot.getRobotContainer().getSwerveDriveTrain().alignWithTarget(targetAngle, yaw, area, targetYaw,
         HighAltitudeConstants.VISION_AREA_TARGET, maxTurnPower, maxStrafePower, maxStrafePower);
   }
 
+  /*
+   * SmartDashboard.putNumber("Turn Max Power", maxTurnPower);
+   * SmartDashboard.putNumber("Speed Max Power", maxSpeedPower);
+   * SmartDashboard.putNumber("Strafe Max Power", maxStrafePower);
+   */
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

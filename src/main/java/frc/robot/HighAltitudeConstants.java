@@ -57,20 +57,20 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
-        public static final double LIFT_kS = 0.025; // 0.025
+        public static final double LIFT_kS = 0.0; // 0.025
         public static final double LIFT_kA = 0.0;
-        public static final double LIFT_kG = 0.055; // 0.055
-        public static final double LIFT_kV = 0.5; // 0.5
+        public static final double LIFT_kG = 0.0625; // 0.055
+        public static final double LIFT_kV = 0.1625; // 0.5
 
-        //TODO: fix que se azota XD
-        public static final double LIFT_kP = 0.5; // 1.5 
+        public static final double LIFT_kP = 3.7; // 1.5 //0.5
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.25; // 0.1 
+        public static final double LIFT_kD = 0.0; // 0.1 //0.25
 
         public static final double LIFT_MAX_VELOCITY = 0.65; // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 1.3; // en m/s^2 // 1.5
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.05
+        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
+                                                               // NO DEJAR EN CERO EL OFFSET
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
@@ -80,9 +80,9 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.01, 0.1975, 0.38, 0.7 }; // TODO: fix this
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.35, 0.7 }; // TODO: fix this
         // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] LIFT_ALGAE_POSITIONS = { 0.15, 0.33, 0.52, 0.68 };
+        public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.68 };
 
         public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 
@@ -91,10 +91,10 @@ public class HighAltitudeConstants {
         public static final double LIFT_MAX_POWER = 4;
 
         ////////////////////////// GRIPPER //////////////////////////
-        public static final double GRIPPER_OUT_SPEED = 0.3;
+        public static final double GRIPPER_OUT_SPEED = 0.2;
         public static final double GRIPPER_IN_SPEED = -0.4;
         public static final double GRIPPER_INTAKE_SPEED = -0.2;
-        public static final double GRIPPER_HOLD_SPEED = 0.05;
+        public static final double GRIPPER_HOLD_SPEED = 0.1;
 
         ////////////////////////// WRIST //////////////////////////
         // TODO: Wrist Constants
@@ -111,7 +111,7 @@ public class HighAltitudeConstants {
         public static final double WRIST_NEO_ENCODER_UNITS_PER_REV = 1.0;
         public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV = WRIST_RATIO
                         / WRIST_NEO_ENCODER_UNITS_PER_REV;
-        public static final double WRIST_ARRIVE_OFFSET = 4.0;
+        public static final double WRIST_ARRIVE_OFFSET = 2.0;
         public static final double WRIST_DEGREES_PER_PULSE = 360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
 
         public static final double WRIST_ZERO_ANGLE = 0.0;
@@ -312,32 +312,32 @@ public class HighAltitudeConstants {
         // So the higher this constant, the higher the DAL effect.
         public static final double DAL_HEIGHT_MULTIPLIER = 0.5;
 
-        public static final double SWERVE_DISTANCE_kP = 0;
+        public static final double SWERVE_DISTANCE_kP = 4.0;
         public static final double SWERVE_DISTANCE_kD = 0;
-        public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0;
+        public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.0254;
 
         //////////////////////////// VISION //////////////////////////////
 
         // TODO: CONFIGURE THESE CONSTANTS
 
-        public static final double VISION_YAW_OFFSET_TARGET_LEFT = 15;
-        public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -15;
+        public static final double VISION_YAW_OFFSET_TARGET_LEFT = 24.89;
+        public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -24.89;
 
-        public static final double VISION_AREA_TARGET = 0.5;
+        public static final double VISION_AREA_TARGET = 7.56;
 
         // Speed reduction constants for aligning with apriltags.
-        public static final double VISION_TURN_ARRIVE_OFFSET = 3;
-        public static final double VISION_TURN_BRAKE_DISTANCE = 32;
+        public static final double VISION_TURN_ARRIVE_OFFSET = 0.0;// 3;
+        public static final double VISION_TURN_BRAKE_DISTANCE = 1.0;// 32;
 
-        public static final double VISION_STRAFE_ARRIVE_OFFSET = 1;
-        public static final double VISION_STRAFE_BRAKE_DISTANCE = 32;
+        public static final double VISION_STRAFE_ARRIVE_OFFSET = 0.1;
+        public static final double VISION_STRAFE_BRAKE_DISTANCE = 32.0; // 32
 
-        public static final double VISION_SPEED_ARRIVE_OFFSET = 0.05;
-        public static final double VISION_SPEED_BRAKE_DISTANCE = 0.5;
+        public static final double VISION_SPEED_ARRIVE_OFFSET = 0.05;// 0.05;
+        public static final double VISION_SPEED_BRAKE_DISTANCE = 0.5;// 0.5;
 
         public static final double VISION_TURN_MAX_POWER = 0.1;
-        public static final double VISION_STRAFE_MAX_POWER = 0.1;
-        public static final double VISION_SPEED_MAX_POWER = 0.1;
+        public static final double VISION_STRAFE_MAX_POWER = 0.0; // 0.1
+        public static final double VISION_SPEED_MAX_POWER = 0.0; // 0.1
         public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.5;
 
         //////////////////////// DRIVERS ////////////////////////

@@ -4,26 +4,37 @@
 
 package frc.robot.commands.cancel;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
-import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class PathCancelCommand extends InstantCommand {
-  SwerveDriveTrain swerve;
-
+/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+public class PathCancelCommand extends Command {
+  /** Creates a new PathCancelCommand. */
   public PathCancelCommand() {
-    swerve = Robot.getRobotContainer().getSwerveDriveTrain();
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(swerve);
+    addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    new WaitCommand(0.1);
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    new WaitCommand(1).schedule();
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return true;
   }
 }

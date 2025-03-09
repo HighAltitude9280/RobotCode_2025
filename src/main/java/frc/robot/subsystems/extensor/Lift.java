@@ -66,7 +66,7 @@ public class Lift extends SubsystemBase {
     return liftMotors.getEncoderPosition();
   }
 
-  private void resetEncoders() {
+  public void resetEncoders() {
     liftMotors.resetEncoder();
   }
 
@@ -109,11 +109,13 @@ public class Lift extends SubsystemBase {
     liftMotors.setAll(liftOutput);
 
     double delta = getTarget() - getLiftPosMeters();
-    
+
     this.onTarget = Math.abs(delta) < arriveOffset;
 
     this.liftOutput = liftOutput;
-
+    
+    if (onTarget)
+      liftOutput = HighAltitudeConstants.LIFT_kG;
   }
 
   public void controlPosition(double maxVoltage, double arriveOffset) {
@@ -175,7 +177,6 @@ public class Lift extends SubsystemBase {
 
     if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
       resetEncoders();
-    ;
 
   }
 }

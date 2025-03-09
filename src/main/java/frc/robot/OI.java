@@ -12,13 +12,17 @@ import frc.robot.commands.compound.CoralOrAlgaeLiftDown;
 import frc.robot.commands.compound.KeepAlgaeSafe;
 import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
 import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
+import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
 import frc.robot.commands.leds.SetFlameModeHighAltitude;
 import frc.robot.commands.leds.SetLEDOff;
 import frc.robot.commands.modes.SetCoralMode;
+import frc.robot.commands.modes.SetLeftMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
+import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
+import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
@@ -54,14 +58,25 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-                pilot.whileTrue(ButtonType.LB, new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED));
-                pilot.whileTrue(ButtonType.RB, new IntakeAlgae());
+                // pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT,
+                // ButtonType.LT);
+                pilot.whileTrueCombo(new AlignWithTargetVision(HighAltitudeConstants.VISION_TURN_MAX_POWER,
+                        HighAltitudeConstants.VISION_SPEED_MAX_POWER,
+                        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.LT, ButtonType.RT);
+
+                pilot.whileTrue(ButtonType.B, new SetLeftMode(false));
+                pilot.whileTrue(ButtonType.X, new SetLeftMode(true));
+
+
+                pilot.onTrueCombo(new DefaultSwerveDriveNew(), ButtonType.RB, ButtonType.LB);
 
                 pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
                 pilot.whileTrueCombo(new AlignWithTargetVision(HighAltitudeConstants.VISION_TURN_MAX_POWER,
                         HighAltitudeConstants.VISION_SPEED_MAX_POWER,
                         HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.RT, ButtonType.LT);
+
+                pilot.whileTrue(ButtonType.A, new SwerveMoveMeters(0.3, 0, 0.7));
 
             case JoakinButChambing:
 
@@ -98,7 +113,9 @@ public class OI {
                 copilot.whileTrue(ButtonType.LB, new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED)); // Score
                                                                                                               // Game
                                                                                                               // Piece
-                copilot.whileTrue(ButtonType.RB, new IntakeAlgae()); // Intake Algae / Reverse Coral
+                copilot.onTrue(ButtonType.RT, new IntakeAlgae()); // Intake Algae / Reverse Coral
+
+                copilot.whileTrue(ButtonType.RB, new IntakeAlgae());
 
                 copilot.onTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
                 copilot.onFalse(ButtonType.B, new CoralOrAlgaeLiftDown());
@@ -116,9 +133,9 @@ public class OI {
                 copilot.onTrue(ButtonType.START, new SetCoralMode(true)); // Coral Mode
 
                 copilot.onTrue(ButtonType.LT, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM)); // Intake Position
-                copilot.whileTrue(ButtonType.LT, new IntakeUntilCoral()); // Intake until Coral
+                copilot.onTrue(ButtonType.LT, new IntakeUntilCurrentCoral());
 
-                copilot.whileTrueCombo(new SubsystemsCancelCommand(), ButtonType.RT, ButtonType.RB);
+                copilot.whileTrue(ButtonType.POV_N, new SubsystemsCancelCommand());
 
                 /*
                  * copilot.onTrue(ButtonType.A, new

@@ -5,9 +5,11 @@
 package frc.robot.commands.compound;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
+import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.lift.control.LiftGoToTarget;
 import frc.robot.commands.extensor.wrist.control.WristGoToTarget;
 import frc.robot.Robot;
@@ -57,9 +59,14 @@ public class LiftWristGoToTargetHeight extends InstantCommand {
       (new SequentialCommandGroup(
           new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget,
               HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
-          new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED))).schedule();
+          new ParallelRaceGroup(
+              new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
+              new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED))))
+          .schedule();
     else
-      (new SequentialCommandGroup(new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED),
+      (new SequentialCommandGroup(new ParallelRaceGroup(
+          new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
+          new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
           new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget,
               HighAltitudeConstants.LIFT_ARRIVE_OFFSET)))
           .schedule();

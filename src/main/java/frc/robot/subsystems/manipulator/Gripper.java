@@ -24,10 +24,12 @@ public class Gripper extends SubsystemBase {
   // Sensor de color
   ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
+
+  private final double CURRENT_THRESOLD = 15.0;
   boolean coralInGripper;
   // Definir el color "blanco del coral"
   private final Color coralWhite = new Color(0.30, 0.45, 0.25); // Ajusta estos valores
-  private final double tolerance = 0.02; // Ajusta según pruebas
+  private final double tolerance = 0.015; // Ajusta según pruebas
 
   /** Creates a new Gripper. */
   public Gripper() {
@@ -51,6 +53,21 @@ public class Gripper extends SubsystemBase {
 
   public void gripperIn() {
     gripperMotors.setAll(HighAltitudeConstants.GRIPPER_IN_SPEED);
+  }
+
+  /** Verifica si la corriente del motor ha superado el umbral */
+  public boolean isCurrentThresholdExceeded() {
+    double current = gripperMotors.getMotors().get(0).getOutput();
+    //System.out.println("Current:" + current);
+    return current > CURRENT_THRESOLD;
+  }
+
+  public void gripperInCurrent() {
+    if (!isCurrentThresholdExceeded())
+      gripperMotors.setAll(HighAltitudeConstants.GRIPPER_INTAKE_SPEED);
+    else {
+      stopGripper();
+    }
   }
 
   public void gripperOut(double speed) {

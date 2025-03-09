@@ -109,12 +109,11 @@ public class Vision extends SubsystemBase {
   public double getTargetYaw() {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
-    else
-    {
+    else {
       var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
-      if(target == null)
+      if (target == null)
         return Double.NaN;
-        
+
       return target.yaw;
     }
   }
@@ -134,10 +133,9 @@ public class Vision extends SubsystemBase {
   public double getTargetSize() {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return Double.NaN;
-    else
-    {
+    else {
       var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
-      if(target == null)
+      if (target == null)
         return Double.NaN;
       return target.area;
     }
@@ -146,10 +144,9 @@ public class Vision extends SubsystemBase {
   public int getTargetID() {
     if (alignmentResults == null || alignmentResults.isEmpty())
       return -1;
-    else
-    {
+    else {
       var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
-      if(target == null)
+      if (target == null)
         return -1;
 
       return target.fiducialId;
