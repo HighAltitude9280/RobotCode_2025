@@ -36,9 +36,9 @@ public class DefaultSwerveDriveNew extends Command {
 
       // 1. Read input
 
-      speed = OI.getInstance().getDefaultSwerveDriveSpeed() * 0.88;
-      strafe = OI.getInstance().getDefaultSwerveDriveStrafe() * 0.88;
-      turn = OI.getInstance().getDefaultSwerveDriveTurn() * 0.8;
+      speed = OI.getInstance().getDefaultSwerveDriveSpeed() * 0.8;
+      strafe = OI.getInstance().getDefaultSwerveDriveStrafe() * 0.8;
+      turn = OI.getInstance().getDefaultSwerveDriveTurn() * 0.7;
 
     } else {
 

@@ -56,14 +56,14 @@ public class Vision extends SubsystemBase {
 
     fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
-    Transform3d camFront = new Transform3d(new Translation3d(0, 0, 0),
-        new Rotation3d(0f, Math.toRadians(-10), Math.toRadians(190)));
+    Transform3d camFront = new Transform3d(new Translation3d(0.26095284233, 0.272430748254, 0.215),
+        new Rotation3d(0f, Math.toRadians(-61.875), Math.toRadians(149.52786828)));
 
     poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         camFront);
 
-    Transform3d camBack = new Transform3d(new Translation3d(0, 0, 0),
-        new Rotation3d(0f, Math.toRadians(-10), Math.toRadians(190)));
+    Transform3d camBack = new Transform3d(new Translation3d(-0.261676313324, -0.272904897166, 0.215),
+        new Rotation3d(0f, Math.toRadians(-61.875), Math.toRadians(-149.52786828)));
 
     poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         camBack);

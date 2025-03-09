@@ -111,4 +111,8 @@ public class RobotMap {
     public static final int[] CLIMBER_INVERTED_MOTORS_PORTS = {};
     public static final TypeOfMotor[] CLIMBER_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
 
+    // TODO: poner puertos
+    public static final int CLIMBER_SERVO_2_PORT = 1;
+    public static final int CLIMBER_SERVO_1_PORT = 2;
+
 }

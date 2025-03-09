@@ -182,15 +182,10 @@ public class SwerveDriveTrain extends SubsystemBase {
     turn = turnLimiter.calculate(turn);
 
     // 3. Scale input to teleop max speed
-    if (cleanUpMode = true) {
-      speed *= HighAltitudeConstants.SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND;
-      strafe *= HighAltitudeConstants.SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND;
-      turn *= 8.0;
-    } else {
-      speed *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
-      strafe *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
-      turn *= 8.0;
-    }
+
+    speed *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
+    strafe *= HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND;
+    turn *= HighAltitudeConstants.SWERVE_DIRECTION_MAX_ANGULAR_SPEED_RADS_PER_SECOND;
 
     // 4. Construct the chassis speeds
     ChassisSpeeds chassisSpeeds;
@@ -327,7 +322,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     if (Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET)
       stopModules();
-      
+
     return Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET;
   }
 

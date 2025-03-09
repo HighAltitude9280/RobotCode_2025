@@ -147,6 +147,8 @@ public class HighAltitudeConstants {
         // ft/s //ft -> in //im -> m
         public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 19.5 * 12 * 0.0254;
 
+        public static final double SWERVE_DIRECTION_MAX_ANGULAR_SPEED_RADS_PER_SECOND = 5.0;
+
         /////////// KINEMATICS
         // Distance left - right (meters)
         public static final double SWERVE_TRACK_WIDTH = 26 * 0.0254; // este es de llanta a llanta
