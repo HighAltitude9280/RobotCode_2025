@@ -43,6 +43,9 @@ public class HighAltitudeConstants {
         public static final double LIFT_UP_SPEED = 0.2;
         public static final double LIFT_DOWN_SPEED = -0.1;
 
+        public static final double LIFT_UP_CONTROL_ADDED_VALUE = 0.1;
+        public static final double LIFT_DOWN_CONTROL_ADDED_VALUE = 0.1;
+
         /*
          * Necesitas la gráfica de velocidad del encoder del Lift
          * 

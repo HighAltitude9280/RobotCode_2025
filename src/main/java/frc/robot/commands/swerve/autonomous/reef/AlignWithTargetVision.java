@@ -67,6 +67,7 @@ public class AlignWithTargetVision extends Command {
    */
   public AlignWithTargetVision(REEF_SIDE side, double maxTurnPower, double maxSpeedPower,
       double maxStrafePower) {
+    addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
     this.side = side;
     this.maxTurnPower = maxTurnPower;
     this.maxSpeedPower = maxSpeedPower;
@@ -86,6 +87,7 @@ public class AlignWithTargetVision extends Command {
    */
   public AlignWithTargetVision(double maxTurnPower, double maxSpeedPower,
       double maxStrafePower) {
+    addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
     this.maxTurnPower = maxTurnPower;
     this.maxSpeedPower = maxSpeedPower;
     this.maxStrafePower = maxStrafePower;

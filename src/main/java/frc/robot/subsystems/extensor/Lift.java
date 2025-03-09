@@ -130,6 +130,11 @@ public class Lift extends SubsystemBase {
   public void setTarget(double target) {
     this.currentTarget = target;
   }
+ 
+  public void addToTarget(double meters)
+  {
+    this.currentTarget += meters;
+  }
 
   public double getTarget() {
     return currentTarget;
@@ -139,7 +144,7 @@ public class Lift extends SubsystemBase {
     return this.onTarget;
   }
 
-  public void setHeight(double velocity, double acceleration) {
+  public void setSpeed(double velocity, double acceleration) {
     double ffOutput = liftFeedforward.calculate(velocity, acceleration);
 
     driveLift(ffOutput);
