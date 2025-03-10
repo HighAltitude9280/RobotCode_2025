@@ -49,10 +49,10 @@ public class PathplanToReefThenVision extends InstantCommand
     if(pos == null)
     {
       pos = side.getPosition(Robot.isFrontMode());
-      align = new AlignWithTargetVision(side, maxTurnPower, maxSpeedPower, maxStrafePower);
+      align = new AlignWithTargetVision(null, side, null, maxTurnPower, maxSpeedPower, maxStrafePower);
     }
     else
-    align = new AlignWithTargetVision(pos, left, maxTurnPower, maxSpeedPower, maxStrafePower);
+    align = new AlignWithTargetVision(pos,null, left, maxTurnPower, maxSpeedPower, maxStrafePower);
 
     Pose2d targetPose;
     var alliance = DriverStation.getAlliance();

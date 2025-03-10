@@ -65,11 +65,7 @@ public class OI {
 
                 // pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT,
                 // ButtonType.LT);
-                pilot.whileTrueCombo(
-                        new AlignWithTargetVision(REEF_POSITION.BC, false, HighAltitudeConstants.VISION_TURN_MAX_POWER,
-                                HighAltitudeConstants.VISION_SPEED_MAX_POWER,
-                                HighAltitudeConstants.VISION_STRAFE_MAX_POWER),
-                        ButtonType.LT, ButtonType.RT);
+                
 
                 pilot.whileTrue(ButtonType.B, new SetLeftMode(false));
                 pilot.whileTrue(ButtonType.X, new SetLeftMode(true));
@@ -78,7 +74,7 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
-                pilot.whileTrueCombo(new AlignWithTargetVision(HighAltitudeConstants.VISION_TURN_MAX_POWER,
+                pilot.whileTrueCombo(new AlignWithTargetVision(null, null, null, HighAltitudeConstants.VISION_TURN_MAX_POWER,
                         HighAltitudeConstants.VISION_SPEED_MAX_POWER,
                         HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.RT, ButtonType.LT);
 
@@ -102,7 +98,6 @@ public class OI {
                 pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(4));
                 pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-4));
 
-                pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT, ButtonType.LT);
                 pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
 
                 // pilot.whileTrue(ButtonType.B, new TestSwerve());

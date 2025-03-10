@@ -43,6 +43,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   private boolean isOnCompetitiveField = false;
   private PIDController distancePIDController;
 
+  private PIDController visionTurnController, visionSpeedController, visionStrafeController;
+
   private Field2d field = new Field2d();
 
   private SlewRateLimiter speedLimiter, strafeLimiter, turnLimiter;
@@ -141,6 +143,14 @@ public class SwerveDriveTrain extends SubsystemBase {
     distancePIDController = new PIDController(HighAltitudeConstants.SWERVE_DISTANCE_kP, 0,
         HighAltitudeConstants.SWERVE_DISTANCE_kD);
 
+    visionSpeedController = new PIDController(HighAltitudeConstants.VISION_SPEED_kP, 
+      HighAltitudeConstants.VISION_SPEED_kI, HighAltitudeConstants.VISION_SPEED_kD);
+
+    visionStrafeController = new PIDController(HighAltitudeConstants.VISION_STRAFE_kP, 
+      HighAltitudeConstants.VISION_STRAFE_kI, HighAltitudeConstants.VISION_STRAFE_kD);
+    
+    visionTurnController = new PIDController(HighAltitudeConstants.VISION_TURN_kP, 
+      HighAltitudeConstants.VISION_TURN_kI, HighAltitudeConstants.VISION_TURN_kD);
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
     SmartDashboard.putData("Field", field);
@@ -499,30 +509,29 @@ public class SwerveDriveTrain extends SubsystemBase {
   public boolean alignWithTarget(double angle, double yaw, double area, double targetYaw, double targetArea,
       double maxTurnPower, double maxSpeedPower, double maxStrafePower) {
 
-    double deltaAngle = Math.deltaAngle(getPose().getRotation().getDegrees(), angle);
-    double turnPower = deltaAngle / HighAltitudeConstants.VISION_TURN_BRAKE_DISTANCE;
-    turnPower = Math.clamp(maxTurnPower * turnPower, -maxTurnPower, maxTurnPower);
+    double turnPower = visionTurnController.calculate(getPose().getRotation().getDegrees(), angle);
+    turnPower = Math.clamp(turnPower, -maxTurnPower, maxTurnPower);
 
+    double deltaAngle = Math.deltaAngle(getPose().getRotation().getDegrees(), angle);
     boolean turnOnTarget = Math.abs(deltaAngle) < HighAltitudeConstants.VISION_TURN_ARRIVE_OFFSET;
-    turnPower = turnOnTarget ? 0 : turnPower;
+
+
+    double speedPower = visionSpeedController.calculate(area, targetArea);
+    speedPower = Math.clamp(speedPower, -maxSpeedPower, maxSpeedPower);
 
     double deltaArea = targetArea - area;
-    double speedPower = deltaArea / HighAltitudeConstants.VISION_SPEED_BRAKE_DISTANCE;
-    speedPower = Math.clamp(speedPower * maxSpeedPower, -maxSpeedPower, maxSpeedPower);
-
     boolean speedOnTarget = Math.abs(deltaArea) < HighAltitudeConstants.VISION_SPEED_ARRIVE_OFFSET;
-    speedPower = speedOnTarget ? 0 : speedPower;
 
+
+    double strafePower = visionStrafeController.calculate(yaw, targetYaw);
+    strafePower = Math.clamp(strafePower, -maxStrafePower, maxStrafePower);
+    
     double deltaYaw = targetYaw - yaw;
-    double strafePower = deltaYaw / HighAltitudeConstants.VISION_STRAFE_BRAKE_DISTANCE;
-    strafePower = Math.clamp(strafePower * maxStrafePower, -maxStrafePower, maxStrafePower);
-
     boolean strafeOnTarget = Math.abs(deltaYaw) < HighAltitudeConstants.VISION_STRAFE_ARRIVE_OFFSET;
-    strafePower = strafeOnTarget ? 0 : strafePower;
 
     defaultDrive(speedPower, strafePower, turnPower);
 
-    System.out.println("Turn Power" + turnPower);
+    SmartDashboard.putNumber("Turn Power", turnPower);
 
     return turnOnTarget && speedOnTarget && strafeOnTarget;
 
