@@ -17,7 +17,7 @@ public class LiftWristIntakeAlgae extends Command {
   public void initialize() 
   {
     Robot.getRobotContainer().getLift().setTarget(HighAltitudeConstants.LIFT_ALGAE_INTAKE_POSITION);
-    Robot.getRobotContainer().getWrist().setTarget(HighAltitudeConstants.WRIST_ALGAE_INTAKE_POSITION);
+    Robot.getRobotContainer().getWrist().setCurrentTarget(HighAltitudeConstants.WRIST_ALGAE_INTAKE_POSITION);
   }
 
   @Override

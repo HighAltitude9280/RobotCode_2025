@@ -43,8 +43,8 @@ public class HighAltitudeConstants {
         public static final double LIFT_UP_SPEED = 0.2;
         public static final double LIFT_DOWN_SPEED = -0.1;
 
-        public static final double LIFT_UP_CONTROL_ADDED_VALUE = 0.1;
-        public static final double LIFT_DOWN_CONTROL_ADDED_VALUE = 0.1;
+        public static final double LIFT_UP_CONTROL_ADDED_VALUE = 0.03;
+        public static final double LIFT_DOWN_CONTROL_ADDED_VALUE = -0.03;
 
         /*
          * Necesitas la gráfica de velocidad del encoder del Lift
@@ -83,9 +83,9 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.35, 0.7 }; // TODO: fix this
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.35, 0.7 }; // TODO: tunear esto en competencia
         // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.68 };
+        public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
 
         public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 
@@ -103,6 +103,9 @@ public class HighAltitudeConstants {
         // TODO: Wrist Constants
         public static final double WRIST_UP_SPEED = 0.1;
         public static final double WRIST_DOWN_SPEED = -0.1;
+
+        public static final double WRIST_UP_CONTROL_ADDED_VALUE = 10;
+        public static final double WRIST_DOWN_CONTROL_ADDED_VALUE = -10;
 
         public static final double WRIST_DRIVE_SPEED = 0.15;
 
@@ -123,7 +126,7 @@ public class HighAltitudeConstants {
         public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 32.5 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
-        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
+        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 115 };
 
         public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
@@ -134,7 +137,7 @@ public class HighAltitudeConstants {
 
         ////////////////////////// SWERVE //////////////////////////
 
-        public static final double MAX_VOLTAGE = 12;
+        public static final double MAX_VOLTAGE = 11.5;
         // ponlo a 3 para pruebas
 
         /// CONSTANTS FOR MK4i L4 Config DRIVE MOTOR ///
@@ -174,8 +177,8 @@ public class HighAltitudeConstants {
         // Arbitrary. Higher numbers will cause the swerve to react more violently to
         // joysitck inputs and may not be ideal. Lower numbers will cause the swerve to
         // have a very slow reaction to joystick inputs, and may not be ideal.
-        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 30.0; // 20.0
-        public static final double SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = 20.0;
+        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 15.0; // 20.0
+        public static final double SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = 10.0;
 
         // Other
 
@@ -266,8 +269,8 @@ public class HighAltitudeConstants {
         /// PROFILED PID CONTROLLER FOR SWERVE DIRECTION ///
 
         // CONSTRAINTS //
-        public static final double SWERVE_DIRECTION_MAX_VELOCITY = 40;
-        public static final double SWERVE_DIRECTION_MAX_ACCELERATION = 40;
+        public static final double SWERVE_DIRECTION_MAX_VELOCITY = 6;
+        public static final double SWERVE_DIRECTION_MAX_ACCELERATION = 15;
 
         // HOW TO GET THE VALUES //
         /*

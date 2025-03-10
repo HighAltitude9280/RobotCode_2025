@@ -107,8 +107,8 @@ public class RobotContainer {
         // el default command).
 
         wrist.setDefaultCommand(new WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
-        lift.setDefaultCommand(
-                new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
+        lift.setDefaultCommand(new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
+                HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
 
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
@@ -142,7 +142,7 @@ public class RobotContainer {
     public void generateAutos() {
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
-        m_chooser.addOption("AutoLeave", new AutoLeave(2, 0.7));
+        m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
 
     }

@@ -20,6 +20,6 @@ public class WristSetAngleTarget extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.getRobotContainer().getWrist().setTarget(this.target);
+    Robot.getRobotContainer().getWrist().setCurrentTarget(this.target);
   }
 }

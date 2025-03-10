@@ -15,6 +15,10 @@ import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
 import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
+import frc.robot.commands.extensor.lift.manual.LiftDownControl;
+import frc.robot.commands.extensor.lift.manual.LiftUpControl;
+import frc.robot.commands.extensor.wrist.manual.WristDownControl;
+import frc.robot.commands.extensor.wrist.manual.WristUpControl;
 import frc.robot.commands.leds.SetFlameModeHighAltitude;
 import frc.robot.commands.leds.SetLEDOff;
 import frc.robot.commands.modes.SetCoralMode;
@@ -66,7 +70,6 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.B, new SetLeftMode(false));
                 pilot.whileTrue(ButtonType.X, new SetLeftMode(true));
-
 
                 pilot.onTrueCombo(new DefaultSwerveDriveNew(), ButtonType.RB, ButtonType.LB);
 
@@ -135,7 +138,11 @@ public class OI {
                 copilot.onTrue(ButtonType.LT, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM)); // Intake Position
                 copilot.onTrue(ButtonType.LT, new IntakeUntilCurrentCoral());
 
-                copilot.whileTrue(ButtonType.POV_N, new SubsystemsCancelCommand());
+                copilot.whileTrue(ButtonType.POV_N, new LiftUpControl());
+                copilot.whileTrue(ButtonType.POV_S, new LiftDownControl());
+
+                copilot.whileTrue(ButtonType.POV_E, new WristUpControl());
+                copilot.whileTrue(ButtonType.POV_W, new WristDownControl());
 
                 /*
                  * copilot.onTrue(ButtonType.A, new

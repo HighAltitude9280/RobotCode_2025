@@ -17,7 +17,7 @@ public class Wrist extends SubsystemBase {
   HighAltitudeMotorGroup wristMotors;
   double wristEncoderPosition, wristPositionDegrees, wristPositionRawEncoder;
 
-  private double target = 0;
+  private double currentTarget = 0;
 
   private PIDController pidController;
 
@@ -54,8 +54,8 @@ public class Wrist extends SubsystemBase {
     return wristMotors.getEncoderPosition();
   }
 
-  private double getTarget() {
-    return target;
+  private double getCurrentTarget() {
+    return currentTarget;
   }
 
   /**
@@ -63,23 +63,27 @@ public class Wrist extends SubsystemBase {
    * 
    * @param target the target angle in degrees
    */
-  public void setTarget(double target) {
-    this.target = target;
+  public void setCurrentTarget(double target) {
+    this.currentTarget = target;
   }
 
   public void mantainTarget(double maxPower) {
 
-    double power = pidController.calculate(getWristPosDegrees(), getTarget());
+    double power = pidController.calculate(getWristPosDegrees(), getCurrentTarget());
     power = Math.clamp(power * maxPower, -maxPower, maxPower);
     driveWrist(power);
 
-    double delta = getTarget() - getWristPosDegrees();
+    double delta = getCurrentTarget() - getWristPosDegrees();
     this.onTarget = Math.abs(delta) < HighAltitudeConstants.WRIST_ARRIVE_OFFSET;
     if (onTarget)
       power = 0.0;
   }
 
   // Explica q
+
+  public void addToTarget(double meters) {
+    this.currentTarget += meters;
+  }
 
   public boolean onTarget() {
     return this.onTarget;
@@ -88,7 +92,7 @@ public class Wrist extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Wrist Encoder Target", getTarget());
+    SmartDashboard.putNumber("Wrist Encoder Target", getCurrentTarget());
     SmartDashboard.putNumber("Wrist Encoder Position", getWristEncoderPosition());
 
     SmartDashboard.putNumber("Wrist Encoder Angle", getWristPosDegrees());

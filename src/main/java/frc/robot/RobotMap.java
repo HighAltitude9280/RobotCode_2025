@@ -98,7 +98,7 @@ public class RobotMap {
 
     public static final boolean GRIPPER_DIGITAL_INPUT_IS_AVAILABLE = false;
     public static final int GRIPPER_DIGITAL_INPUT_PORT = 7;
-    public static final boolean GRIPPER_I2C_PORT_IS_AVAILABLE = true;
+    public static final boolean GRIPPER_I2C_PORT_IS_AVAILABLE = false;
 
     ////////////////////////// WRIST //////////////////////////
     public static final int[] WRIST_MOTOR_PORTS = { 41 };

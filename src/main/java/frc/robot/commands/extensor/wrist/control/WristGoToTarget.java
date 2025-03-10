@@ -31,7 +31,7 @@ public class WristGoToTarget extends Command {
   @Override
   public void initialize() {
     if (!Double.isNaN(target))
-      Robot.getRobotContainer().getWrist().setTarget(target);
+      Robot.getRobotContainer().getWrist().setCurrentTarget(target);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

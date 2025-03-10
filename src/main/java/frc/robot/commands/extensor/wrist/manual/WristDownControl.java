@@ -2,30 +2,24 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.extensor.wrist.control;
+package frc.robot.commands.extensor.wrist.manual;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
-import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class WristSetTargetReefHeight extends InstantCommand {
-  REEF_HEIGHT height;
-  public WristSetTargetReefHeight(REEF_HEIGHT height) 
-  {
-    this.height = height;
+public class WristDownControl extends InstantCommand {
+  public WristDownControl() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
-    if(Robot.isCoralMode())
-      Robot.getRobotContainer().getWrist().setCurrentTarget(HighAltitudeConstants.WRIST_CORAL_POSITIONS[height.getID()]);
-    else
-      Robot.getRobotContainer().getWrist().setCurrentTarget(HighAltitudeConstants.WRIST_ALGAE_POSITIONS[height.getID()]);
+  public void initialize() {
+    Robot.getRobotContainer().getWrist().addToTarget(HighAltitudeConstants.WRIST_DOWN_CONTROL_ADDED_VALUE);
   }
+
 }

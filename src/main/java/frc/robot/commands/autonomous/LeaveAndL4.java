@@ -19,8 +19,7 @@ public class LeaveAndL4 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new SetCoralMode(true),
-        new AutoLeave(1.5, 0.7),
-        new WaitCommand(1.0),
+        new AutoLeave(1.5, 0.7).withTimeout(3),
         new ScoreCoral(REEF_HEIGHT.TOP));
   }
 

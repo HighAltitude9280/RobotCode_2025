@@ -167,17 +167,17 @@ public class Lift extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Lift Encoder Target", getTarget());
 
-    SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
+    //SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
 
     SmartDashboard.putNumber("Lift Encoder Meters", getLiftPosMeters());
 
     SmartDashboard.putNumber("Lift PID Output", this.liftOutput);
 
-    SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());
+    //SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());
 
     SmartDashboard.putNumber("Lift Setpoint Position", getLiftPIDController().getSetpoint().position);
 
-    SmartDashboard.putNumber("Lift Velocity Target", getLiftPIDController().getSetpoint().velocity);
+   // SmartDashboard.putNumber("Lift Velocity Target", getLiftPIDController().getSetpoint().velocity);
     SmartDashboard.putBoolean("Lift OnTarget", onTarget);
 
     if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
