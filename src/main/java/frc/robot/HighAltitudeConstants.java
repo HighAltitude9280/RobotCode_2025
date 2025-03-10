@@ -83,7 +83,8 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.35, 0.7 }; // TODO: tunear esto en competencia
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.35, 0.7 }; // TODO: tunear esto en
+                                                                                      // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
 
@@ -334,7 +335,7 @@ public class HighAltitudeConstants {
         public static final double VISION_AREA_TARGET = 7.56;
 
         // Speed reduction constants for aligning with apriltags.
-        public static final double VISION_TURN_ARRIVE_OFFSET = 0.0;// 3;
+        public static final double VISION_TURN_ARRIVE_OFFSET = 0.1;// 3;
         public static final double VISION_TURN_BRAKE_DISTANCE = 1.0;// 32;
 
         public static final double VISION_STRAFE_ARRIVE_OFFSET = 0.1;

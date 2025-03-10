@@ -4,6 +4,10 @@
 
 package frc.robot.commands.extensor.gripper;
 
+import java.security.Timestamp;
+
+import edu.wpi.first.math.MathSharedStore;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -14,13 +18,13 @@ import frc.robot.subsystems.manipulator.Gripper;
 
 public class IntakeUntilCurrentCoral extends Command {
   private final Gripper gripper;
-  private final double speed;
+  double nextOffTime = -1;
+  double nextOnTime = -1;
 
   /** Creates a new IntakeUntilCurrentCoral. */
   public IntakeUntilCurrentCoral() {
     gripper = Robot.getRobotContainer().getGripper();
     addRequirements(gripper);
-    speed = HighAltitudeConstants.GRIPPER_INTAKE_SPEED;
   }
 
   // Called when the command is initially scheduled.
@@ -35,14 +39,27 @@ public class IntakeUntilCurrentCoral extends Command {
     // Asegurar que el gripper sigue encendido hasta que la corriente supere el
     // umbral
     if (!gripper.isCurrentThresholdExceeded()) {
+      if (MathSharedStore.getTimestamp() > nextOnTime) {
+        OI.getInstance().getPilot().getJoystick().setRumble(RumbleType.kBothRumble, 1);
+        nextOffTime = MathSharedStore.getTimestamp() + 0.2;
+      }
+
+      if (MathSharedStore.getTimestamp() > nextOffTime) {
+        OI.getInstance().getPilot().getJoystick().setRumble(RumbleType.kBothRumble, 0);
+        nextOnTime = MathSharedStore.getTimestamp() + 5;
+      }
+    } else {
       gripper.gripperInCurrent();
+
     }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     gripper.stopGripper();
+    OI.getInstance().getPilot().getJoystick().setRumble(RumbleType.kBothRumble, 0);
   }
 
   // Returns true when the command should end.

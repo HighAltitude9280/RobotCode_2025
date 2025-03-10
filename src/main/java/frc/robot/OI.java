@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
+import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.commands.cancel.PathCancelCommand;
 import frc.robot.commands.cancel.SubsystemsCancelCommand;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
@@ -64,9 +65,11 @@ public class OI {
 
                 // pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT,
                 // ButtonType.LT);
-                pilot.whileTrueCombo(new AlignWithTargetVision(HighAltitudeConstants.VISION_TURN_MAX_POWER,
-                        HighAltitudeConstants.VISION_SPEED_MAX_POWER,
-                        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.LT, ButtonType.RT);
+                pilot.whileTrueCombo(
+                        new AlignWithTargetVision(REEF_POSITION.BC, false, HighAltitudeConstants.VISION_TURN_MAX_POWER,
+                                HighAltitudeConstants.VISION_SPEED_MAX_POWER,
+                                HighAltitudeConstants.VISION_STRAFE_MAX_POWER),
+                        ButtonType.LT, ButtonType.RT);
 
                 pilot.whileTrue(ButtonType.B, new SetLeftMode(false));
                 pilot.whileTrue(ButtonType.X, new SetLeftMode(true));

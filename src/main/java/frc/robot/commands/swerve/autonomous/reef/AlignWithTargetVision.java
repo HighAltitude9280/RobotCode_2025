@@ -41,7 +41,8 @@ public class AlignWithTargetVision extends Command {
    * @param maxSpeedPower  Max speed power (from 0 to 1).
    * @param maxStrafePower Max strafe power (from 0 to 1).
    */
-  public AlignWithTargetVision(REEF_POSITION position, boolean left, double maxTurnPower, double maxSpeedPower,
+  public AlignWithTargetVision(REEF_POSITION position, boolean left,
+   double maxTurnPower, double maxSpeedPower,
       double maxStrafePower) {
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
 

@@ -522,7 +522,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     defaultDrive(speedPower, strafePower, turnPower);
 
-    System.out.println(turnPower);
+    System.out.println("Turn Power" + turnPower);
 
     return turnOnTarget && speedOnTarget && strafeOnTarget;
 
