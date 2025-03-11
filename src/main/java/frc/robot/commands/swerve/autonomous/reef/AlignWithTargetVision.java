@@ -15,8 +15,7 @@ import frc.robot.Robot;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;;
 
-public class AlignWithTargetVision extends Command 
-{
+public class AlignWithTargetVision extends Command {
   private boolean isFinished = false;
   private int targetID = -1;
   private double targetAngle = Double.NaN;
@@ -29,16 +28,17 @@ public class AlignWithTargetVision extends Command
   /**
    * Command to align the robot using vision.
    *
-   * @param position      The position to align the robot to (nullable for detection mode).
-   * @param side          The reef side (nullable for detection mode).
-   * @param left          True for left branch, false for right (nullable for detection mode).
-   * @param maxTurnPower  Max turning power.
-   * @param maxSpeedPower Max speed power.
+   * @param position       The position to align the robot to (nullable for
+   *                       detection mode).
+   * @param side           The reef side (nullable for detection mode).
+   * @param left           True for left branch, false for right (nullable for
+   *                       detection mode).
+   * @param maxTurnPower   Max turning power.
+   * @param maxSpeedPower  Max speed power.
    * @param maxStrafePower Max strafe power.
    */
   public AlignWithTargetVision(REEF_POSITION position, REEF_SIDE side, Boolean left,
-                               double maxTurnPower, double maxSpeedPower, double maxStrafePower) 
-  {
+      double maxTurnPower, double maxSpeedPower, double maxStrafePower) {
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
 
     this.pos = position;
@@ -48,21 +48,20 @@ public class AlignWithTargetVision extends Command
     this.maxStrafePower = maxStrafePower;
     this.side = side;
   }
-  
+
   @Override
   public void initialize() {
     if (pos == null && side != null)
       this.pos = side.getPosition(Robot.isFrontMode());
-    
+
     left = left != null ? left : Robot.isLeftMode();
     Robot.getRobotContainer().getSwerveDriveTrain().setIsFieldOriented(false);
     determineTarget();
   }
 
-  private void determineTarget() 
-  {
+  private void determineTarget() {
     targetYaw = left ? HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_LEFT
-                     : HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_RIGHT;
+        : HighAltitudeConstants.VISION_YAW_OFFSET_TARGET_RIGHT;
 
     var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
 
@@ -74,21 +73,18 @@ public class AlignWithTargetVision extends Command
         ? HighAltitudeConstants.PATHFINDING_RED_REEF_POS
         : HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS;
 
-    if (pos == null) 
-    {
+    if (pos == null) {
       targetID = Robot.getRobotContainer().getVision().getTargetID();
-      if(targetID == -1) return;
+      if (targetID == -1)
+        return;
 
       for (int i = 0; i < reefIDs.length; i++) {
-        if (targetID == reefIDs[i]) 
-        {
+        if (targetID == reefIDs[i]) {
           targetAngle = reefPoses[i].getRotation().getDegrees();
           break;
         }
       }
-    } 
-    else 
-    {
+    } else {
       targetID = reefIDs[pos.getID()];
       targetAngle = reefPoses[pos.getID()].getRotation().getDegrees();
     }
@@ -96,19 +92,20 @@ public class AlignWithTargetVision extends Command
 
   @Override
   public void execute() {
-    if (Double.isNaN(targetAngle)) 
-    {
+    if (Double.isNaN(targetAngle)) {
       determineTarget();
-      if (Double.isNaN(targetAngle)) return;
+      if (Double.isNaN(targetAngle))
+        return;
     }
-    
+
     double yaw = Robot.getRobotContainer().getVision().getTargetYaw(targetID);
     double area = Robot.getRobotContainer().getVision().getTargetSize(targetID);
 
     yaw = Double.isNaN(yaw) ? targetYaw : yaw;
     area = Double.isNaN(area) ? HighAltitudeConstants.VISION_AREA_TARGET : area;
 
-    System.out.println("TargetAngle: " + targetAngle);
+    System.out.println("targetYaw: " + targetYaw);
+    System.out.println("Yaw: " + yaw);
 
     isFinished = Robot.getRobotContainer().getSwerveDriveTrain().alignWithTarget(
         targetAngle, yaw, area, targetYaw,
@@ -127,4 +124,3 @@ public class AlignWithTargetVision extends Command
     return isFinished;
   }
 }
-

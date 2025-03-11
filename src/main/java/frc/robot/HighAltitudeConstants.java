@@ -329,32 +329,30 @@ public class HighAltitudeConstants {
 
         // TODO: CONFIGURE THESE CONSTANTS
 
-        public static final double VISION_YAW_OFFSET_TARGET_LEFT = 24.89;
-        public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -24.89;
+        public static final double VISION_YAW_OFFSET_TARGET_LEFT = 6.96;
+        public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -18.8;
 
         public static final double VISION_AREA_TARGET = 7.56;
 
         // Speed reduction constants for aligning with apriltags.
         public static final double VISION_TURN_ARRIVE_OFFSET = 0.1;// 3;
-        public static final double VISION_TURN_kP = 0;
+        public static final double VISION_TURN_kP = 0.075;
         public static final double VISION_TURN_kI = 0;
         public static final double VISION_TURN_kD = 0;
 
-
-        public static final double VISION_STRAFE_kP = 0;
+        public static final double VISION_STRAFE_kP = 0.002;
         public static final double VISION_STRAFE_kI = 0;
         public static final double VISION_STRAFE_kD = 0;
-        public static final double VISION_STRAFE_ARRIVE_OFFSET = 0.1;
-
+        public static final double VISION_STRAFE_ARRIVE_OFFSET = 0.01;
 
         public static final double VISION_SPEED_kP = 0;
         public static final double VISION_SPEED_kI = 0;
         public static final double VISION_SPEED_kD = 0;
         public static final double VISION_SPEED_ARRIVE_OFFSET = 0.05;// 0.05;
 
-        public static final double VISION_TURN_MAX_POWER = 0.1;
-        public static final double VISION_STRAFE_MAX_POWER = 0.0; // 0.1
-        public static final double VISION_SPEED_MAX_POWER = 0.0; // 0.1
+        public static final double VISION_TURN_MAX_POWER = 0.0;
+        public static final double VISION_STRAFE_MAX_POWER = 0.1; // 0.1
+        public static final double VISION_SPEED_MAX_POWER = 0.0; // 0.1%
 
         public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.5;
 

@@ -40,12 +40,12 @@ public class IntakeUntilCurrentCoral extends Command {
     // umbral
     if (!gripper.isCurrentThresholdExceeded()) {
       if (MathSharedStore.getTimestamp() > nextOnTime) {
-        OI.getInstance().getPilot().getJoystick().setRumble(RumbleType.kBothRumble, 1);
+        OI.getInstance().getPilot().getJoystick().setRumble(RumbleType.kBothRumble, 0);
         nextOffTime = MathSharedStore.getTimestamp() + 0.2;
       }
 
       if (MathSharedStore.getTimestamp() > nextOffTime) {
-        OI.getInstance().getPilot().getJoystick().setRumble(RumbleType.kBothRumble, 0);
+        OI.getInstance().getPilot().getJoystick().setRumble(RumbleType.kBothRumble, 1);
         nextOnTime = MathSharedStore.getTimestamp() + 5;
       }
     } else {
