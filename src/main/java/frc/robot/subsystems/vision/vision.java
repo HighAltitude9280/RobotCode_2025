@@ -59,7 +59,7 @@ public class Vision extends SubsystemBase {
     fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     Transform3d camFront = new Transform3d(new Translation3d(0.26095284233, 0.272430748254, 0.215),
-        new Rotation3d(0f, Math.toRadians(-61.875), Math.toRadians(149.52786828)));
+        new Rotation3d(0f, Math.toRadians(-61.875), Math.toRadians(180 - 149.52786828)));
 
     poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         camFront);
@@ -180,12 +180,12 @@ public class Vision extends SubsystemBase {
   public void periodic() {
     var aligmentRes = alignmentCam.getAllUnreadResults();
 
-    if(!aligmentRes.isEmpty()) alignmentResults = aligmentRes;
-    else if (!alignmentResults.isEmpty())
-    {
-      double age = MathSharedStore.getTimestamp() - alignmentResults.get(alignmentResults.size()-1).getTimestampSeconds();
-      if(age > 0.05)
-      {
+    if (!aligmentRes.isEmpty() || alignmentResults == null)
+      alignmentResults = aligmentRes;
+    else if (!alignmentResults.isEmpty()) {
+      double age = MathSharedStore.getTimestamp()
+          - alignmentResults.get(alignmentResults.size() - 1).getTimestampSeconds();
+      if (age > 0.05) {
         alignmentResults.clear();
       }
     }

@@ -304,7 +304,7 @@ public class HighAltitudeConstants {
 
         public static final double SWERVE_TURN_ARRIVE_OFFSET = 3; // 3.0;
 
-        public static final double SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET = 3 * (Math.PI / 180);
+        public static final double SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET = 4 * (Math.PI / 180);
         // degrees to radians
 
         //// Dynamic acceleration limiter
@@ -321,44 +321,43 @@ public class HighAltitudeConstants {
         // So the higher this constant, the higher the DAL effect.
         public static final double DAL_HEIGHT_MULTIPLIER = 0.5;
 
-        public static final double SWERVE_DISTANCE_kP = 4.0;
+        public static final double SWERVE_DISTANCE_kP = 3.5;
         public static final double SWERVE_DISTANCE_kD = 0;
-        public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.0254;
+        public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.015;
 
         //////////////////////////// VISION //////////////////////////////
-        
+
         public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 3.5;
         public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;
-        
 
         // TODO: CONFIGURE THESE CONSTANTS
 
         public static final double VISION_YAW_OFFSET_TARGET_LEFT = 6.96;
         public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -18.8;
 
-        public static final double VISION_AREA_TARGET = 7.56;
+        public static final double VISION_AREA_TARGET = 6.38;
 
         // Speed reduction constants for aligning with apriltags.
-        public static final double VISION_TURN_ARRIVE_OFFSET = 0.1;// 3;
-        public static final double VISION_TURN_kP = 0.075;
+        public static final double VISION_TURN_kP = 0.05;
         public static final double VISION_TURN_kI = 0;
         public static final double VISION_TURN_kD = 0;
+        public static final double VISION_TURN_ARRIVE_OFFSET = 2.5;// 3;
 
-        public static final double VISION_STRAFE_kP = 0.002;
+        public static final double VISION_STRAFE_kP = 0.01;
         public static final double VISION_STRAFE_kI = 0;
         public static final double VISION_STRAFE_kD = 0;
-        public static final double VISION_STRAFE_ARRIVE_OFFSET = 0.01;
+        public static final double VISION_STRAFE_ARRIVE_OFFSET = 3.0;
 
-        public static final double VISION_SPEED_kP = 0;
+        public static final double VISION_SPEED_kP = 0.05;
         public static final double VISION_SPEED_kI = 0;
         public static final double VISION_SPEED_kD = 0;
-        public static final double VISION_SPEED_ARRIVE_OFFSET = 0.05;// 0.05;
+        public static final double VISION_SPEED_ARRIVE_OFFSET = 0.8;// 0.05;
 
-        public static final double VISION_TURN_MAX_POWER = 0.0;
-        public static final double VISION_STRAFE_MAX_POWER = 0.1; // 0.1
-        public static final double VISION_SPEED_MAX_POWER = 0.0; // 0.1%
+        public static final double VISION_TURN_MAX_POWER = 0.3;
+        public static final double VISION_STRAFE_MAX_POWER = 0.03; // 0.1
+        public static final double VISION_SPEED_MAX_POWER = 0.3; // 0.1%
 
-        public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.5;
+        public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.38;
 
         //////////////////////// DRIVERS ////////////////////////
 

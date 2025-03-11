@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
+import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.cancel.PathCancelCommand;
 import frc.robot.commands.cancel.SubsystemsCancelCommand;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
@@ -55,9 +56,9 @@ public class OI {
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.06);
-                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.06);
-                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.06);
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
@@ -65,28 +66,27 @@ public class OI {
 
                 // pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT,
                 // ButtonType.LT);
-                
 
                 pilot.whileTrue(ButtonType.B, new SetLeftMode(false));
                 pilot.whileTrue(ButtonType.X, new SetLeftMode(true));
 
-                pilot.onTrueCombo(new DefaultSwerveDriveNew(), ButtonType.RB, ButtonType.LB);
+                pilot.onTrueCombo(new DefaultSwerveDriveNew(), ButtonType.A, ButtonType.B);
 
                 pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
-                pilot.whileTrueCombo(new AlignWithTargetVision(null, null, null, HighAltitudeConstants.VISION_TURN_MAX_POWER,
-                        HighAltitudeConstants.VISION_SPEED_MAX_POWER,
-                        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), ButtonType.RT, ButtonType.LT);
+                pilot.whileTrueCombo(new AlignVisionMoveMeters(null, null, null), ButtonType.LB, ButtonType.RB);
 
-                pilot.whileTrue(ButtonType.A, new SwerveMoveMeters(0.3, 0, 0.7));
+                pilot.whileTrue(ButtonType.A,
+                        new AutoLeave(HighAltitudeConstants.SWERVE_METERS_DISTANCE_ALIGN_TO_REEF, 0.7));
 
+                break;
             case JoakinButChambing:
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.06);
-                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.06);
-                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.06);
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
 
                 pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
@@ -98,9 +98,10 @@ public class OI {
                 pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(4));
                 pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-4));
 
-                pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
+                // pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
 
                 // pilot.whileTrue(ButtonType.B, new TestSwerve());
+                break;
             default:
                 break;
 

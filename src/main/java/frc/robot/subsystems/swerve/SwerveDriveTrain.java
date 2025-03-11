@@ -332,8 +332,9 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     double delta = getMetersTarget() - frontLeft.getDriveDistance();
 
-    if (Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET)
+    if (Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET) {
       stopModules();
+    }
 
     return Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET;
   }
@@ -528,7 +529,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     double deltaYaw = targetYaw - yaw;
     boolean strafeOnTarget = Math.abs(deltaYaw) < HighAltitudeConstants.VISION_STRAFE_ARRIVE_OFFSET;
 
-    defaultDrive(speedPower, -strafePower, -turnPower);
+    defaultDrive(-speedPower, -strafePower, -turnPower);
 
     SmartDashboard.putNumber("Turn Power", turnPower);
 
@@ -547,7 +548,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    // updateOdometryWithVision();
+    updateOdometryWithVision();
     putAllInfoInSmartDashboard();
 
   }

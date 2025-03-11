@@ -20,7 +20,7 @@ public class AlignVisionMoveMeters extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new AlignWithTargetVision(pos, side, left, HighAltitudeConstants.VISION_TURN_MAX_POWER,
         HighAltitudeConstants.VISION_SPEED_MAX_POWER,
-        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), new TurnWheels(0),
+        HighAltitudeConstants.VISION_STRAFE_MAX_POWER), new TurnWheels(0).withTimeout(0.3),
         new SwerveMoveMeters(HighAltitudeConstants.SWERVE_METERS_DISTANCE_ALIGN_TO_REEF, 0,
             HighAltitudeConstants.VISION_SPEED_MAX_POWER));
   }
