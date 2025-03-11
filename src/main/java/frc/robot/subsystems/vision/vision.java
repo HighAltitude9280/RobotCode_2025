@@ -17,11 +17,13 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.HighAltitudeConstants;
 
 public class Vision extends SubsystemBase {
   PhotonCamera poseCamFront, poseCamBack, alignmentCam;
@@ -76,11 +78,32 @@ public class Vision extends SubsystemBase {
     Optional<EstimatedRobotPose> pose2 = Optional.empty();
 
     for (var change : frontResults) {
+      if (!change.hasTargets())
+        continue;
+
+      var dist = change.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
+      var ambig = change.getBestTarget().poseAmbiguity;
+      if (dist > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_DISTANCE ||
+          ambig > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_AMBIGUITY)
+        continue;
+
       pose1 = poseEstimatorFront.update(change);
     }
     for (var change : backResults) {
+      if (!change.hasTargets())
+        continue;
+
+      var dist = change.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
+      var ambig = change.getBestTarget().poseAmbiguity;
+      if (dist > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_DISTANCE ||
+          ambig > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_AMBIGUITY)
+        continue;
+
       pose2 = poseEstimatorBack.update(change);
     }
+
+    frontResults.clear();
+    backResults.clear();
 
     res.add(pose1);
     res.add(pose2);
@@ -155,7 +178,18 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    alignmentResults = alignmentCam.getAllUnreadResults();
+    var aligmentRes = alignmentCam.getAllUnreadResults();
+
+    if(!aligmentRes.isEmpty()) alignmentResults = aligmentRes;
+    else if (!alignmentResults.isEmpty())
+    {
+      double age = MathSharedStore.getTimestamp() - alignmentResults.get(alignmentResults.size()-1).getTimestampSeconds();
+      if(age > 0.05)
+      {
+        alignmentResults.clear();
+      }
+    }
+
     frontResults = poseCamFront.getAllUnreadResults();
     backResults = poseCamBack.getAllUnreadResults();
     putDataInDashboard();

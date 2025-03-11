@@ -326,6 +326,10 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.0254;
 
         //////////////////////////// VISION //////////////////////////////
+        
+        public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 3.5;
+        public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;
+        
 
         // TODO: CONFIGURE THESE CONSTANTS
 
