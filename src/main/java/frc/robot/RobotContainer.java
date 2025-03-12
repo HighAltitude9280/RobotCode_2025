@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -144,6 +146,6 @@ public class RobotContainer {
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
-
+        m_chooser.addOption("TranslationPID", new PathPlannerAuto("Translation PID"));
     }
 }

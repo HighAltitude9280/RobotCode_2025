@@ -155,7 +155,7 @@ public class HighAltitudeConstants {
 
         /////////// KINEMATICS
         // Distance left - right (meters)
-        public static final double SWERVE_TRACK_WIDTH = 26 * 0.0254; // este es de llanta a llanta
+        public static final double SWERVE_TRACK_WIDTH = 21 * 0.0254; // este es de llanta a llanta
         // Distance front - back (meters)
         public static final double SWERVE_WHEEL_BASE = 23 * 0.0254;
 
@@ -295,8 +295,8 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_kD = 0.075; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
-        PPHolonomicDriveController(new PIDConstants(0.9, 0, 0.000025),
-                        new PIDConstants(2.0, 0, 0));
+        PPHolonomicDriveController(new PIDConstants(0.8, 0, 0.0),
+                        new PIDConstants(0.0, 0, 0));
 
         //// SpeedReduction constants
 
