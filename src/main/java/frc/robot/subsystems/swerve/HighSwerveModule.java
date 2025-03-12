@@ -275,6 +275,20 @@ public class HighSwerveModule {
     lastTimeStamp = currentTime;
     return driveAcceleration;
   }
+  
+  public void setDriveBrakeMode(boolean brake)
+  {
+    driveMotor.setBrakeMode(brake);
+  }
+  public void setDirectionBrakeMode(boolean brake)
+  {
+    directionMotor.setBrakeMode(brake);
+  }
+  public void setBrakeModeAllMotors(boolean brake)
+  {
+    setDriveBrakeMode(brake);
+    setDirectionBrakeMode(brake);
+  }
 
   // Smartdashboard prints for debugging.
 

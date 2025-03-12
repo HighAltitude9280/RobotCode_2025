@@ -411,11 +411,9 @@ public class SwerveDriveTrain extends SubsystemBase {
     isFieldOriented = shouldBeFieldOriented;
   }
 
-  public void setModulesBrakeMode(boolean doBrake) {
+  public void setModulesDriveBrakeMode(boolean doBrake) {
     for (HighSwerveModule module : modules) {
-      module.getDriveMotor();
-      module.getDirectionMotor().setBrakeMode(doBrake);
-      System.out.println("BrakeMode: " + doBrake);
+      module.setDriveBrakeMode(doBrake);
     }
   }
 
@@ -556,6 +554,12 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void periodic() {
     updateOdometry();
     updateOdometryWithVision();
+  }
+
+  public void setBrakeModeAllMotors(boolean brake)
+  {
+    for(var module : modules)
+      module.setBrakeModeAllMotors(brake);
   }
 
   public void putTargetAlignTuningValues()

@@ -39,6 +39,7 @@ public class RobotContainer {
 
     private boolean precisionModeOn = false;
     private boolean overrideEncoders = false;
+    private boolean generalBrakingMode = true;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -99,6 +100,18 @@ public class RobotContainer {
 
     public boolean getPrecisionMode() {
         return precisionModeOn;
+    }
+
+    public void setBrakeModeAllMotors(boolean brake)
+    {
+        wrist.setBrakeModeAllMotors(brake);
+        lift.setBrakeModeAllMotors(brake);
+        swerveDriveTrain.setBrakeModeAllMotors(brake);
+    }
+    public void toggleBrakeModeAllMotors()
+    {
+        setBrakeModeAllMotors(!generalBrakingMode);
+        generalBrakingMode = !generalBrakingMode;
     }
 
     public void ConfigureButtonBindings() {

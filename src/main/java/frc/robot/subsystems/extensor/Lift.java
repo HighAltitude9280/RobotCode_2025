@@ -161,6 +161,11 @@ public class Lift extends SubsystemBase {
     liftMotors.setAll(0);
   }
 
+  public void setBrakeModeAllMotors(boolean brake)
+  {
+    liftMotors.setBrakeMode(brake);
+  }
+
   public void putTuningValues()
   {
     SmartDashboard.putNumber("Lift Encoder Target", getTarget());

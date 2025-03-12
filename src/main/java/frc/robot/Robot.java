@@ -97,6 +97,9 @@ public class Robot extends TimedRobot {
   
     putSmartDashboardMatchMode();
 
+    if(getRobotContainer().getLift().getTopLimitSwitch())
+      getRobotContainer().toggleBrakeModeAllMotors();
+
   }
 
   void putSmartDashboardMatchMode()

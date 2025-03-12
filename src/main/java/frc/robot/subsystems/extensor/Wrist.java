@@ -79,8 +79,6 @@ public class Wrist extends SubsystemBase {
       power = 0.0;
   }
 
-  // Explica q
-
   public void addToTarget(double meters) {
     this.currentTarget += meters;
   }
@@ -89,6 +87,10 @@ public class Wrist extends SubsystemBase {
     return this.onTarget;
   }
 
+  public void setBrakeModeAllMotors(boolean brake)
+  {
+    wristMotors.setBrakeMode(brake);
+  }
   public void putTuningValues()
   {
     SmartDashboard.putNumber("Wrist Encoder Target", getCurrentTarget());
