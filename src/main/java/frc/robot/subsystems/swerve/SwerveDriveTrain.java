@@ -556,7 +556,6 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void periodic() {
     updateOdometry();
     updateOdometryWithVision();
-    putOdometry();
   }
 
   public void putTargetAlignTuningValues()
