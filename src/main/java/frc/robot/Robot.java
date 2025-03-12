@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
@@ -93,16 +94,17 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    /*
-     * SmartDashboard.putString("Pilot",
-     * robotContainer.getCurrentPilot().toString());
-     * SmartDashboard.putString("Copilot",
-     * robotContainer.getCurrentCopilot().toString());
-     * 
-     * SmartDashboard.putBoolean("Field Oriented",
-     * robotContainer.getSwerveDriveTrain().getIsFieldOriented());
-     */
+  
+    putSmartDashboardMatchMode();
 
+  }
+
+  void putSmartDashboardMatchMode()
+  {
+    SmartDashboard.putBoolean("Left mode", leftMode);
+    SmartDashboard.putBoolean("Coral mode", coralMode);
+    SmartDashboard.putString("Reef mode", reef_mode.name());
+    SmartDashboard.putBoolean("Field oriented mode", getRobotContainer().getSwerveDriveTrain().getIsFieldOriented());
   }
 
   /**

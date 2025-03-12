@@ -294,24 +294,19 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "CANCoder Angle", getAbsoluteEncoderRAD());
 
     // 3. Graphic of the CANCoder Velocity
-    // SmartDashboard.putNumber(identifier + "CANCoder Velocity",
-    // getEncoderVelocity());
+    SmartDashboard.putNumber(identifier + "CANCoder Velocity", getEncoderVelocity());
 
     // 5. Setpoint of the ProfiledPIDController Angle
-    SmartDashboard.putNumber(identifier + "Direction Angle Target",
-        directionPIDAngleTarget);
+    SmartDashboard.putNumber(identifier + "Direction Angle Target", directionPIDAngleTarget);
 
-    SmartDashboard.putNumber(identifier + "Direction Angle SetPoint",
-        directionPIDAngleSetPoint);
+    SmartDashboard.putNumber(identifier + "Direction Angle SetPoint", directionPIDAngleSetPoint);
 
     // 6. Setpoint of the ProfiledPIDController Velocity
-    // SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint",
-    // directionPIDVelocitySetPoint);
+    SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint", directionPIDVelocitySetPoint);
 
     SmartDashboard.putNumber(identifier + "Direction Output", directionOutput);
 
-    // SmartDashboard.putNumber(identifier + "Direction ERROR",
-    // directionPIDAngleTarget - getAbsoluteEncoderRAD());
+    SmartDashboard.putNumber(identifier + "Direction ERROR", directionPIDAngleTarget - getAbsoluteEncoderRAD());
 
     SmartDashboard.putNumber(identifier + "Drive Acceleration", getDriveAcceleration());
 

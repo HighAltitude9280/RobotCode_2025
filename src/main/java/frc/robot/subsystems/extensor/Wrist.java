@@ -89,13 +89,17 @@ public class Wrist extends SubsystemBase {
     return this.onTarget;
   }
 
+  public void putTuningValues()
+  {
+    SmartDashboard.putNumber("Wrist Encoder Target", getCurrentTarget());
+    SmartDashboard.putNumber("Wrist Encoder Position", getWristEncoderPosition());
+    SmartDashboard.putNumber("Wrist Encoder Angle", getWristPosDegrees());
+    SmartDashboard.putBoolean("Wrist OnTarget", onTarget);
+    
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Wrist Encoder Target", getCurrentTarget());
-    SmartDashboard.putNumber("Wrist Encoder Position", getWristEncoderPosition());
-
-    SmartDashboard.putNumber("Wrist Encoder Angle", getWristPosDegrees());
-    SmartDashboard.putBoolean("Wrist OnTarget", onTarget);
   }
 }

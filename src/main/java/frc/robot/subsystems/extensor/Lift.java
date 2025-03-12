@@ -14,7 +14,6 @@ import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 import frc.robot.resources.math.Math;
-import pabeles.concurrency.IntOperatorTask.Max;
 
 public class Lift extends SubsystemBase {
   private HighAltitudeMotorGroup liftMotors;
@@ -162,24 +161,21 @@ public class Lift extends SubsystemBase {
     liftMotors.setAll(0);
   }
 
+  public void putTuningValues()
+  {
+    SmartDashboard.putNumber("Lift Encoder Target", getTarget());
+    SmartDashboard.putNumber("Lift Encoder Meters", getLiftPosMeters());
+    SmartDashboard.putNumber("Lift PID Output", this.liftOutput);
+    SmartDashboard.putNumber("Lift Setpoint Position", getLiftPIDController().getSetpoint().position);
+    SmartDashboard.putBoolean("Lift OnTarget", onTarget);
+    SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
+    SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());
+    SmartDashboard.putNumber("Lift Velocity Target", getLiftPIDController().getSetpoint().velocity);
+
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Lift Encoder Target", getTarget());
-
-    //SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
-
-    SmartDashboard.putNumber("Lift Encoder Meters", getLiftPosMeters());
-
-    SmartDashboard.putNumber("Lift PID Output", this.liftOutput);
-
-    //SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());
-
-    SmartDashboard.putNumber("Lift Setpoint Position", getLiftPIDController().getSetpoint().position);
-
-   // SmartDashboard.putNumber("Lift Velocity Target", getLiftPIDController().getSetpoint().velocity);
-    SmartDashboard.putBoolean("Lift OnTarget", onTarget);
-
     if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
       resetEncoders();
 

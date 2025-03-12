@@ -4,11 +4,9 @@
 
 package frc.robot.commands.swerve.autonomous.reef;
 
-import com.fasterxml.jackson.annotation.Nulls;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
@@ -104,13 +102,6 @@ public class AlignWithTargetVision extends Command {
     yaw = Double.isNaN(yaw) ? targetYaw : yaw;
     area = Double.isNaN(area) ? HighAltitudeConstants.VISION_AREA_TARGET : area;
 
-    System.out.println("targetArea: " + HighAltitudeConstants.VISION_AREA_TARGET);
-    System.out.println("Area: " + area);
-    System.out.println("targetYaw: " + targetYaw);
-    System.out.println("Yaw: " + yaw);
-    System.out.println("targetAngle: " + targetAngle);
-    System.out
-        .println("Angle: " + Robot.getRobotContainer().getSwerveDriveTrain().getPose().getRotation().getDegrees());
 
     isFinished = Robot.getRobotContainer().getSwerveDriveTrain().alignWithTarget(
         targetAngle, yaw, area, targetYaw,

@@ -51,6 +51,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   public boolean cleanUpMode = false;
   private double targetMeters;
 
+  private double visionYaw, visionTargetYaw, visionArea, visionTargetArea, visionAngle, visionTargetAngle;
+
   public SwerveDriveTrain() {
     frontLeft = new HighSwerveModule(
         RobotMap.SWERVE_FRONT_LEFT_DRIVE_MOTOR_PORT,
@@ -531,7 +533,12 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     defaultDrive(-speedPower, -strafePower, -turnPower);
 
-    SmartDashboard.putNumber("Turn Power", turnPower);
+    visionAngle = getPose().getRotation().getDegrees();
+    visionTargetAngle = angle;
+    visionYaw = yaw;
+    visionTargetYaw = targetYaw;
+    visionArea = area;
+    visionTargetArea = targetArea;
 
     return turnOnTarget && speedOnTarget && strafeOnTarget;
 
@@ -549,27 +556,40 @@ public class SwerveDriveTrain extends SubsystemBase {
   public void periodic() {
     updateOdometry();
     updateOdometryWithVision();
-    putAllInfoInSmartDashboard();
-
+    putOdometry();
   }
 
-  public void putAllInfoInSmartDashboard() {
+  public void putTargetAlignTuningValues()
+  {
+    SmartDashboard.putNumber("visionAngle", visionAngle);
+    SmartDashboard.putNumber("visionTargetAngle", visionTargetAngle);
+    SmartDashboard.putNumber("visionYaw", visionYaw);
+    SmartDashboard.putNumber("visionTargetYaw", visionTargetYaw);
+    SmartDashboard.putNumber("visionArea", visionArea);
+    SmartDashboard.putNumber("visionTargetArea", visionTargetArea);
+  }
 
-    // frontLeft.putProcessedValues("FL");
-    // frontRight.putProcessedValues("FR");
-    // backRight.putProcessedValues("BR");
-    // backLeft.putProcessedValues("BL");
+  public void putModuleTuningValues()
+  {
 
-    // frontLeft.putEncoderValuesInvertedApplied("FL");
-    // frontRight.putEncoderValuesInvertedApplied("FR");
-    // backLeft.putEncoderValuesInvertedApplied("BL");
-    // backRight.putEncoderValuesInvertedApplied("BR");
+    frontLeft.putProcessedValues("FL");
+    frontRight.putProcessedValues("FR");
+    backRight.putProcessedValues("BR");
+    backLeft.putProcessedValues("BL");
+
+    frontLeft.putEncoderValuesInvertedApplied("FL");
+    frontRight.putEncoderValuesInvertedApplied("FR");
+    backLeft.putEncoderValuesInvertedApplied("BL");
+    backRight.putEncoderValuesInvertedApplied("BR");
 
     frontLeft.putControlTunningValues("FL");
     frontRight.putControlTunningValues("FR");
     backLeft.putControlTunningValues("BL");
     backRight.putControlTunningValues("BR");
+  }
 
+  public void putOdometry() 
+  {
     SmartDashboard.putBoolean("IsFieldOriented?", getIsFieldOriented());
 
     SmartDashboard.putNumber("GetXPose", getPose().getX());
