@@ -168,10 +168,16 @@ public class RobotContainer {
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
         m_chooser.addOption("TranslationPID", new PathPlannerAuto("Translation PID"));
 
-        m_chooser.addOption("Orbit", new AutoGenerator(new ArrayList<>(Arrays.asList(
+        m_chooser.addOption("Orbit Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
             new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),
             new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, true),
             new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, true),
+            new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)
+            ))));
+        m_chooser.addOption("Orbit Left", new AutoGenerator(new ArrayList<>(Arrays.asList(
+            new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true),
+            new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true),
+            new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true),
             new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)
             ))));
     }
