@@ -18,6 +18,7 @@ import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.commands.autonomous.AutoGenerator;
 import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.autonomous.AutoPortion;
+import frc.robot.commands.autonomous.Center2L4;
 import frc.robot.commands.autonomous.LeaveAndL4;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
@@ -109,14 +110,13 @@ public class RobotContainer {
         return precisionModeOn;
     }
 
-    public void setBrakeModeAllMotors(boolean brake)
-    {
+    public void setBrakeModeAllMotors(boolean brake) {
         wrist.setBrakeModeAllMotors(brake);
         lift.setBrakeModeAllMotors(brake);
         swerveDriveTrain.setBrakeModeAllMotors(brake);
     }
-    public void toggleBrakeModeAllMotors()
-    {
+
+    public void toggleBrakeModeAllMotors() {
         setBrakeModeAllMotors(!generalBrakingMode);
         generalBrakingMode = !generalBrakingMode;
     }
@@ -166,19 +166,17 @@ public class RobotContainer {
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
-        m_chooser.addOption("TranslationPID", new PathPlannerAuto("Translation PID"));
+        m_chooser.addOption("2L4 Center", new PathPlannerAuto(new Center2L4()));
 
         m_chooser.addOption("Orbit Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
-            new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),
-            new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, true),
-            new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, true),
-            new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)
-            ))));
+                new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),
+                new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, true),
+                new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, true),
+                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)))));
         m_chooser.addOption("Orbit Left", new AutoGenerator(new ArrayList<>(Arrays.asList(
-            new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true),
-            new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true),
-            new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true),
-            new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)
-            ))));
+                new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true),
+                new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true),
+                new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true),
+                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)))));
     }
 }

@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
 
     putSmartDashboardMatchMode();
 
-    // if(getRobotContainer().getLift().getTopLimitSwitch())
+    // if (getRobotContainer().getLift().getTopLimitSwitch())
     // getRobotContainer().toggleBrakeModeAllMotors();
 
   }
@@ -149,7 +149,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    // getRobotContainer().getSwerveDriveTrain().setModulesBrakeMode(true);
+    getRobotContainer().getSwerveDriveTrain().setIsFieldOriented(true);
   }
 
   /** This function is called periodically during operator control. */
