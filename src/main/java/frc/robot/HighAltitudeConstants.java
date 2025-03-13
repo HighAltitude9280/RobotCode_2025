@@ -403,6 +403,12 @@ public class HighAltitudeConstants {
         public static final int[] BLUE_APRILTAG_IDS = { 19, 18, 17, 22, 21, 20 };
         public static final int[] RED_APRILTAG_IDS = { 6, 7, 8, 9, 10, 11 };
 
+        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.203,7.027, Rotation2d.fromDegrees(-54.2));
+        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(0.981,1.138, Rotation2d.fromDegrees(54.2));
+
+        public static final Pose2d PATHFINDING_LEFT_RED_FEEDER = new Pose2d(16.347,1.138, Rotation2d.fromDegrees(125));
+        public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER = new Pose2d(16.347,7.027, Rotation2d.fromDegrees(-125));
+
         public enum REEF_POSITION {
                 BL(0), BC(1), BR(2), FR(3), FC(4), FL(5);
 

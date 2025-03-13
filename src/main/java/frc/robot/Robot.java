@@ -4,13 +4,13 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathfindingCommand;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
-import frc.robot.commands.leds.SetLEDColor;
-import frc.robot.commands.modes.SetCoralMode;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     setCoralMode(coralMode);
+    PathfindingCommand.warmupCommand().schedule();
   }
 
   /**
