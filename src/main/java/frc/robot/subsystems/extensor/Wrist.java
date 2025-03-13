@@ -75,8 +75,6 @@ public class Wrist extends SubsystemBase {
 
     double delta = getCurrentTarget() - getWristPosDegrees();
     this.onTarget = Math.abs(delta) < HighAltitudeConstants.WRIST_ARRIVE_OFFSET;
-    if (onTarget)
-      power = 0.0;
   }
 
   public void addToTarget(double meters) {
@@ -87,17 +85,16 @@ public class Wrist extends SubsystemBase {
     return this.onTarget;
   }
 
-  public void setBrakeModeAllMotors(boolean brake)
-  {
+  public void setBrakeModeAllMotors(boolean brake) {
     wristMotors.setBrakeMode(brake);
   }
-  public void putTuningValues()
-  {
+
+  public void putTuningValues() {
     SmartDashboard.putNumber("Wrist Encoder Target", getCurrentTarget());
     SmartDashboard.putNumber("Wrist Encoder Position", getWristEncoderPosition());
     SmartDashboard.putNumber("Wrist Encoder Angle", getWristPosDegrees());
     SmartDashboard.putBoolean("Wrist OnTarget", onTarget);
-    
+
   }
 
   @Override

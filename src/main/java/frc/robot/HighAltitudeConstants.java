@@ -83,8 +83,8 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.35, 0.7 }; // TODO: tunear esto en
-                                                                                      // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.14, 0.35, 0.72 }; // TODO: tunear esto en
+                                                                                       // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
 
@@ -124,7 +124,7 @@ public class HighAltitudeConstants {
         public static final double WRIST_ZERO_ANGLE = 0.0;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 32.5 };
+        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 36 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
         public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 115 };
@@ -332,32 +332,32 @@ public class HighAltitudeConstants {
 
         // TODO: CONFIGURE THESE CONSTANTS
 
-        public static final double VISION_YAW_OFFSET_TARGET_LEFT = 6.96;
-        public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -18.8;
+        public static final double VISION_YAW_OFFSET_TARGET_LEFT = 17.82;
+        public static final double VISION_YAW_OFFSET_TARGET_RIGHT = -25.31;
 
-        public static final double VISION_AREA_TARGET = 6.38;
+        public static final double VISION_AREA_TARGET = 7.42;
 
         // Speed reduction constants for aligning with apriltags.
         public static final double VISION_TURN_kP = 0.05;
         public static final double VISION_TURN_kI = 0;
         public static final double VISION_TURN_kD = 0;
-        public static final double VISION_TURN_ARRIVE_OFFSET = 2.5;// 3;
+        public static final double VISION_TURN_ARRIVE_OFFSET = 2;// 3;
 
-        public static final double VISION_STRAFE_kP = 0.01;
+        public static final double VISION_STRAFE_kP = 0.1;
         public static final double VISION_STRAFE_kI = 0;
         public static final double VISION_STRAFE_kD = 0;
-        public static final double VISION_STRAFE_ARRIVE_OFFSET = 3.0;
+        public static final double VISION_STRAFE_ARRIVE_OFFSET = 0;
 
         public static final double VISION_SPEED_kP = 0.05;
         public static final double VISION_SPEED_kI = 0;
         public static final double VISION_SPEED_kD = 0;
-        public static final double VISION_SPEED_ARRIVE_OFFSET = 0.8;// 0.05;
+        public static final double VISION_SPEED_ARRIVE_OFFSET = 0;// 0.05;
 
-        public static final double VISION_TURN_MAX_POWER = 0.3;
-        public static final double VISION_STRAFE_MAX_POWER = 0.03; // 0.1
-        public static final double VISION_SPEED_MAX_POWER = 0.3; // 0.1%
+        public static final double VISION_TURN_MAX_POWER = 0.0;
+        public static final double VISION_STRAFE_MAX_POWER = 0.05; // 0.1
+        public static final double VISION_SPEED_MAX_POWER = 0.0; // 0.1%
 
-        public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.38;
+        public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.33;
 
         //////////////////////// DRIVERS ////////////////////////
 

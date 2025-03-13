@@ -94,16 +94,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-  
+
     putSmartDashboardMatchMode();
 
-    if(getRobotContainer().getLift().getTopLimitSwitch())
-      getRobotContainer().toggleBrakeModeAllMotors();
+    // if(getRobotContainer().getLift().getTopLimitSwitch())
+    // getRobotContainer().toggleBrakeModeAllMotors();
 
   }
 
-  void putSmartDashboardMatchMode()
-  {
+  void putSmartDashboardMatchMode() {
     SmartDashboard.putBoolean("Left mode", leftMode);
     SmartDashboard.putBoolean("Coral mode", coralMode);
     SmartDashboard.putString("Reef mode", reef_mode.name());
