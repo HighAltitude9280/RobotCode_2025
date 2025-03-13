@@ -32,5 +32,6 @@ public class AutoPortion
         this.pos = pos;
         this.leftBranch = leftBranch;
         this.leftFeeder = leftFeeder;
+        this.height = height;
     }
 }
