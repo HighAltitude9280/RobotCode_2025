@@ -36,7 +36,7 @@ public class ScoreCoral extends SequentialCommandGroup {
             new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
             new WristGoToTarget(wristTargetUp, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
 
-        new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED).withTimeout(0.4),
+        new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED).withTimeout(0.6),
 
         new ParallelRaceGroup(
             new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),

@@ -20,7 +20,7 @@ public class ScoreGamePieceLiftDown extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new ParallelRaceGroup(new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED), new WaitCommand(0.4
+        new ParallelRaceGroup(new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED), new WaitCommand(0.5
         )),
         new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
   }
