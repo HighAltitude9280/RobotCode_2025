@@ -553,7 +553,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    updateOdometryWithVision();
+  //  updateOdometryWithVision();
   }
 
   public void setBrakeModeAllMotors(boolean brake)

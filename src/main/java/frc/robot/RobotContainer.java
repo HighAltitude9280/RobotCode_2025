@@ -167,6 +167,7 @@ public class RobotContainer {
         m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
         m_chooser.addOption("2L4 Center", new PathPlannerAuto(new Center2L4()));
+        m_chooser.addOption("PID TEST", new PathPlannerAuto("Translation PID"));
 
         m_chooser.addOption("Orbit Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
                 new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),

@@ -296,7 +296,7 @@ public class HighAltitudeConstants {
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
         PPHolonomicDriveController(new PIDConstants(0.125, 0, 0.001),
-                        new PIDConstants(9.0, 0, 0.0001));
+                        new PIDConstants(0.1, 0, 0.0001));
 
         //// SpeedReduction constants
 
@@ -343,19 +343,19 @@ public class HighAltitudeConstants {
         public static final double VISION_TURN_kD = 0;
         public static final double VISION_TURN_ARRIVE_OFFSET = 2;// 3;
 
-        public static final double VISION_STRAFE_kP = 0.01;
+        public static final double VISION_STRAFE_kP = 0.0085;
         public static final double VISION_STRAFE_kI = 0;
         public static final double VISION_STRAFE_kD = 0;
-        public static final double VISION_STRAFE_ARRIVE_OFFSET = 0;
+        public static final double VISION_STRAFE_ARRIVE_OFFSET = 0.8;
 
         public static final double VISION_SPEED_kP = 0.05;
         public static final double VISION_SPEED_kI = 0;
         public static final double VISION_SPEED_kD = 0;
-        public static final double VISION_SPEED_ARRIVE_OFFSET = 0;// 0.05;
+        public static final double VISION_SPEED_ARRIVE_OFFSET = 0.4;// 0.8;
 
-        public static final double VISION_TURN_MAX_POWER = 0.3;
-        public static final double VISION_STRAFE_MAX_POWER = 0.05; // 0.1
-        public static final double VISION_SPEED_MAX_POWER = 0.3; // 0.1%
+        public static final double VISION_TURN_MAX_POWER = 0.3; // 0.3
+        public static final double VISION_STRAFE_MAX_POWER = 0.05; // 0.3
+        public static final double VISION_SPEED_MAX_POWER = 0.3; // 0.3
 
         public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.33;
 
