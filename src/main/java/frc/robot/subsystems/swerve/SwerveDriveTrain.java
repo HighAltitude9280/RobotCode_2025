@@ -39,8 +39,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   private SwerveDrivePoseEstimator swerveDrivePoseEstimator;
 
   // TODO: cambiar isFieldOriented
-  private boolean isFieldOriented = false;
-  private boolean isOnCompetitiveField = false;
+  private boolean isFieldOriented = true;
+  private boolean isOnCompetitiveField = true;
   private PIDController distancePIDController;
 
   private PIDController visionTurnController, visionSpeedController, visionStrafeController;
@@ -364,15 +364,12 @@ public class SwerveDriveTrain extends SubsystemBase {
     }
   }
 
-  public Pose2d getPoseAllianceCorrected()
-  {
+  public Pose2d getPoseAllianceCorrected() {
     var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
     var currentPos = getPose();
-    if(alliance == DriverStation.Alliance.Red)
-      return new Pose2d(currentPos.getX(), currentPos.getY(), currentPos.getRotation().plus(new Rotation2d(Math.PI)));
-    else 
-      return currentPos;
+    return new Pose2d(currentPos.getX(), currentPos.getY(), currentPos.getRotation().plus(new Rotation2d(Math.PI)));
   }
+
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
   }
@@ -562,17 +559,16 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-  //  updateOdometryWithVision();
+    updateOdometryWithVision();
+    putOdometry();
   }
 
-  public void setBrakeModeAllMotors(boolean brake)
-  {
-    for(var module : modules)
+  public void setBrakeModeAllMotors(boolean brake) {
+    for (var module : modules)
       module.setBrakeModeAllMotors(brake);
   }
 
-  public void putTargetAlignTuningValues()
-  {
+  public void putTargetAlignTuningValues() {
     SmartDashboard.putNumber("visionAngle", visionAngle);
     SmartDashboard.putNumber("visionTargetAngle", visionTargetAngle);
     SmartDashboard.putNumber("visionYaw", visionYaw);
@@ -581,8 +577,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("visionTargetArea", visionTargetArea);
   }
 
-  public void putModuleTuningValues()
-  {
+  public void putModuleTuningValues() {
 
     frontLeft.putProcessedValues("FL");
     frontRight.putProcessedValues("FR");
@@ -600,8 +595,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     backRight.putControlTunningValues("BR");
   }
 
-  public void putOdometry() 
-  {
+  public void putOdometry() {
     SmartDashboard.putBoolean("IsFieldOriented?", getIsFieldOriented());
 
     SmartDashboard.putNumber("GetXPose", getPose().getX());

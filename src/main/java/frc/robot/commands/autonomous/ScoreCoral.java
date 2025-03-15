@@ -18,30 +18,32 @@ import frc.robot.commands.extensor.wrist.control.WristGoToTarget;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ScoreCoral extends SequentialCommandGroup {
 
-  /** Creates a new ScoreL4. */
-  public ScoreCoral(REEF_HEIGHT heightUp) {
-    double liftTargetUp = HighAltitudeConstants.LIFT_CORAL_POSITIONS[heightUp.getID()];
-    double wristTargetUp = HighAltitudeConstants.WRIST_CORAL_POSITIONS[heightUp.getID()];
+    /** Creates a new ScoreL4. */
+    public ScoreCoral(REEF_HEIGHT heightUp) {
+        double liftTargetUp = HighAltitudeConstants.LIFT_CORAL_POSITIONS[heightUp.getID()];
+        double wristTargetUp = HighAltitudeConstants.WRIST_CORAL_POSITIONS[heightUp.getID()];
 
-    REEF_HEIGHT heightDown = REEF_HEIGHT.BOTTOM;
-    double liftTargetDown = HighAltitudeConstants.LIFT_CORAL_POSITIONS[heightDown.getID()];
-    double wristTargetDown = HighAltitudeConstants.WRIST_CORAL_POSITIONS[heightDown.getID()];
+        REEF_HEIGHT heightDown = REEF_HEIGHT.BOTTOM;
+        double liftTargetDown = HighAltitudeConstants.LIFT_CORAL_POSITIONS[heightDown.getID()];
+        double wristTargetDown = HighAltitudeConstants.WRIST_CORAL_POSITIONS[heightDown.getID()];
 
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-        new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTargetUp,
-            HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
-        new ParallelRaceGroup(
-            new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
-            new WristGoToTarget(wristTargetUp, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
+        // Add your commands in the addCommands() call, e.g.
+        // addCommands(new FooCommand(), new BarCommand());
+        addCommands(
+                new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTargetUp,
+                        HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
+                new ParallelRaceGroup(
+                        new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
+                                HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
+                        new WristGoToTarget(wristTargetUp, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
 
-        new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED).withTimeout(0.6),
+                new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED).withTimeout(0.75),
 
-        new ParallelRaceGroup(
-            new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
-            new WristGoToTarget(wristTargetDown, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
-        new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTargetDown,
-            HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
-  }
+                new ParallelRaceGroup(
+                        new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
+                                HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
+                        new WristGoToTarget(wristTargetDown, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
+                new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTargetDown,
+                        HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
+    }
 }

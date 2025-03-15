@@ -74,7 +74,11 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
 
-                pilot.whileTrueCombo(new AlignVisionMoveMeters(null, null, null), ButtonType.LB, ButtonType.RB);
+                // pilot.whileTrueCombo(new AlignVisionMoveMeters(null, null, null),
+                // ButtonType.LB, ButtonType.RB);
+
+                pilot.whileTrue(ButtonType.LB, new AlignVisionMoveMeters(null, null, true));
+                pilot.whileTrue(ButtonType.RB, new AlignVisionMoveMeters(null, null, false));
 
                 pilot.whileTrue(ButtonType.A,
                         new AutoLeave(HighAltitudeConstants.SWERVE_METERS_DISTANCE_ALIGN_TO_REEF, 0.7));

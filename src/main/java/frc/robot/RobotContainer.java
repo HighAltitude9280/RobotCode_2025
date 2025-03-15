@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,8 +19,12 @@ import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.commands.autonomous.AutoGenerator;
 import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.autonomous.AutoPortion;
-import frc.robot.commands.autonomous.Center2L4;
-import frc.robot.commands.autonomous.LeaveAndL4;
+import frc.robot.commands.autonomous.ScoreCoral;
+import frc.robot.commands.autonomous.center.Center2L4Left;
+import frc.robot.commands.autonomous.center.Center2L4Right;
+import frc.robot.commands.autonomous.center.LeaveAndL4;
+import frc.robot.commands.compound.ScoreGamePieceLiftDown;
+import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
 import frc.robot.commands.leds.SetLEDColor;
@@ -165,9 +170,18 @@ public class RobotContainer {
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
+
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
-        m_chooser.addOption("2L4 Center", new PathPlannerAuto(new Center2L4()));
+        m_chooser.addOption("2L4 Center Right", new PathPlannerAuto(new Center2L4Right()));
+        m_chooser.addOption("2L4 Center Left", new PathPlannerAuto(new Center2L4Left()));
+
         m_chooser.addOption("PID TEST", new PathPlannerAuto("Translation PID"));
+
+        m_chooser.addOption("L4Right", new PathPlannerAuto("L4Right"));
+        m_chooser.addOption("L4Left", new PathPlannerAuto("L4Left"));
+
+        NamedCommands.registerCommand("ScoreCoral", new ScoreCoral(REEF_HEIGHT.TOP));
+        NamedCommands.registerCommand("AutoLeave", new AutoLeave(2, 0.8).withTimeout(3.4));
 
         m_chooser.addOption("Orbit Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
                 new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),

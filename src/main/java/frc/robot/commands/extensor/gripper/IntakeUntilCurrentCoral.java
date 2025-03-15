@@ -4,14 +4,9 @@
 
 package frc.robot.commands.extensor.gripper;
 
-import java.security.Timestamp;
-
 import edu.wpi.first.math.MathSharedStore;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.HighAltitudeConstants;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.Gripper;

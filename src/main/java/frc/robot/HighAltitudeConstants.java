@@ -83,7 +83,7 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.14, 0.35, 0.72 }; // TODO: tunear esto en
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.14, 0.35, 0.73 }; // TODO: tunear esto en
                                                                                        // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
@@ -124,7 +124,7 @@ public class HighAltitudeConstants {
         public static final double WRIST_ZERO_ANGLE = 0.0;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 36 };
+        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
         public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 115 };
@@ -295,8 +295,8 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_kD = 0.075; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
-        PPHolonomicDriveController(new PIDConstants(0.125, 0, 0.001),
-                        new PIDConstants(0.1, 0, 0.0001));
+        PPHolonomicDriveController(new PIDConstants(0.125, 0, 0.00),
+                        new PIDConstants(0.875, 0, 0.000));
 
         //// SpeedReduction constants
 
