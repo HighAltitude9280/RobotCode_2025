@@ -364,12 +364,14 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_kP = 0;
         public static final double VISION_POSE_kI = 0;
         public static final double VISION_POSE_kD = 0;
+        // In meters
         public static final double VISION_POSE_ARRIVE_OFFSET = 0.01;
 
         public static final double VISION_POSE_TURN_kP = 0;
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
-        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = 2;
+        //In radians
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(2);
 
         //////////////////////// DRIVERS ////////////////////////
 

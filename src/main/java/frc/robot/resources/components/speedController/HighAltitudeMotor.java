@@ -471,6 +471,34 @@ public class HighAltitudeMotor {
         return inverted;
     }
 
+    public double get()
+    {
+        switch (motorToUse) {
+
+            case TALON_SRX:
+
+                return talonSRX.get();
+
+            case TALON_FX:
+
+                return talonFX.get();
+
+            case SPARK_MAX_BRUSHED:
+
+                return sparkMax.get();
+
+            case SPARK_MAX_BRUSHLESS:
+
+                return sparkMax.get();
+
+            case SPARK_FLEX:
+
+                return sparkFlex.get();
+            default:
+                return 0;
+        }
+    }
+
     public void setVoltage(double volts) {
         switch (motorToUse) {
 

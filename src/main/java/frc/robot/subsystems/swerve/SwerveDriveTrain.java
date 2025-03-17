@@ -9,6 +9,11 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.resources.math.Math;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Volt;
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.ArrayList;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -26,11 +31,19 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class SwerveDriveTrain extends SubsystemBase {
   /** Creates a new SwerveDriveTrain. */
@@ -53,6 +66,23 @@ public class SwerveDriveTrain extends SubsystemBase {
   private double targetMeters;
 
   private double visionYaw, visionTargetYaw, visionArea, visionTargetArea, visionAngle, visionTargetAngle;
+
+  private SysIdRoutine drivesysIdRoutine;
+
+  MutVoltage flVoltage = Volts.mutable(0);
+  MutVoltage frVoltage = Volts.mutable(0);
+  MutVoltage blVoltage = Volts.mutable(0);
+  MutVoltage brVoltage = Volts.mutable(0);
+
+  MutDistance flDistance = Meters.mutable(0);
+  MutDistance frDistance = Meters.mutable(0);
+  MutDistance blDistance = Meters.mutable(0);
+  MutDistance brDistance = Meters.mutable(0);
+
+  MutLinearVelocity flVelocity = MetersPerSecond.mutable(0);
+  MutLinearVelocity frVelocity = MetersPerSecond.mutable(0);
+  MutLinearVelocity blVelocity = MetersPerSecond.mutable(0);
+  MutLinearVelocity brVelocity = MetersPerSecond.mutable(0);
 
   public SwerveDriveTrain() {
     frontLeft = new HighSwerveModule(
@@ -156,12 +186,12 @@ public class SwerveDriveTrain extends SubsystemBase {
         HighAltitudeConstants.VISION_TURN_kI, HighAltitudeConstants.VISION_TURN_kD);
     visionTurnController.enableContinuousInput(-180, 180);
 
-    visionPoseController = new PIDController(HighAltitudeConstants.VISION_POSE_kP, 
-      HighAltitudeConstants.VISION_POSE_kI, HighAltitudeConstants.VISION_POSE_kD)
+    visionPoseController = new PIDController(HighAltitudeConstants.VISION_POSE_kP,
+        HighAltitudeConstants.VISION_POSE_kI, HighAltitudeConstants.VISION_POSE_kD);
 
-    visionPoseTurnController = new PIDController(HighAltitudeConstants.VISION_POSE_TURN_kP, 
-      HighAltitudeConstants.VISION_POSE_TURN_kI, HighAltitudeConstants.VISION_POSE_TURN_kD);
-    
+    visionPoseTurnController = new PIDController(HighAltitudeConstants.VISION_POSE_TURN_kP,
+        HighAltitudeConstants.VISION_POSE_TURN_kI, HighAltitudeConstants.VISION_POSE_TURN_kD);
+
     visionPoseTurnController.enableContinuousInput(-180, 180);
 
     // Set up custom logging to add the current path to a field 2d widget
@@ -172,6 +202,48 @@ public class SwerveDriveTrain extends SubsystemBase {
     strafeLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
     turnLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND);
 
+    drivesysIdRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(),
+        new SysIdRoutine.Mechanism(this::driveSysID, this::logDriveSysID, this));
+
+  }
+
+  private void driveSysID(Voltage voltage) {
+    frontLeft.getDriveMotor().setVoltage(voltage.magnitude());
+    frontRight.getDriveMotor().setVoltage(voltage.magnitude());
+    backLeft.getDriveMotor().setVoltage(voltage.magnitude());
+    backRight.getDriveMotor().setVoltage(voltage.magnitude());
+  }
+
+  private void logDriveSysID(SysIdRoutineLog log) {
+    brVoltage.mut_replace(backRight.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
+    blVoltage.mut_replace(backLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
+    frVoltage.mut_replace(frontRight.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
+    flVoltage.mut_replace(frontLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
+
+    brDistance.mut_replace(backRight.getDriveDistance(), Meters);
+    blDistance.mut_replace(backLeft.getDriveDistance(), Meters);
+    frDistance.mut_replace(frontRight.getDriveDistance(), Meters);
+    flDistance.mut_replace(frontLeft.getDriveDistance(), Meters);
+
+    brVelocity.mut_replace(backRight.getDriveVelocity(), MetersPerSecond);
+    blVelocity.mut_replace(backLeft.getDriveVelocity(), MetersPerSecond);
+    frVelocity.mut_replace(frontRight.getDriveVelocity(), MetersPerSecond);
+    flVelocity.mut_replace(frontLeft.getDriveVelocity(), MetersPerSecond);
+
+    log.motor("Front right").voltage(frVoltage).linearPosition(frDistance).linearVelocity(frVelocity);
+    log.motor("Front left").voltage(flVoltage).linearPosition(flDistance).linearVelocity(flVelocity);
+    log.motor("Back right").voltage(brVoltage).linearPosition(brDistance).linearVelocity(brVelocity);
+    log.motor("Back left").voltage(blVoltage).linearPosition(blDistance).linearVelocity(blVelocity);
+  }
+
+  public Command driveSysIdQuasistatic(SysIdRoutine.Direction direction)
+  {
+    return drivesysIdRoutine.quasistatic(direction);
+  }
+  public Command driveSysIdDynamic(SysIdRoutine.Direction direction)
+  {
+    return drivesysIdRoutine.dynamic(direction);
   }
 
   // By default, the Navx reports its angle as increasing when turning to its
@@ -361,7 +433,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   public boolean AlignWithTargetPose(Pose2d targetPose, double maxSpeed, double maxTurnSpeed) {
     var diff = targetPose.minus(getPose());
     double distance = diff.getTranslation().getNorm();
-    double angleTranslation = diff.getTranslation().getAngle();
+    double angleTranslation = diff.getTranslation().getAngle().getRadians();
     double deltaAngle = diff.getRotation().getDegrees();
 
     double speed = visionPoseController.calculate(distance, 0);
@@ -376,7 +448,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     turnSpeed = Math.clamp(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
 
     var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, turnSpeed,
-        getPoseAllianceCorrected().getRotation().getDegrees());
+        getPoseAllianceCorrected().getRotation());
     driveSpeed(speeds);
 
     return distance < HighAltitudeConstants.VISION_POSE_ARRIVE_OFFSET &&
