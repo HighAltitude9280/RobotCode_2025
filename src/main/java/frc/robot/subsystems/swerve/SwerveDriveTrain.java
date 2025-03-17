@@ -44,6 +44,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   private PIDController distancePIDController;
 
   private PIDController visionTurnController, visionSpeedController, visionStrafeController;
+  private PIDController visionPoseController, visionPoseTurnController;
 
   private Field2d field = new Field2d();
 
@@ -154,6 +155,14 @@ public class SwerveDriveTrain extends SubsystemBase {
     visionTurnController = new PIDController(HighAltitudeConstants.VISION_TURN_kP,
         HighAltitudeConstants.VISION_TURN_kI, HighAltitudeConstants.VISION_TURN_kD);
     visionTurnController.enableContinuousInput(-180, 180);
+
+    visionPoseController = new PIDController(HighAltitudeConstants.VISION_POSE_kP, 
+      HighAltitudeConstants.VISION_POSE_kI, HighAltitudeConstants.VISION_POSE_kD)
+
+    visionPoseTurnController = new PIDController(HighAltitudeConstants.VISION_POSE_TURN_kP, 
+      HighAltitudeConstants.VISION_POSE_TURN_kI, HighAltitudeConstants.VISION_POSE_TURN_kD);
+    
+    visionPoseTurnController.enableContinuousInput(-180, 180);
 
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
@@ -339,6 +348,39 @@ public class SwerveDriveTrain extends SubsystemBase {
     }
 
     return Math.abs(delta) < HighAltitudeConstants.SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET;
+  }
+
+  /**
+   * Moves to a target pose in a straight line.
+   * 
+   * @param targetPose   The target pose.
+   * @param maxSpeed     The maximum linear speed in m/s.
+   * @param maxTurnSpeed The maximum angular velocity in rad/s
+   * @return True if considered on target.
+   */
+  public boolean AlignWithTargetPose(Pose2d targetPose, double maxSpeed, double maxTurnSpeed) {
+    var diff = targetPose.minus(getPose());
+    double distance = diff.getTranslation().getNorm();
+    double angleTranslation = diff.getTranslation().getAngle();
+    double deltaAngle = diff.getRotation().getDegrees();
+
+    double speed = visionPoseController.calculate(distance, 0);
+    double speedX = Math.cos(angleTranslation) * speed;
+    double speedY = Math.sin(angleTranslation) * speed;
+
+    double turnSpeed = visionPoseTurnController.calculate(getPose().getRotation().getRadians(),
+        targetPose.getRotation().getRadians());
+
+    speedX = Math.clamp(speedX, -maxSpeed * Math.cos(angleTranslation), maxSpeed * Math.cos(angleTranslation));
+    speedY = Math.clamp(speedY, -maxSpeed * Math.sin(angleTranslation), maxSpeed * Math.sin(angleTranslation));
+    turnSpeed = Math.clamp(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
+
+    var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, turnSpeed,
+        getPoseAllianceCorrected().getRotation().getDegrees());
+    driveSpeed(speeds);
+
+    return distance < HighAltitudeConstants.VISION_POSE_ARRIVE_OFFSET &&
+        Math.abs(deltaAngle) < HighAltitudeConstants.VISION_POSE_TURN_ARRIVE_OFFSET;
   }
 
   // Odometry

@@ -359,6 +359,18 @@ public class HighAltitudeConstants {
 
         public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.33;
 
+        // Pos alignment
+
+        public static final double VISION_POSE_kP = 0;
+        public static final double VISION_POSE_kI = 0;
+        public static final double VISION_POSE_kD = 0;
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.01;
+
+        public static final double VISION_POSE_TURN_kP = 0;
+        public static final double VISION_POSE_TURN_kI = 0;
+        public static final double VISION_POSE_TURN_kD = 0;
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = 2;
+
         //////////////////////// DRIVERS ////////////////////////
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
@@ -380,40 +392,67 @@ public class HighAltitudeConstants {
         // Note that this array should be in the same order as the enum
         // i.e. PATHFINDING_REEF_POS[REEF_POSITION.BC] should correspond to BC.
         public static final Pose2d[] PATHFINDING_BLUE_REEF_POS = {
-                        // Back (closer to the driver station)
-                        new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60)),
-                        new Pose2d(2.963, 4.015, Rotation2d.fromDegrees(0)),
-                        new Pose2d(3.704, 2.668, Rotation2d.fromDegrees(60)),
-                        // Front (opposite to the driver station)
-                        new Pose2d(5.282, 2.620, Rotation2d.fromDegrees(120)),
-                        new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180)),
-                        new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120))
+
+                        new Pose2d(2.963, 4.015, Rotation2d.fromDegrees(0)), // BC
+                        new Pose2d(3.704, 2.668, Rotation2d.fromDegrees(60)), // BR
+                        new Pose2d(5.282, 2.620, Rotation2d.fromDegrees(120)), // FR
+                        new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180)), // FC
+                        new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120)), // FL
+                        new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60))// BL
         };
         public static final Pose2d[] PATHFINDING_RED_REEF_POS = {
-                        // Back (closer to the driver station)
-                        new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120)),
-                        new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)),
-                        new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)),
-                        // Front (opposite to the driver station)
-                        new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)),
-                        new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)),
-                        new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60))
+                        new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)), // BC
+                        new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)), // BR
+                        new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)), // FR
+                        new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)), // FC
+                        new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60)), // FL
+                        new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120))// BL
         };
 
-        public static final int[] BLUE_APRILTAG_IDS = { 19, 18, 17, 22, 21, 20 };
-        public static final int[] RED_APRILTAG_IDS = { 6, 7, 8, 9, 10, 11 };
+        public static final int[] BLUE_APRILTAG_IDS = { 18, 17, 22, 21, 20, 19 };
+        public static final int[] RED_APRILTAG_IDS = { 7, 8, 9, 10, 11, 6 };
 
-        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.203, 7.027,
+        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.38, 7.09,
                         Rotation2d.fromDegrees(-54.2));
-        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(0.981, 1.138,
+        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(1.56, 0.80,
                         Rotation2d.fromDegrees(54.2));
 
-        public static final Pose2d PATHFINDING_LEFT_RED_FEEDER = new Pose2d(16.347, 1.138, Rotation2d.fromDegrees(125));
-        public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER = new Pose2d(16.347, 7.027,
+        public static final Pose2d PATHFINDING_LEFT_RED_FEEDER = new Pose2d(15.98, 0.77, Rotation2d.fromDegrees(125));
+        public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER = new Pose2d(15.92, 7.301,
                         Rotation2d.fromDegrees(-125));
 
+        // Order as in game manual A, B, C,...
+        public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = {
+                        new Pose2d(3.18, 4.2, Rotation2d.fromDegrees(0)), // A
+                        new Pose2d(3.18, 3.85, Rotation2d.fromDegrees(0)), // B
+                        new Pose2d(3.7, 3, Rotation2d.fromDegrees(60)), // C
+                        new Pose2d(3.98, 2.83, Rotation2d.fromDegrees(60)), // D
+                        new Pose2d(4.98, 2.86, Rotation2d.fromDegrees(120)), // E
+                        new Pose2d(5.25, 2.99, Rotation2d.fromDegrees(120)), // F
+                        new Pose2d(5.78, 3.86, Rotation2d.fromDegrees(180)), // G
+                        new Pose2d(5.78, 4.17, Rotation2d.fromDegrees(180)), // H
+                        new Pose2d(5.26, 5.05, Rotation2d.fromDegrees(-120)), // I
+                        new Pose2d(4.99, 5.20, Rotation2d.fromDegrees(-120)), // J
+                        new Pose2d(3.98, 5.25, Rotation2d.fromDegrees(-60)), // K
+                        new Pose2d(3.70, 5.04, Rotation2d.fromDegrees(-60)) // L
+        };
+        public static final Pose2d PATHFINDING_RED_BRANCHES[] = {
+                        new Pose2d(14.35, 3.86, Rotation2d.fromDegrees(180)), // A
+                        new Pose2d(14.35, 4.18, Rotation2d.fromDegrees(180)), // B
+                        new Pose2d(13.85, 5.03, Rotation2d.fromDegrees(-120)), // C
+                        new Pose2d(13.56, 5.22, Rotation2d.fromDegrees(-120)), // D
+                        new Pose2d(12.54, 5.20, Rotation2d.fromDegrees(-60)), // E
+                        new Pose2d(12.28, 5.05, Rotation2d.fromDegrees(-60)), // F
+                        new Pose2d(11.77, 4.19, Rotation2d.fromDegrees(0)), // G
+                        new Pose2d(11.77, 3.85, Rotation2d.fromDegrees(0)), // H
+                        new Pose2d(12.27, 3.00, Rotation2d.fromDegrees(60)), // I
+                        new Pose2d(12.55, 2.82, Rotation2d.fromDegrees(60)), // J
+                        new Pose2d(13.55, 2.81, Rotation2d.fromDegrees(120)), // K
+                        new Pose2d(13.85, 2.99, Rotation2d.fromDegrees(120)) // L
+        };
+
         public enum REEF_POSITION {
-                BL(0), BC(1), BR(2), FR(3), FC(4), FL(5);
+                BC(0), BR(1), FR(2), FC(3), FL(4), BL(5);
 
                 int id;
 
@@ -424,7 +463,14 @@ public class HighAltitudeConstants {
                 public int getID() {
                         return id;
                 }
+
+                public int getBranchID(boolean left) {
+                        return left ? 2 * id : 2 * id + 1;
+                }
         }
+
+        public static REEF_POSITION[] REEF_POSITIONS = { REEF_POSITION.BC, REEF_POSITION.BR, REEF_POSITION.FR,
+                        REEF_POSITION.FC, REEF_POSITION.FL, REEF_POSITION.BL};
 
         public enum REEF_SIDE {
                 LEFT(REEF_POSITION.BL, REEF_POSITION.FL),
