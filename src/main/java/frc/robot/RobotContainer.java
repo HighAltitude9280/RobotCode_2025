@@ -180,7 +180,9 @@ public class RobotContainer {
         m_chooser.addOption("L4Right", new PathPlannerAuto("L4Right"));
         m_chooser.addOption("L4Left", new PathPlannerAuto("L4Left"));
 
-        NamedCommands.registerCommand("ScoreCoral", new ScoreCoral(REEF_HEIGHT.TOP));
+        m_chooser.addOption("L4Center", new PathPlannerAuto("L4Center"));
+
+        NamedCommands.registerCommand("ScoreCoralL4", new ScoreCoral(REEF_HEIGHT.TOP));
         NamedCommands.registerCommand("AutoLeave", new AutoLeave(2, 0.8).withTimeout(3.4));
 
         m_chooser.addOption("Orbit Right", new AutoGenerator(new ArrayList<>(Arrays.asList(

@@ -127,7 +127,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     // Configure AutoBuilder
     AutoBuilder.configure(
-        this::getPoseAllianceCorrected,
+        this::getPoseInverted,
         this::resetPose,
         this::getChassisSpeeds,
         this::driveSpeed,
@@ -367,11 +367,19 @@ public class SwerveDriveTrain extends SubsystemBase {
   public Pose2d getPoseAllianceCorrected() {
     var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
     var currentPos = getPose();
-    return new Pose2d(currentPos.getX(), currentPos.getY(), currentPos.getRotation().plus(new Rotation2d(Math.PI)));
+    if (alliance == DriverStation.Alliance.Red)
+      return new Pose2d(currentPos.getX(), currentPos.getY(), currentPos.getRotation().plus(new Rotation2d(Math.PI)));
+    else
+      return currentPos;
   }
 
   public Pose2d getPose() {
     return swerveDrivePoseEstimator.getEstimatedPosition();
+  }
+
+  public Pose2d getPoseInverted() {
+    var currentPos = getPose();
+    return new Pose2d(currentPos.getX(), currentPos.getY(), currentPos.getRotation().plus(new Rotation2d(Math.PI)));
   }
 
   public void resetPose(Pose2d pose) {
