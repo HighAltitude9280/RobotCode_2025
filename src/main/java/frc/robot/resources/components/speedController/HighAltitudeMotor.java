@@ -239,7 +239,7 @@ public class HighAltitudeMotor {
                 return sparkMax.getEncoder().getVelocity();
 
             case SPARK_MAX_BRUSHLESS:
-
+                
                 return sparkMax.getEncoder().getVelocity();
 
             case SPARK_FLEX:

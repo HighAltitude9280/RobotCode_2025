@@ -4,12 +4,31 @@
 
 package frc.robot.subsystems.extensor;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
+import java.util.ArrayList;
+
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearAcceleration;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
@@ -24,13 +43,22 @@ public class Lift extends SubsystemBase {
   private double liftOutput;
   private double currentTarget = 0;
 
+  private double lastSpeedSetpoint;
+  private double lastSetpointTimestamp;
+
   private boolean onTarget = false;
 
   DigitalInput topLimitSwitch, bottomLimitSwitch;
 
+  SysIdRoutine sysIdRoutine;
+
+  MutVoltage voltage = Volts.mutable(0);
+  MutDistance distance = Meters.mutable(0);
+  MutLinearVelocity velocity = MetersPerSecond.mutable(0);
+
   /** Creates a new Lift. */
   public Lift() {
-
+    
     liftMotors = new HighAltitudeMotorGroup(RobotMap.LIFT_MOTOR_PORTS,
         RobotMap.LIFT_INVERTED_MOTORS_PORTS,
         RobotMap.LIFT_MOTOR_TYPES);
@@ -50,6 +78,13 @@ public class Lift extends SubsystemBase {
       bottomLimitSwitch = new DigitalInput(RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_PORT);
 
     resetEncoders();
+
+    lastSpeedSetpoint = 0;
+    lastSetpointTimestamp = Timer.getFPGATimestamp();
+
+    sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(Volts.of(1).per(Seconds), 
+      Volts.of(7), Seconds.of(10)), 
+      new SysIdRoutine.Mechanism(this::driveSysID, this::logSysId, this));
   }
 
   public void driveLift(double speed) {
@@ -94,23 +129,31 @@ public class Lift extends SubsystemBase {
     return liftProfiledPIDController;
   }
 
-  public void controlPosition(double metersTarget, double maxVoltage, double arriveOffset) {
+  public void controlPosition(double metersTarget, double maxVoltage, double arriveOffset) 
+  {
     double pidVal = liftProfiledPIDController.calculate(getLiftPosMeters(), metersTarget);
+
     double targetSpeed = liftProfiledPIDController.getSetpoint().velocity;
 
-    double feedforwardVal = liftFeedforward.calculate(targetSpeed);
+    double currentTime = Timer.getFPGATimestamp();
+    double targetAcceleration = (targetSpeed - lastSpeedSetpoint)/(currentTime - lastSetpointTimestamp); 
+
+    double feedforwardVal = liftFeedforward.calculate(targetSpeed, targetAcceleration);
+
     double liftOutput = pidVal + feedforwardVal;
 
     liftOutput = Math.clamp(liftOutput, -maxVoltage, maxVoltage);
 
+    liftMotors.setVoltage(liftOutput);
+    //liftMotors.setAll(liftOutput);
+
+    
     currentTarget = metersTarget;
-
-    liftMotors.setAll(liftOutput);
-
+    lastSpeedSetpoint = targetSpeed;
+    lastSetpointTimestamp = currentTime;
+    
     double delta = getTarget() - getLiftPosMeters();
-
     this.onTarget = Math.abs(delta) < arriveOffset;
-
     this.liftOutput = liftOutput;
     
     if (onTarget)
@@ -166,6 +209,31 @@ public class Lift extends SubsystemBase {
     liftMotors.setBrakeMode(brake);
   }
 
+  private void driveSysID(Voltage voltage)
+  {
+    liftMotors.setVoltage(voltage.magnitude());
+  }
+  private void logSysId(SysIdRoutineLog log)
+  {
+    var motor = liftMotors.getMotors().get(0);
+
+    voltage.mut_replace(motor.get() * RobotController.getBatteryVoltage(), Volts);
+    distance.mut_replace(getLiftPosMeters(), Meters);
+    velocity.mut_replace(getLiftVelocityMPS(), MetersPerSecond);
+
+    log.motor("lift").voltage(voltage).linearPosition(distance).linearVelocity(velocity);
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction)
+  {
+    return sysIdRoutine.quasistatic(direction);
+  }
+  public Command sysIdDynamic(SysIdRoutine.Direction direction)
+  {
+    return sysIdDynamic(direction);
+  }
+  
+
   public void putTuningValues()
   {
     SmartDashboard.putNumber("Lift Encoder Target", getTarget());
@@ -175,7 +243,7 @@ public class Lift extends SubsystemBase {
     SmartDashboard.putBoolean("Lift OnTarget", onTarget);
     SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
     SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());
-    SmartDashboard.putNumber("Lift Velocity Target", getLiftPIDController().getSetpoint().velocity);
+    SmartDashboard.putNumber("Lift Velocity Target", lastSpeedSetpoint);
 
   }
   @Override
