@@ -60,12 +60,12 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
-        public static final double LIFT_kS = 0.0; // 0.025
+        public static final double LIFT_kS = 0.0; // 0.0
         public static final double LIFT_kA = 0.0;
-        public static final double LIFT_kG = 0.0625; // 0.055
-        public static final double LIFT_kV = 0.1625; // 0.5
+        public static final double LIFT_kG = 0.7; // 0.0624
+        public static final double LIFT_kV = 0.0; // 0.1625
 
-        public static final double LIFT_kP = 3.7; // 1.5 //0.5
+        public static final double LIFT_kP = 0.0; // 3.7
         public static final double LIFT_kI = 0.0;
         public static final double LIFT_kD = 0.0; // 0.1 //0.25
 
@@ -370,7 +370,7 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_TURN_kP = 0;
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
-        //In radians
+        // In radians
         public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(2);
 
         //////////////////////// DRIVERS ////////////////////////
@@ -472,7 +472,7 @@ public class HighAltitudeConstants {
         }
 
         public static REEF_POSITION[] REEF_POSITIONS = { REEF_POSITION.BC, REEF_POSITION.BR, REEF_POSITION.FR,
-                        REEF_POSITION.FC, REEF_POSITION.FL, REEF_POSITION.BL};
+                        REEF_POSITION.FC, REEF_POSITION.FL, REEF_POSITION.BL };
 
         public enum REEF_SIDE {
                 LEFT(REEF_POSITION.BL, REEF_POSITION.FL),

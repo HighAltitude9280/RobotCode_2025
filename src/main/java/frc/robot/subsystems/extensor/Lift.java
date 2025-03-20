@@ -58,7 +58,7 @@ public class Lift extends SubsystemBase {
 
   /** Creates a new Lift. */
   public Lift() {
-    
+
     liftMotors = new HighAltitudeMotorGroup(RobotMap.LIFT_MOTOR_PORTS,
         RobotMap.LIFT_INVERTED_MOTORS_PORTS,
         RobotMap.LIFT_MOTOR_TYPES);
@@ -82,9 +82,9 @@ public class Lift extends SubsystemBase {
     lastSpeedSetpoint = 0;
     lastSetpointTimestamp = Timer.getFPGATimestamp();
 
-    sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(Volts.of(1).per(Seconds), 
-      Volts.of(7), Seconds.of(10)), 
-      new SysIdRoutine.Mechanism(this::driveSysID, this::logSysId, this));
+    sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(Volts.of(1).per(Seconds),
+        Volts.of(3.5), Seconds.of(10)),
+        new SysIdRoutine.Mechanism(this::driveSysID, this::logSysId, this));
   }
 
   public void driveLift(double speed) {
@@ -129,14 +129,13 @@ public class Lift extends SubsystemBase {
     return liftProfiledPIDController;
   }
 
-  public void controlPosition(double metersTarget, double maxVoltage, double arriveOffset) 
-  {
+  public void controlPosition(double metersTarget, double maxVoltage, double arriveOffset) {
     double pidVal = liftProfiledPIDController.calculate(getLiftPosMeters(), metersTarget);
 
     double targetSpeed = liftProfiledPIDController.getSetpoint().velocity;
 
     double currentTime = Timer.getFPGATimestamp();
-    double targetAcceleration = (targetSpeed - lastSpeedSetpoint)/(currentTime - lastSetpointTimestamp); 
+    double targetAcceleration = (targetSpeed - lastSpeedSetpoint) / (currentTime - lastSetpointTimestamp);
 
     double feedforwardVal = liftFeedforward.calculate(targetSpeed, targetAcceleration);
 
@@ -145,17 +144,16 @@ public class Lift extends SubsystemBase {
     liftOutput = Math.clamp(liftOutput, -maxVoltage, maxVoltage);
 
     liftMotors.setVoltage(liftOutput);
-    //liftMotors.setAll(liftOutput);
+    // liftMotors.setAll(liftOutput);
 
-    
     currentTarget = metersTarget;
     lastSpeedSetpoint = targetSpeed;
     lastSetpointTimestamp = currentTime;
-    
+
     double delta = getTarget() - getLiftPosMeters();
     this.onTarget = Math.abs(delta) < arriveOffset;
     this.liftOutput = liftOutput;
-    
+
     if (onTarget)
       liftOutput = HighAltitudeConstants.LIFT_kG;
   }
@@ -172,9 +170,8 @@ public class Lift extends SubsystemBase {
   public void setTarget(double target) {
     this.currentTarget = target;
   }
- 
-  public void addToTarget(double meters)
-  {
+
+  public void addToTarget(double meters) {
     this.currentTarget += meters;
   }
 
@@ -204,17 +201,15 @@ public class Lift extends SubsystemBase {
     liftMotors.setAll(0);
   }
 
-  public void setBrakeModeAllMotors(boolean brake)
-  {
+  public void setBrakeModeAllMotors(boolean brake) {
     liftMotors.setBrakeMode(brake);
   }
 
-  private void driveSysID(Voltage voltage)
-  {
+  private void driveSysID(Voltage voltage) {
     liftMotors.setVoltage(voltage.magnitude());
   }
-  private void logSysId(SysIdRoutineLog log)
-  {
+
+  private void logSysId(SysIdRoutineLog log) {
     var motor = liftMotors.getMotors().get(0);
 
     voltage.mut_replace(motor.get() * RobotController.getBatteryVoltage(), Volts);
@@ -224,18 +219,15 @@ public class Lift extends SubsystemBase {
     log.motor("lift").voltage(voltage).linearPosition(distance).linearVelocity(velocity);
   }
 
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction)
-  {
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.quasistatic(direction);
   }
-  public Command sysIdDynamic(SysIdRoutine.Direction direction)
-  {
-    return sysIdDynamic(direction);
-  }
-  
 
-  public void putTuningValues()
-  {
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
+  }
+
+  public void putTuningValues() {
     SmartDashboard.putNumber("Lift Encoder Target", getTarget());
     SmartDashboard.putNumber("Lift Encoder Meters", getLiftPosMeters());
     SmartDashboard.putNumber("Lift PID Output", this.liftOutput);
@@ -246,6 +238,7 @@ public class Lift extends SubsystemBase {
     SmartDashboard.putNumber("Lift Velocity Target", lastSpeedSetpoint);
 
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

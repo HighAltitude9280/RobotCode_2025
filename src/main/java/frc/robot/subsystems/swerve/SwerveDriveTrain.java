@@ -51,9 +51,10 @@ public class SwerveDriveTrain extends SubsystemBase {
   ArrayList<HighSwerveModule> modules;
   private SwerveDrivePoseEstimator swerveDrivePoseEstimator;
 
-  // TODO: cambiar isFieldOriented
-  private boolean isFieldOriented = true;
-  private boolean isOnCompetitiveField = true;
+  private boolean isFieldOriented = false;
+
+  // TODO: cambiar isOnCompetitiveField
+  private boolean isOnCompetitiveField = false;
   private PIDController distancePIDController;
 
   private PIDController visionTurnController, visionSpeedController, visionStrafeController;
@@ -158,7 +159,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     // Configure AutoBuilder
     AutoBuilder.configure(
-        this::getPoseInverted,
+        this::getPose,
         this::resetPose,
         this::getChassisSpeeds,
         this::driveSpeed,
@@ -167,9 +168,9 @@ public class SwerveDriveTrain extends SubsystemBase {
         () -> {
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
+            return alliance.get() == DriverStation.Alliance.Blue;
           }
-          return false;
+          return true;
         },
         this);
 
@@ -237,12 +238,11 @@ public class SwerveDriveTrain extends SubsystemBase {
     log.motor("Back left").voltage(blVoltage).linearPosition(blDistance).linearVelocity(blVelocity);
   }
 
-  public Command driveSysIdQuasistatic(SysIdRoutine.Direction direction)
-  {
+  public Command driveSysIdQuasistatic(SysIdRoutine.Direction direction) {
     return drivesysIdRoutine.quasistatic(direction);
   }
-  public Command driveSysIdDynamic(SysIdRoutine.Direction direction)
-  {
+
+  public Command driveSysIdDynamic(SysIdRoutine.Direction direction) {
     return drivesysIdRoutine.dynamic(direction);
   }
 
@@ -681,7 +681,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    updateOdometryWithVision();
+    // updateOdometryWithVision();
     putOdometry();
   }
 

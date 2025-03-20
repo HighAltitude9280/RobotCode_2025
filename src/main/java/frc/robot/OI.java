@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.commands.autonomous.AutoLeave;
@@ -92,17 +93,25 @@ public class OI {
                 pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
                 pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
 
-                pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
+                pilot.whileTrue(ButtonType.A, new WhileHeldPrecisionMode());
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrue(ButtonType.X, new ResetOdometryZeros());
 
                 // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
-                pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(4));
-                pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-4));
+                // pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(4));
+                // pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-4));
 
                 // pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
+
+                pilot.whileTrue(ButtonType.POV_N,
+                        Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kForward));
+                pilot.whileTrue(ButtonType.POV_S,
+                        Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kReverse));
+
+                pilot.whileTrue(ButtonType.POV_E, Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kForward));
+                pilot.whileTrue(ButtonType.POV_W, Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kReverse));
 
                 // pilot.whileTrue(ButtonType.B, new TestSwerve());
                 break;
