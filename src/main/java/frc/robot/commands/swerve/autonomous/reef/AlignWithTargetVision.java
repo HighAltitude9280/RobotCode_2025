@@ -90,26 +90,29 @@ public class AlignWithTargetVision extends Command {
 
   @Override
   public void execute() {
-    if (Double.isNaN(targetAngle)) {
+    /**
+     * 
+     if (Double.isNaN(targetAngle)) {
       determineTarget();
       if (Double.isNaN(targetAngle))
-        return;
+      return;
     }
-
+    
     double yaw = Robot.getRobotContainer().getVision().getTargetYaw(targetID);
     double area = Robot.getRobotContainer().getVision().getTargetSize(targetID);
-
+    
     yaw = Double.isNaN(yaw) ? targetYaw : yaw;
     area = Double.isNaN(area) ? HighAltitudeConstants.VISION_AREA_TARGET : area;
-
-
+    
+    
     isFinished = Robot.getRobotContainer().getSwerveDriveTrain().alignWithTarget(
-        targetAngle, yaw, area, targetYaw,
-        HighAltitudeConstants.VISION_AREA_TARGET,
-        maxTurnPower, maxSpeedPower, maxStrafePower);
-  }
-
-  @Override
+      targetAngle, yaw, area, targetYaw,
+      HighAltitudeConstants.VISION_AREA_TARGET,
+      maxTurnPower, maxSpeedPower, maxStrafePower);
+      */
+    }
+    
+    @Override
   public void end(boolean interrupted) {
     Robot.getRobotContainer().getSwerveDriveTrain().stopModules();
     Robot.getRobotContainer().getSwerveDriveTrain().setIsFieldOriented(true);

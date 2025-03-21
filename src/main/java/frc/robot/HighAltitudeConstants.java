@@ -13,7 +13,10 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.resources.Human_Drivers.HumanDrivers;
 
@@ -326,6 +329,27 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.015;
 
         //////////////////////////// VISION //////////////////////////////
+        
+        // Keep the order of the cameras consistent across the arrays.
+        public static final String[] CAMERA_NAMES = {"ArducamLeft", "ArducamRight", "LimelightLeft", "LimelightRight"};
+        public static final Transform3d[] CAMERA_POSITIONS = 
+        {
+                //ArducamLeft
+                new Transform3d(new Translation3d(0, 0, 0), 
+                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))),
+                //ArducamRight
+                new Transform3d(new Translation3d(0, 0, 0), 
+                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))),
+                //LimelightLeft
+                new Transform3d(new Translation3d(0, 0, 0), 
+                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))),
+                //LimelightRight
+                new Transform3d(new Translation3d(0, 0, 0), 
+                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0)))
+        };
+
+        // The indexes in the previous arrays of the cameras that will be used for alignment. 
+        public static final int[] ALIGNMENT_CAMERAS = {2,3};
 
         public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 3.5;
         public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;

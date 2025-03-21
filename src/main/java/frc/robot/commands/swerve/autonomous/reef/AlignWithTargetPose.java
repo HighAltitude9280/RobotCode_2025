@@ -20,6 +20,8 @@ public class AlignWithTargetPose extends Command {
   private final double maxLinearVelocity, maxAngularVelocity;
   private Pose2d targetPose;
 
+  private boolean isFinished = false;
+
   /**
    * Command to align the robot using pose.
    *
@@ -43,11 +45,13 @@ public class AlignWithTargetPose extends Command {
   }
 
   @Override
-  public void initialize() {
-    if (pos == null && side != null)
-      this.pos = side.getPosition(Robot.isFrontMode());
-
+  public void initialize() 
+  {
     left = left != null ? left : Robot.isLeftMode();
+
+    if (pos == null && side != null)
+        this.pos = side.getPosition(Robot.isFrontMode());
+      
     determineTarget();
   }
 
@@ -63,10 +67,9 @@ public class AlignWithTargetPose extends Command {
         ? HighAltitudeConstants.PATHFINDING_BLUE_BRANCHES
         : HighAltitudeConstants.PATHFINDING_RED_BRANCHES;
 
-    if (pos == null) {
+    if (pos == null) 
+    {
       var targetID = Robot.getRobotContainer().getVision().getTargetID();
-      if (targetID == -1)
-        return;
 
       for (int i = 0; i < reefIDs.length; i++) {
         if (targetID == reefIDs[i]) {
@@ -75,18 +78,21 @@ public class AlignWithTargetPose extends Command {
         }
       }
     }
-    
-    targetPose = branches[pos.getBranchID(left)];
+    if(pos != null)
+     targetPose = branches[pos.getBranchID(left)];
 
   }
 
   @Override
   public void execute() {
-    if (pos == null) {
+    if (pos == null) 
+    {
       determineTarget();
       if (pos == null)
         return;
     }
+    isFinished = Robot.getRobotContainer().getSwerveDriveTrain().AlignWithTargetPose(targetPose, maxLinearVelocity,
+    maxAngularVelocity);
   }
 
   @Override
@@ -95,8 +101,8 @@ public class AlignWithTargetPose extends Command {
   }
 
   @Override
-  public boolean isFinished() {
-    return Robot.getRobotContainer().getSwerveDriveTrain().AlignWithTargetPose(targetPose, maxLinearVelocity,
-        maxAngularVelocity);
+  public boolean isFinished() 
+  {
+    return isFinished;
   }
 }

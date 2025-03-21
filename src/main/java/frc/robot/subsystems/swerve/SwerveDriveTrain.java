@@ -468,14 +468,9 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public void updateOdometryWithVision() {
-    for (var pos : Robot.getRobotContainer().getVision().getEstimatedGlobalPose()) {
-      if (pos == null || pos.isEmpty())
-        continue;
-
-      var pose = pos.get();
-      swerveDrivePoseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-          pose.timestampSeconds);
-    }
+    for (var pos : Robot.getRobotContainer().getVision().getEstimatedRobotPoses()) 
+      swerveDrivePoseEstimator.addVisionMeasurement(pos.estimatedPose.toPose2d(),
+          pos.timestampSeconds);
   }
 
   public Pose2d getPoseAllianceCorrected() {
