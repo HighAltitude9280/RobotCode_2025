@@ -37,7 +37,6 @@ public class Climber extends SubsystemBase {
 
   /** Mueve el Climber solo después de que los servos han cambiado de posición */
   public void driveClimber(double speed) {
-    prepareClimb();
     climberMotors.setAll(speed);
   }
 

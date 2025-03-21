@@ -62,10 +62,10 @@ public class HighAltitudeConstants {
          */
         public static final double LIFT_kS = 0.0; // 0.0
         public static final double LIFT_kA = 0.0;
-        public static final double LIFT_kG = 0.7; // 0.0624
-        public static final double LIFT_kV = 0.0; // 0.1625
+        public static final double LIFT_kG = 0.0624; // 0.0624 //0.6
+        public static final double LIFT_kV = 0.1625; // 0.1625
 
-        public static final double LIFT_kP = 0.0; // 3.7
+        public static final double LIFT_kP = 3.7; // 3.
         public static final double LIFT_kI = 0.0;
         public static final double LIFT_kD = 0.0; // 0.1 //0.25
 
@@ -379,8 +379,8 @@ public class HighAltitudeConstants {
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////
-        public static final double CLIMBER_FOLD_SPEED = 0.1;
-        public static final double CLIMBER_EXTEND_SPEED = -0.1;
+        public static final double CLIMBER_FOLD_SPEED = 0.2;
+        public static final double CLIMBER_EXTEND_SPEED = -0.2;
 
         ////////////////////////////// Pathfinding ////////////////////////}
 

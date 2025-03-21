@@ -14,6 +14,8 @@ import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.CoralOrAlgaeLiftDown;
 import frc.robot.commands.compound.KeepAlgaeSafe;
 import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
+import frc.robot.commands.extensor.climber.ClimberExtend;
+import frc.robot.commands.extensor.climber.ClimberFold;
 import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
 import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
@@ -97,11 +99,11 @@ public class OI {
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
-                pilot.onTrue(ButtonType.X, new ResetOdometryZeros());
+                pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
                 // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
-                // pilot.whileTrue(ButtonType.POV_N, new TestDrivePIDFFSwerve(4));
-                // pilot.whileTrue(ButtonType.POV_S, new TestDrivePIDFFSwerve(-4));
+                pilot.whileTrue(ButtonType.LB, new TestDrivePIDFFSwerve(1));
+                pilot.whileTrue(ButtonType.RB, new TestDrivePIDFFSwerve(-1));
 
                 // pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
 
@@ -155,6 +157,9 @@ public class OI {
 
                 copilot.whileTrue(ButtonType.POV_E, new WristUpControl());
                 copilot.whileTrue(ButtonType.POV_W, new WristDownControl());
+
+                copilot.whileTrue(ButtonType.LS, new ClimberExtend());
+                copilot.whileTrue(ButtonType.RS, new ClimberFold());
 
                 /*
                  * copilot.onTrue(ButtonType.A, new
@@ -241,13 +246,13 @@ public class OI {
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
-                return pilot.getAxis(AxisType.LEFT_Y);
+                return -pilot.getAxis(AxisType.LEFT_Y);
 
             case Joakin:
-                return pilot.getAxis(AxisType.LEFT_Y);
+                return -pilot.getAxis(AxisType.LEFT_Y);
 
             default:
-                return pilot.getAxis(AxisType.LEFT_Y);
+                return -pilot.getAxis(AxisType.LEFT_Y);
 
         }
     }
@@ -257,13 +262,13 @@ public class OI {
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
-                return pilot.getAxis(AxisType.LEFT_X);
+                return -pilot.getAxis(AxisType.LEFT_X);
 
             case Joakin:
-                return pilot.getAxis(AxisType.LEFT_X);
+                return -pilot.getAxis(AxisType.LEFT_X);
 
             default:
-                return pilot.getAxis(AxisType.LEFT_X);
+                return -pilot.getAxis(AxisType.LEFT_X);
         }
     }
 
@@ -272,13 +277,13 @@ public class OI {
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
             case DefaultUser:
-                return pilot.getAxis(AxisType.RIGHT_X);
+                return -pilot.getAxis(AxisType.RIGHT_X);
 
             case Joakin:
-                return pilot.getAxis(AxisType.RIGHT_X);
+                return -pilot.getAxis(AxisType.RIGHT_X);
 
             default:
-                return pilot.getAxis(AxisType.RIGHT_X);
+                return -pilot.getAxis(AxisType.RIGHT_X);
         }
     }
 

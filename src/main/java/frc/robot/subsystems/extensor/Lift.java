@@ -143,8 +143,8 @@ public class Lift extends SubsystemBase {
 
     liftOutput = Math.clamp(liftOutput, -maxVoltage, maxVoltage);
 
-    liftMotors.setVoltage(liftOutput);
-    // liftMotors.setAll(liftOutput);
+    // liftMotors.setVoltage(liftOutput);
+    liftMotors.setAll(liftOutput);
 
     currentTarget = metersTarget;
     lastSpeedSetpoint = targetSpeed;

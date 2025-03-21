@@ -168,9 +168,9 @@ public class SwerveDriveTrain extends SubsystemBase {
         () -> {
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Blue;
+            return alliance.get() == DriverStation.Alliance.Red;
           }
-          return true;
+          return false;
         },
         this);
 
@@ -286,7 +286,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     ChassisSpeeds chassisSpeeds;
     if (getIsFieldOriented()) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(speed, strafe, turn,
-          getPoseAllianceCorrected().getRotation());
+          getPose().getRotation());
     } else {
       chassisSpeeds = new ChassisSpeeds(speed, strafe, turn);
     }
@@ -571,8 +571,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         // supplier for chassisSpeed, order of motors need to be the same as the
         // consumer of ChassisSpeed
         frontLeft.getState(),
-        backLeft.getState(),
         frontRight.getState(),
+        backLeft.getState(),
         backRight.getState());
   }
 
