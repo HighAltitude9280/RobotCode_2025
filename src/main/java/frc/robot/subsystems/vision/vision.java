@@ -27,8 +27,7 @@ public class Vision extends SubsystemBase {
   ArrayList<List<PhotonPipelineResult>> results;
 
   /** Creates a new vision. */
-  public Vision() 
-  {
+  public Vision() {
     cams = new ArrayList<>();
     poseEstimators = new ArrayList<>();
     results = new ArrayList<>();
@@ -48,128 +47,128 @@ public class Vision extends SubsystemBase {
 
     fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
-    for(var name : HighAltitudeConstants.CAMERA_NAMES)
-    {
+    for (var name : HighAltitudeConstants.CAMERA_NAMES) {
       cams.add(new PhotonCamera(name));
     }
-    for(var robotToCamera : HighAltitudeConstants.CAMERA_POSITIONS)
-    {
-      poseEstimators.add(new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, 
-        robotToCamera));
+    for (var robotToCamera : HighAltitudeConstants.CAMERA_POSITIONS) {
+      poseEstimators.add(new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+          robotToCamera));
     }
   }
 
-  public ArrayList<EstimatedRobotPose> getEstimatedRobotPoses()
-  {
+  public ArrayList<EstimatedRobotPose> getEstimatedRobotPoses() {
     var poses = new ArrayList<EstimatedRobotPose>();
 
-    if(results.isEmpty()) return poses;
+    if (results.isEmpty())
+      return poses;
 
-    for(int i = 0 ; i < cams.size() ; i ++)
-    {
+    for (int i = 0; i < cams.size(); i++) {
       Optional<EstimatedRobotPose> pose = Optional.empty();
 
-      for(var result : results.get(i))
-      {
-        if(!result.hasTargets()) continue;
+      for (var result : results.get(i)) {
+        if (!result.hasTargets())
+          continue;
 
         var dist = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
         var ambig = result.getBestTarget().poseAmbiguity;
 
-        if(dist > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_DISTANCE ||
-          ambig > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_AMBIGUITY) continue;
+        if (dist > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_DISTANCE ||
+            ambig > HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_AMBIGUITY)
+          continue;
 
         pose = poseEstimators.get(i).update(result);
       }
-      if(pose.isPresent()) poses.add(pose.get());
+      if (pose.isPresent())
+        poses.add(pose.get());
     }
     return poses;
   }
 
-  public boolean alignmentCamHasTargets() 
-  {
-    if(results.isEmpty()) return false;
-    for(int i : HighAltitudeConstants.ALIGNMENT_CAMERAS)
-    {
-      if(!results.get(i).isEmpty() && results.get(i).get(results.get(i).size() -1).hasTargets()) 
+  public boolean alignmentCamHasTargets() {
+    if (results.isEmpty())
+      return false;
+    for (int i : HighAltitudeConstants.ALIGNMENT_CAMERAS) {
+      if (!results.get(i).isEmpty() && results.get(i).get(results.get(i).size() - 1).hasTargets())
         return true;
     }
     return false;
   }
 
-  public int getTargetID() 
-  {
-    if (results.isEmpty()) return-1;
-    else
-    {
-      for(int i : HighAltitudeConstants.ALIGNMENT_CAMERAS)
-      {
-        if(!results.get(i).isEmpty())
-        {
-          var target = results.get(i).get(results.get(i).size() -1).getBestTarget();
-          if(target == null) continue;
-          else return target.getFiducialId();
+  public int getTargetID() {
+    if (results.isEmpty())
+      return -1;
+    else {
+      for (int i : HighAltitudeConstants.ALIGNMENT_CAMERAS) {
+        if (!results.get(i).isEmpty()) {
+          var target = results.get(i).get(results.get(i).size() - 1).getBestTarget();
+          if (target == null)
+            continue;
+          else
+            return target.getFiducialId();
         }
       }
     }
     return -1;
   }
-  /** 
-  public double getTargetYaw(int id) {
-    if (alignmentResults == null || alignmentResults.isEmpty())
-      return Double.NaN;
-    else
-      for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
-        if (target.getFiducialId() == id) {
-          return target.getYaw();
-        }
-      }
 
-    return Double.NaN;
-  }
-
-  public double getTargetYaw() {
-    if (alignmentResults == null || alignmentResults.isEmpty())
-      return Double.NaN;
-    else {
-      var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
-      if (target == null)
-        return Double.NaN;
-
-      return target.yaw;
-    }
-  }
-
-  public double getTargetSize(int id) {
-    if (alignmentResults == null || alignmentResults.isEmpty())
-      return Double.NaN;
-    else
-      for (var target : alignmentResults.get(alignmentResults.size() - 1).getTargets()) {
-        if (target.getFiducialId() == id) {
-          return target.getArea();
-        }
-      }
-    return Double.NaN;
-  }
-
-  public double getTargetSize() {
-    if (alignmentResults == null || alignmentResults.isEmpty())
-      return Double.NaN;
-    else {
-      var target = alignmentResults.get(alignmentResults.size() - 1).getBestTarget();
-      if (target == null)
-        return Double.NaN;
-      return target.area;
-    }
-  }
-    */
+  /**
+   * public double getTargetYaw(int id) {
+   * if (alignmentResults == null || alignmentResults.isEmpty())
+   * return Double.NaN;
+   * else
+   * for (var target : alignmentResults.get(alignmentResults.size() -
+   * 1).getTargets()) {
+   * if (target.getFiducialId() == id) {
+   * return target.getYaw();
+   * }
+   * }
+   * 
+   * return Double.NaN;
+   * }
+   * 
+   * public double getTargetYaw() {
+   * if (alignmentResults == null || alignmentResults.isEmpty())
+   * return Double.NaN;
+   * else {
+   * var target = alignmentResults.get(alignmentResults.size() -
+   * 1).getBestTarget();
+   * if (target == null)
+   * return Double.NaN;
+   * 
+   * return target.yaw;
+   * }
+   * }
+   * 
+   * public double getTargetSize(int id) {
+   * if (alignmentResults == null || alignmentResults.isEmpty())
+   * return Double.NaN;
+   * else
+   * for (var target : alignmentResults.get(alignmentResults.size() -
+   * 1).getTargets()) {
+   * if (target.getFiducialId() == id) {
+   * return target.getArea();
+   * }
+   * }
+   * return Double.NaN;
+   * }
+   * 
+   * public double getTargetSize() {
+   * if (alignmentResults == null || alignmentResults.isEmpty())
+   * return Double.NaN;
+   * else {
+   * var target = alignmentResults.get(alignmentResults.size() -
+   * 1).getBestTarget();
+   * if (target == null)
+   * return Double.NaN;
+   * return target.area;
+   * }
+   * }
+   */
 
   @Override
-  public void periodic() 
-  {
+  public void periodic() {
     results.clear();
-    for(var cam : cams)
-    {
+    for (var cam : cams) {
       results.add(cam.getAllUnreadResults());
     }
   }

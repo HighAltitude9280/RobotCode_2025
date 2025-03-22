@@ -468,7 +468,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public void updateOdometryWithVision() {
-    for (var pos : Robot.getRobotContainer().getVision().getEstimatedRobotPoses()) 
+    for (var pos : Robot.getRobotContainer().getVision().getEstimatedRobotPoses())
       swerveDrivePoseEstimator.addVisionMeasurement(pos.estimatedPose.toPose2d(),
           pos.timestampSeconds);
   }
@@ -676,7 +676,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-    // updateOdometryWithVision();
+    updateOdometryWithVision();
     putOdometry();
   }
 

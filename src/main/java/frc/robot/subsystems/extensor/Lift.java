@@ -143,8 +143,8 @@ public class Lift extends SubsystemBase {
 
     liftOutput = Math.clamp(liftOutput, -maxVoltage, maxVoltage);
 
-    // liftMotors.setVoltage(liftOutput);
-    liftMotors.setAll(liftOutput);
+    liftMotors.setVoltage(liftOutput);
+    // liftMotors.setAll(liftOutput);
 
     currentTarget = metersTarget;
     lastSpeedSetpoint = targetSpeed;
@@ -245,5 +245,13 @@ public class Lift extends SubsystemBase {
     if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
       resetEncoders();
 
+    SmartDashboard.putNumber("Lift Encoder Target", getTarget());
+    SmartDashboard.putNumber("Lift Encoder Meters", getLiftPosMeters());
+    SmartDashboard.putNumber("Lift PID Output", this.liftOutput);
+    SmartDashboard.putNumber("Lift Setpoint Position", getLiftPIDController().getSetpoint().position);
+    SmartDashboard.putBoolean("Lift OnTarget", onTarget);
+    SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
+    SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());
+    SmartDashboard.putNumber("Lift Velocity Target", lastSpeedSetpoint);
   }
 }

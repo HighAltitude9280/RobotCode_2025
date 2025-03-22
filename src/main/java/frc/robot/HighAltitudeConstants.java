@@ -63,20 +63,22 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
-        public static final double LIFT_kS = 0.0; // 0.0
-        public static final double LIFT_kA = 0.0;
-        public static final double LIFT_kG = 0.0624; // 0.0624 //0.6
-        public static final double LIFT_kV = 0.1625; // 0.1625
+        public static final double LIFT_kS = 0.097455; // 0.0
+        public static final double LIFT_kA = 0.0; // 1.2565
+        public static final double LIFT_kG = 0.72598; // 0.0624 //0.6
+        public static final double LIFT_kV = 5.1535; // 0.1625
 
-        public static final double LIFT_kP = 3.7; // 3.
+        public static final double LIFT_kP = 1.1653; // 3.7 //1.1653
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.0; // 0.1 //0.25
+        public static final double LIFT_kD = 0.921640625; // 0.1 //5.8985
 
         public static final double LIFT_MAX_VELOCITY = 0.65; // en m/s //0.65
-        public static final double LIFT_MAX_ACCELERATION = 1.3; // en m/s^2 // 1.5
+        public static final double LIFT_MAX_ACCELERATION = 1.3; // en m/s^2 // 1.3
 
         public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
                                                                // NO DEJAR EN CERO EL OFFSET
+
+        public static final double LIFT_MAX_POWER = 7; // 4
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
@@ -94,8 +96,6 @@ public class HighAltitudeConstants {
         public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 
         public static final double LIFT_TRANSITION_POSITION = 0.47;
-
-        public static final double LIFT_MAX_POWER = 4;
 
         ////////////////////////// GRIPPER //////////////////////////
         public static final double GRIPPER_OUT_SPEED = 0.2;
@@ -329,27 +329,29 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.015;
 
         //////////////////////////// VISION //////////////////////////////
-        
+
         // Keep the order of the cameras consistent across the arrays.
-        public static final String[] CAMERA_NAMES = {"ArducamLeft", "ArducamRight", "LimelightLeft", "LimelightRight"};
-        public static final Transform3d[] CAMERA_POSITIONS = 
-        {
-                //ArducamLeft
-                new Transform3d(new Translation3d(0, 0, 0), 
-                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))),
-                //ArducamRight
-                new Transform3d(new Translation3d(0, 0, 0), 
-                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))),
-                //LimelightLeft
-                new Transform3d(new Translation3d(0, 0, 0), 
-                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))),
-                //LimelightRight
-                new Transform3d(new Translation3d(0, 0, 0), 
-                        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0)))
+        public static final String[] CAMERA_NAMES = { "ArducamFront", "ArducamBack", "Limelight3",
+                        "Limelight2Pi" };
+        public static final Transform3d[] CAMERA_POSITIONS = {
+                        // ArducamFront
+                        new Transform3d(new Translation3d(0.212571011152, 0.262729491994, 0.227090042532),
+                                        new Rotation3d(Math.toRadians(0f), Math.toRadians(55),
+                                                        Math.toRadians(145.02940176))),
+                        // ArducamBack
+                        new Transform3d(new Translation3d(-0.261676313324, -0.272904897166, 0.215),
+                                        new Rotation3d(0f, Math.toRadians(-61.875), Math.toRadians(-149.52786828))),
+                        // Limelight3
+                        new Transform3d(new Translation3d(0.20908042075, -0.271998758978, 0.19710410922),
+                                        new Rotation3d(Math.toRadians(0), Math.toRadians(70), Math.toRadians(30))),
+                        // Limelight2Pi
+                        new Transform3d(new Translation3d(-0.037639273664, 0.0235341, 0.989082539932),
+                                        new Rotation3d(Math.toRadians(0f), Math.toRadians(-30), Math.toRadians(180)))
         };
 
-        // The indexes in the previous arrays of the cameras that will be used for alignment. 
-        public static final int[] ALIGNMENT_CAMERAS = {2,3};
+        // The indexes in the previous arrays of the cameras that will be used for
+        // alignment.
+        public static final int[] ALIGNMENT_CAMERAS = { 2, 0 };
 
         public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 3.5;
         public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;
