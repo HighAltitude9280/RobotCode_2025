@@ -94,6 +94,16 @@ public class Vision extends SubsystemBase {
     return false;
   }
 
+  public boolean camerasHasTargets() {
+    if (results.isEmpty())
+      return false;
+    for (int i : HighAltitudeConstants.ALIGNMENT_CAMERAS) {
+      if (!results.get(i).isEmpty() && results.get(i).get(results.get(i).size() - 1).hasTargets())
+        return true;
+    }
+    return false;
+  }
+
   public int getTargetID() {
     if (results.isEmpty())
       return -1;

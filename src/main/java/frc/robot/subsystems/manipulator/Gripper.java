@@ -25,7 +25,7 @@ public class Gripper extends SubsystemBase {
   ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
 
-  private final double CURRENT_THRESOLD = 15.0;
+  private final double CURRENT_THRESOLD = 35.0;
   boolean coralInGripper;
   // Definir el color "blanco del coral"
   private final Color coralWhite = new Color(0.30, 0.45, 0.25); // Ajusta estos valores
@@ -58,7 +58,7 @@ public class Gripper extends SubsystemBase {
   /** Verifica si la corriente del motor ha superado el umbral */
   public boolean isCurrentThresholdExceeded() {
     double current = gripperMotors.getMotors().get(0).getOutput();
-    //System.out.println("Current:" + current);
+    // System.out.println("Current:" + current);
     return current > CURRENT_THRESOLD;
   }
 
@@ -103,15 +103,6 @@ public class Gripper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (RobotMap.GRIPPER_I2C_PORT_IS_AVAILABLE) {
-      Color detectedColor = colorSensor.getColor();
-      SmartDashboard.putNumber("Color Sensor Red", detectedColor.red);
-      SmartDashboard.putNumber("Color Sensor Green", detectedColor.green);
-      SmartDashboard.putNumber("Color Sensor Blue", detectedColor.blue);
-      SmartDashboard.putString("Detected Color RGB", String.format("R: %.2f, G: %.2f, B: %.2f",
-          detectedColor.red, detectedColor.green, detectedColor.blue));
-      SmartDashboard.putBoolean("CoralInGripper", coralInGripper);
-    }
 
   }
 }

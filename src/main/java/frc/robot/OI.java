@@ -35,6 +35,7 @@ import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
+import frc.robot.commands.swerve.test.TestAlignWithPose;
 import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
 import frc.robot.commands.swerve.test.TestDrivePIDFFSwerve;
 import frc.robot.commands.swerve.test.TestSwerve;
@@ -107,14 +108,18 @@ public class OI {
 
                 // pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
 
-                pilot.whileTrue(ButtonType.POV_N,
-                        Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kForward));
-                pilot.whileTrue(ButtonType.POV_S,
-                        Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kReverse));
-
-                pilot.whileTrue(ButtonType.POV_E, Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kForward));
-                pilot.whileTrue(ButtonType.POV_W, Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kReverse));
-
+                pilot.whileTrue(ButtonType.POV_N, new TestAlignWithPose());
+                /*
+                 * pilot.whileTrue(ButtonType.POV_N,
+                 * Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kForward));
+                 * pilot.whileTrue(ButtonType.POV_S,
+                 * Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kReverse));
+                 * 
+                 * pilot.whileTrue(ButtonType.POV_E,
+                 * Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kForward));
+                 * pilot.whileTrue(ButtonType.POV_W,
+                 * Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kReverse));
+                 */
                 // pilot.whileTrue(ButtonType.B, new TestSwerve());
                 break;
             default:

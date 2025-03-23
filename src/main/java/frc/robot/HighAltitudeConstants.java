@@ -335,15 +335,15 @@ public class HighAltitudeConstants {
                         "Limelight2Pi" };
         public static final Transform3d[] CAMERA_POSITIONS = {
                         // ArducamFront
-                        new Transform3d(new Translation3d(0.212571011152, 0.262729491994, 0.227090042532),
-                                        new Rotation3d(Math.toRadians(0f), Math.toRadians(55),
-                                                        Math.toRadians(145.02940176))),
+                        new Transform3d(new Translation3d(0.221203922244, 0.25669297658, 0.19710410922),
+                                        new Rotation3d(Math.toRadians(0f), Math.toRadians(-20),
+                                                        Math.toRadians(-34.97059824))),
                         // ArducamBack
-                        new Transform3d(new Translation3d(-0.261676313324, -0.272904897166, 0.215),
-                                        new Rotation3d(0f, Math.toRadians(-61.875), Math.toRadians(-149.52786828))),
+                        new Transform3d(new Translation3d(-0.261660589262, -0.273947519502, 0.215),
+                                        new Rotation3d(0f, Math.toRadians(-28.125), Math.toRadians(-149.98289197))),
                         // Limelight3
                         new Transform3d(new Translation3d(0.20908042075, -0.271998758978, 0.19710410922),
-                                        new Rotation3d(Math.toRadians(0), Math.toRadians(70), Math.toRadians(30))),
+                                        new Rotation3d(Math.toRadians(0), Math.toRadians(-20), Math.toRadians(30))),
                         // Limelight2Pi
                         new Transform3d(new Translation3d(-0.037639273664, 0.0235341, 0.989082539932),
                                         new Rotation3d(Math.toRadians(0f), Math.toRadians(-30), Math.toRadians(180)))
@@ -391,17 +391,19 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_kI = 0;
         public static final double VISION_POSE_kD = 0;
         // In meters
-        public static final double VISION_POSE_ARRIVE_OFFSET = 0.01;
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.0; // 0.01
 
-        public static final double VISION_POSE_TURN_kP = 0;
+        public static final double VISION_POSE_TURN_kP = 2.0;
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
         // In radians
-        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(2);
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(0);// 2
 
+        public static final double VISION_POSE_MAX_TURN = 1.0;
+        public static final double VISION_POSE_MAX_SPEED = 0.5;
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////
