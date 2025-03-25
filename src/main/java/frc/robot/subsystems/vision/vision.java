@@ -94,16 +94,14 @@ public class Vision extends SubsystemBase {
     return false;
   }
 
-  public boolean targetsVisible() 
-  {
-    if(results.isEmpty())
+  public boolean targetsVisible() {
+    if (results.isEmpty())
       return false;
-    for(var camResults : results)
-    {
-      if(!camResults.isEmpty() && camResults.get(camResults.size()-1).hasTargets())
+    for (var camResults : results) {
+      if (!camResults.isEmpty() && camResults.get(camResults.size() - 1).hasTargets())
         return true;
-    } 
-    return false;  
+    }
+    return false;
   }
 
   public int getTargetID() {

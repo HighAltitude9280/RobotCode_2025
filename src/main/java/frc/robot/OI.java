@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
+import frc.robot.HighAltitudeConstants.REEF_SIDE;
 import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.cancel.PathCancelCommand;
 import frc.robot.commands.cancel.SubsystemsCancelCommand;
@@ -27,11 +28,14 @@ import frc.robot.commands.extensor.wrist.manual.WristUpControl;
 import frc.robot.commands.leds.SetFlameModeHighAltitude;
 import frc.robot.commands.leds.SetLEDOff;
 import frc.robot.commands.modes.SetCoralMode;
+import frc.robot.commands.modes.SetFrontMode;
 import frc.robot.commands.modes.SetLeftMode;
+import frc.robot.commands.modes.SetReefSideMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
 import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
+import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
@@ -71,21 +75,34 @@ public class OI {
                 // pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT,
                 // ButtonType.LT);
 
-                pilot.whileTrue(ButtonType.B, new SetLeftMode(false));
-                pilot.whileTrue(ButtonType.X, new SetLeftMode(true));
+                pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
+                pilot.whileTrue(ButtonType.POV_E,
+                        new AlignWithTargetPose(null, null, Robot.isLeftMode(),
+                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
-                pilot.onTrueCombo(new DefaultSwerveDriveNew(), ButtonType.A, ButtonType.B);
+                pilot.whileTrue(ButtonType.POV_W, new SetLeftMode(true));
+                pilot.whileTrue(ButtonType.POV_W,
+                        new AlignWithTargetPose(null, null, Robot.isLeftMode(),
+                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
-                pilot.whileTrue(ButtonType.POV_E, new WhileHeldPrecisionMode());
+                pilot.whileTrue(ButtonType.POV_N, new SetFrontMode(true));
+                pilot.whileTrue(ButtonType.POV_S, new SetFrontMode(false));
 
-                // pilot.whileTrueCombo(new AlignVisionMoveMeters(null, null, null),
-                // ButtonType.LB, ButtonType.RB);
+                pilot.whileTrue(ButtonType.X, new SetReefSideMode(REEF_SIDE.LEFT));
+                pilot.whileTrue(ButtonType.A, new SetReefSideMode(REEF_SIDE.CENTER));
+                pilot.whileTrue(ButtonType.B, new SetReefSideMode(REEF_SIDE.RIGHT));
 
-                pilot.whileTrue(ButtonType.LB, new AlignVisionMoveMeters(null, null, true));
-                pilot.whileTrue(ButtonType.RB, new AlignVisionMoveMeters(null, null, false));
+                pilot.whileTrue(ButtonType.Y, new WhileHeldPrecisionMode());
 
-                pilot.whileTrue(ButtonType.A,
-                        new AutoLeave(HighAltitudeConstants.SWERVE_METERS_DISTANCE_ALIGN_TO_REEF, 0.7));
+                pilot.whileTrue(ButtonType.LB,
+                        new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
+
+                pilot.whileTrue(ButtonType.RB,
+                        new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 break;
             case JoakinButChambing:

@@ -83,7 +83,7 @@ public class Lift extends SubsystemBase {
     lastSetpointTimestamp = Timer.getFPGATimestamp();
 
     sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(Volts.of(1).per(Seconds),
-        Volts.of(3.5), Seconds.of(10)),
+        Volts.of(1.75), Seconds.of(10)),
         new SysIdRoutine.Mechanism(this::driveSysID, this::logSysId, this));
   }
 
