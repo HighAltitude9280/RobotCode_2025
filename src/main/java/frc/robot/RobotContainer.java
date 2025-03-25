@@ -23,7 +23,9 @@ import frc.robot.commands.autonomous.ScoreCoral;
 import frc.robot.commands.autonomous.center.Center2L4Left;
 import frc.robot.commands.autonomous.center.Center2L4Right;
 import frc.robot.commands.autonomous.center.LeaveAndL4;
+import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.ScoreGamePieceLiftDown;
+import frc.robot.commands.extensor.gripper.IntakeAuto;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
@@ -170,6 +172,11 @@ public class RobotContainer {
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("PID TEST", new PathPlannerAuto("Translation PID"));
+
+        NamedCommands.registerCommand("ScoreCoralL4", new ScoreCoral(REEF_HEIGHT.TOP));
+
+        NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+        NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
 
         m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
                 new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),

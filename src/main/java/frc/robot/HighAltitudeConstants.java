@@ -130,7 +130,7 @@ public class HighAltitudeConstants {
         public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
-        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 115 };
+        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
 
         public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
