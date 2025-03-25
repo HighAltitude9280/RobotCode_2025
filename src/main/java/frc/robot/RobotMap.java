@@ -78,9 +78,9 @@ public class RobotMap {
     ////////////////////////// lIFT //////////////////////////
 
     public static final int[] LIFT_MOTOR_PORTS = { 21, 22 };
-    public static final int[] LIFT_INVERTED_MOTORS_PORTS = { 21, 22 };
-    public static final TypeOfMotor[] LIFT_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS,
-            TypeOfMotor.SPARK_MAX_BRUSHLESS };
+    public static final int[] LIFT_INVERTED_MOTORS_PORTS = {};
+    public static final TypeOfMotor[] LIFT_MOTOR_TYPES = { TypeOfMotor.TALON_FX,
+            TypeOfMotor.TALON_FX };
     public static final boolean LIFT_ENCODER_IS_INVERTED = false;
 
     public static final boolean LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE = true;
@@ -93,7 +93,7 @@ public class RobotMap {
 
     public static final int[] GRIPPER_MOTOR_PORTS = { 31 };
     public static final int[] GRIPPER_INVERTED_MOTORS_PORTS = {};
-    public static final TypeOfMotor[] GRIPPER_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
+    public static final TypeOfMotor[] GRIPPER_MOTOR_TYPES = { TypeOfMotor.TALON_FX };
     public static final boolean GRIPPER_ENCODER_IS_INVERTED = false;
 
     public static final boolean GRIPPER_DIGITAL_INPUT_IS_AVAILABLE = false;
