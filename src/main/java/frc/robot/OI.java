@@ -37,6 +37,7 @@ import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
 import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
+import frc.robot.commands.swerve.autonomous.reef.PathplanToReefThenVisionPose;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestAlignWithPose;
@@ -77,14 +78,12 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
                 pilot.whileTrue(ButtonType.POV_E,
-                        new AlignWithTargetPose(null, null, Robot.isLeftMode(),
-                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        new PathplanToReefThenVisionPose(null, null, null, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 pilot.whileTrue(ButtonType.POV_W, new SetLeftMode(true));
                 pilot.whileTrue(ButtonType.POV_W,
-                        new AlignWithTargetPose(null, null, Robot.isLeftMode(),
-                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        new PathplanToReefThenVisionPose(null, null, null, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 pilot.whileTrue(ButtonType.POV_N, new SetFrontMode(true));
