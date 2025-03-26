@@ -29,9 +29,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "2L4Right"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2L4Right"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LiftPrepare"
+                }
+              }
+            ]
           }
         },
         {
@@ -53,9 +66,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "3L4Right"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3L4Right"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LiftPrepare"
+                }
+              }
+            ]
           }
         },
         {
