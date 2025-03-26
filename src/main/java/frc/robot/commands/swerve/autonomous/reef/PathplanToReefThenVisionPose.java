@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
+import frc.robot.Robot;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
 public class PathplanToReefThenVisionPose extends InstantCommand 
@@ -18,7 +19,7 @@ public class PathplanToReefThenVisionPose extends InstantCommand
   REEF_POSITION pos = null;
   REEF_SIDE side;
 
-  boolean left;
+  Boolean left;
 
   double maxLinearVelocity, maxAngularVelocity;
 
@@ -36,6 +37,12 @@ public class PathplanToReefThenVisionPose extends InstantCommand
   @Override
   public void initialize() 
   {
+    if (pos == null)
+    {
+      if(side == null) 
+        side = Robot.getReefMode();
+      pos = side.getPosition(Robot.isFrontMode());
+    }
     var align = new AlignWithTargetPose(pos, side, left,maxLinearVelocity, maxAngularVelocity);
 
     Pose2d targetPose;
