@@ -436,19 +436,19 @@ public class SwerveDriveTrain extends SubsystemBase {
     double angleTranslation = diff.getTranslation().getAngle().getRadians();
     double deltaAngle = diff.getRotation().getDegrees();
 
-    double speed = visionPoseController.calculate(distance, 0);
-    double speedX = Math.sin(angleTranslation) * speed;
-    double speedY = Math.cos(angleTranslation) * speed;
+    double speed = Math.abs(visionPoseController.calculate(distance, 0));
+    double speedX = Math.cos(angleTranslation) * speed;
+    double speedY = Math.sin(angleTranslation) * speed;
 
     double turnSpeed = visionPoseTurnController.calculate(getPose().getRotation().getRadians(),
         targetPose.getRotation().getRadians());
 
-    speedX = Math.clamp(speedX, -maxSpeed * Math.sin(angleTranslation), maxSpeed * Math.sin(angleTranslation));
-    speedY = Math.clamp(speedY, -maxSpeed * Math.cos(angleTranslation), maxSpeed * Math.cos(angleTranslation));
+    speedX = Math.clamp(speedX, -maxSpeed * Math.cos(angleTranslation), maxSpeed * Math.cos(angleTranslation));
+    speedY = Math.clamp(speedY, -maxSpeed * Math.sin(angleTranslation), maxSpeed * Math.sin(angleTranslation));
     turnSpeed = Math.clamp(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
 
     var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, turnSpeed,
-        getPoseAllianceCorrected().getRotation());
+        getPose().getRotation());
     driveSpeed(speeds);
 
     return distance < HighAltitudeConstants.VISION_POSE_ARRIVE_OFFSET &&
