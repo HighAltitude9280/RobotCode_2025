@@ -159,7 +159,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     // Configure AutoBuilder
     AutoBuilder.configure(
-        this::getPose,
+        this::getPoseAllianceCorrected,
         this::resetPose,
         this::getChassisSpeeds,
         this::driveSpeed,
@@ -286,7 +286,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     ChassisSpeeds chassisSpeeds;
     if (getIsFieldOriented()) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(speed, strafe, turn,
-          getPose().getRotation());
+          getPoseAllianceCorrected().getRotation());
     } else {
       chassisSpeeds = new ChassisSpeeds(speed, strafe, turn);
     }
