@@ -43,7 +43,7 @@ public class ScoreCoral extends SequentialCommandGroup {
                         new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
                                 HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
                         new WristGoToTarget(wristTargetDown, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
-                new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTargetDown,
+                new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER_GOING_DOWN, liftTargetDown,
                         HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
     }
 }

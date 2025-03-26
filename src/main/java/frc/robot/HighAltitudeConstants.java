@@ -79,6 +79,7 @@ public class HighAltitudeConstants {
                                                               // NO DEJAR EN CERO EL OFFSET
 
         public static final double LIFT_MAX_POWER = 7; // 4
+        public static final double LIFT_MAX_POWER_GOING_DOWN = 3; 
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;

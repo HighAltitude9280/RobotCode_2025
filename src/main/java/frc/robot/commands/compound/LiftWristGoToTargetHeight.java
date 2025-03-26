@@ -67,7 +67,7 @@ public class LiftWristGoToTargetHeight extends InstantCommand {
       (new SequentialCommandGroup(new ParallelRaceGroup(
           new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
           new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
-          new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget,
+          new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER_GOING_DOWN, liftTarget,
               HighAltitudeConstants.LIFT_ARRIVE_OFFSET)))
           .schedule();
   }
