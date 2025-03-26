@@ -25,7 +25,7 @@ public class Gripper extends SubsystemBase {
   ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
 
-  private final double CURRENT_THRESOLD = 35.0;
+  private final double CURRENT_THRESOLD = -2.2;
   boolean coralInGripper;
   // Definir el color "blanco del coral"
   private final Color coralWhite = new Color(0.30, 0.45, 0.25); // Ajusta estos valores
@@ -58,7 +58,7 @@ public class Gripper extends SubsystemBase {
   /** Verifica si la corriente del motor ha superado el umbral */
   public boolean isCurrentThresholdExceeded() {
     double current = gripperMotors.getMotors().get(0).getOutput();
-    // System.out.println("Current:" + current);
+    System.out.println("Current:" + current);
     return current > CURRENT_THRESOLD;
   }
 

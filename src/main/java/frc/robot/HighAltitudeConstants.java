@@ -63,20 +63,20 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
-        public static final double LIFT_kS = 0.097455; // 0.0
-        public static final double LIFT_kA = 0.0; // 1.2565
-        public static final double LIFT_kG = 0.72598; // 0.0624 //0.6
-        public static final double LIFT_kV = 5.1535; // 0.1625
+        public static final double LIFT_kS = 0.03148; // 0.097455
+        public static final double LIFT_kA = 0.28027; // 1.2565
+        public static final double LIFT_kG = 0.44903; // 0.0624 //0.6 //0.72598
+        public static final double LIFT_kV = 5.0705; // 0.1625 // 5.1535
 
-        public static final double LIFT_kP = 1.1653; // 3.7 //1.1653
+        public static final double LIFT_kP = 3.0959; // 3.7 //1.1653
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.921640625; // 0.1 //5.8985
+        public static final double LIFT_kD = 0.2683; // 0.1 //0.2683
 
-        public static final double LIFT_MAX_VELOCITY = 0.65; // en m/s //0.65
-        public static final double LIFT_MAX_ACCELERATION = 1.3; // en m/s^2 // 1.3
+        public static final double LIFT_MAX_VELOCITY = 1.25; // en m/s //0.65
+        public static final double LIFT_MAX_ACCELERATION = 2.5; // en m/s^2 // 1.3
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
-                                                               // NO DEJAR EN CERO EL OFFSET
+        public static final double LIFT_ARRIVE_OFFSET = 0.05; // 0.025
+                                                              // NO DEJAR EN CERO EL OFFSET
 
         public static final double LIFT_MAX_POWER = 7; // 4
 
@@ -298,8 +298,8 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_kD = 0.075; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
-        PPHolonomicDriveController(new PIDConstants(0.125, 0, 0.00),
-                        new PIDConstants(0.875, 0, 0.000));
+        PPHolonomicDriveController(new PIDConstants(0.045, 0, 0.00),
+                        new PIDConstants(0.6, 0, 0.000));
 
         //// SpeedReduction constants
 
@@ -387,13 +387,13 @@ public class HighAltitudeConstants {
 
         // Pos alignment
 
-        public static final double VISION_POSE_kP = 0;
+        public static final double VISION_POSE_kP = 10.0;
         public static final double VISION_POSE_kI = 0;
         public static final double VISION_POSE_kD = 0;
         // In meters
-        public static final double VISION_POSE_ARRIVE_OFFSET = 0.0; // 0.01
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.01; // 0.01
 
-        public static final double VISION_POSE_TURN_kP = 2.0;
+        public static final double VISION_POSE_TURN_kP = 6.0;
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
         // In radians
@@ -412,10 +412,10 @@ public class HighAltitudeConstants {
 
         ////////////////////////////// Pathfinding ////////////////////////}
 
-        public static final double PATHFINDING_MAX_LINEAR_SPEED = 1;
-        public static final double PATHFINDING_MAX_LINEAR_ACCELERATION = 1.5;
-        public static final double PATHFINDING_MAX_ANGULAR_SPEED = Math.PI / 2;
-        public static final double PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION = Math.PI;
+        public static final double PATHFINDING_MAX_LINEAR_SPEED = 2;
+        public static final double PATHFINDING_MAX_LINEAR_ACCELERATION = 8;
+        public static final double PATHFINDING_MAX_ANGULAR_SPEED = Math.PI;
+        public static final double PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION = 2 * Math.PI;
 
         // Reef positions for pathfinding, in meteres
 

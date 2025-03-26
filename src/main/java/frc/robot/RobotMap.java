@@ -78,7 +78,7 @@ public class RobotMap {
     ////////////////////////// lIFT //////////////////////////
 
     public static final int[] LIFT_MOTOR_PORTS = { 21, 22 };
-    public static final int[] LIFT_INVERTED_MOTORS_PORTS = {};
+    public static final int[] LIFT_INVERTED_MOTORS_PORTS = { 21, 22 };
     public static final TypeOfMotor[] LIFT_MOTOR_TYPES = { TypeOfMotor.TALON_FX,
             TypeOfMotor.TALON_FX };
     public static final boolean LIFT_ENCODER_IS_INVERTED = false;

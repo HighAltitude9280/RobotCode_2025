@@ -136,6 +136,7 @@ public class RobotContainer {
         // el default command).
 
         wrist.setDefaultCommand(new WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
+
         lift.setDefaultCommand(new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
                 HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
 
@@ -177,6 +178,8 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
         NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
+
+        m_chooser.addOption("Right 3 L4", new PathPlannerAuto("3L4Right"));
 
         m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
                 new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),

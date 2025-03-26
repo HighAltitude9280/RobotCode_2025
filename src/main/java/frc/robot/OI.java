@@ -17,6 +17,7 @@ import frc.robot.commands.compound.KeepAlgaeSafe;
 import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
 import frc.robot.commands.extensor.climber.ClimberExtend;
 import frc.robot.commands.extensor.climber.ClimberFold;
+import frc.robot.commands.extensor.gripper.IntakeAuto;
 import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
 import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
@@ -78,12 +79,12 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
                 pilot.whileTrue(ButtonType.POV_E,
-                        new PathplanToReefThenVisionPose(null, null, null, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        new PathplanToReefThenVisionPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 pilot.whileTrue(ButtonType.POV_W, new SetLeftMode(true));
                 pilot.whileTrue(ButtonType.POV_W,
-                        new PathplanToReefThenVisionPose(null, null, null, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        new PathplanToReefThenVisionPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 pilot.whileTrue(ButtonType.POV_N, new SetFrontMode(true));
@@ -112,19 +113,21 @@ public class OI {
                 pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
                 pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
 
-                pilot.whileTrue(ButtonType.A, new WhileHeldPrecisionMode());
+                pilot.whileTrue(ButtonType.Y, new WhileHeldPrecisionMode());
 
                 pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
                 // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
-                pilot.whileTrue(ButtonType.LB, new TestDrivePIDFFSwerve(1));
-                pilot.whileTrue(ButtonType.RB, new TestDrivePIDFFSwerve(-1));
+                // pilot.whileTrue(ButtonType.LB, new TestDrivePIDFFSwerve(1));
+                // pilot.whileTrue(ButtonType.RB, new TestDrivePIDFFSwerve(-1));
 
+                pilot.whileTrue(ButtonType.LB, new IntakeAuto());
                 // pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
 
                 pilot.whileTrue(ButtonType.POV_N, new TestAlignWithPose());
+
                 /*
                  * pilot.whileTrue(ButtonType.POV_N,
                  * Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kForward));
@@ -136,6 +139,7 @@ public class OI {
                  * pilot.whileTrue(ButtonType.POV_W,
                  * Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kReverse));
                  */
+
                 // pilot.whileTrue(ButtonType.B, new TestSwerve());
                 break;
             default:
@@ -179,8 +183,10 @@ public class OI {
                 copilot.whileTrue(ButtonType.POV_E, new WristUpControl());
                 copilot.whileTrue(ButtonType.POV_W, new WristDownControl());
 
-                copilot.whileTrue(ButtonType.LS, new ClimberExtend());
+                // copilot.whileTrue(ButtonType.LS, new ClimberExtend());
                 copilot.whileTrue(ButtonType.RS, new ClimberFold());
+
+                copilot.whileTrue(ButtonType.LS, new ScoreGamePiece(-0.1));
 
                 /*
                  * copilot.onTrue(ButtonType.A, new

@@ -17,8 +17,7 @@ public class IntakeAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new ScoreGamePiece(0.7), withTimeout(0.4), new IntakeUntilCurrentCoral(), new WaitCommand(.1),
-        new IntakeUntilCurrentCoral(),
-        new WaitCommand(.1), new IntakeUntilCurrentCoral());
+        new ScoreGamePiece(-0.7), withTimeout(0.4), new IntakeUntilCurrentCoral(), new WaitCommand(.1),
+        new ScoreGamePiece(-0.1).withTimeout(0.4));
   }
 }

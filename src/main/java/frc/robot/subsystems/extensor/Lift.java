@@ -122,7 +122,7 @@ public class Lift extends SubsystemBase {
   }
 
   public double getLiftVelocityMPS() { // de RPM a Metersper Pulse
-    return liftMotors.getEncoderVelocity() / 60 * HighAltitudeConstants.LIFT_METERS_PER_PULSE;
+    return liftMotors.getEncoderVelocity() * HighAltitudeConstants.LIFT_METERS_PER_PULSE;
   }
 
   public ProfiledPIDController getLiftPIDController() {
@@ -143,19 +143,21 @@ public class Lift extends SubsystemBase {
 
     liftOutput = Math.clamp(liftOutput, -maxVoltage, maxVoltage);
 
+    double delta = getTarget() - getLiftPosMeters();
+    this.onTarget = Math.abs(delta) < arriveOffset;
+
+    if (onTarget) {
+      liftOutput = HighAltitudeConstants.LIFT_kG;
+    }
+
     liftMotors.setVoltage(liftOutput);
     // liftMotors.setAll(liftOutput);
 
     currentTarget = metersTarget;
     lastSpeedSetpoint = targetSpeed;
     lastSetpointTimestamp = currentTime;
-
-    double delta = getTarget() - getLiftPosMeters();
-    this.onTarget = Math.abs(delta) < arriveOffset;
     this.liftOutput = liftOutput;
 
-    if (onTarget)
-      liftOutput = HighAltitudeConstants.LIFT_kG;
   }
 
   public void controlPosition(double maxVoltage, double arriveOffset) {
