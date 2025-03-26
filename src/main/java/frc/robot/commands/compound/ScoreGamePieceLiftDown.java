@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
+import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -20,8 +21,9 @@ public class ScoreGamePieceLiftDown extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new ParallelRaceGroup(new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED), new WaitCommand(0.5
-        )),
+        new ParallelRaceGroup(
+          new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED), new WaitCommand(0.5),
+          new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET)),
         new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
   }
 }
