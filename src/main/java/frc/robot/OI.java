@@ -74,8 +74,8 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-                // pilot.whileTrueCombo(new AlignVisionMoveMeters(), ButtonType.RT,
-                // ButtonType.LT);
+                pilot.whileTrue(ButtonType.LS, new ClimberExtend());
+                pilot.whileTrue(ButtonType.RS, new ClimberFold());
 
                 pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
                 pilot.whileTrue(ButtonType.POV_E,
@@ -104,6 +104,9 @@ public class OI {
                         new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
+                pilot.onTrue(ButtonType.LT, new CoralOrAlgaeLiftDown());
+                pilot.whileTrue(ButtonType.RT, new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED));
+
                 break;
             case JoakinButChambing:
 
@@ -122,11 +125,21 @@ public class OI {
                 // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
                 // pilot.whileTrue(ButtonType.LB, new TestDrivePIDFFSwerve(1));
                 // pilot.whileTrue(ButtonType.RB, new TestDrivePIDFFSwerve(-1));
-
-                pilot.whileTrue(ButtonType.LB, new IntakeAuto());
                 // pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
 
-                pilot.whileTrue(ButtonType.POV_N, new TestAlignWithPose());
+                pilot.whileTrue(ButtonType.LB, new IntakeAuto());
+
+                pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
+
+                pilot.whileTrue(ButtonType.POV_E,
+                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(Direction.kForward));
+                pilot.whileTrue(ButtonType.POV_W,
+                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(Direction.kReverse));
+
+                pilot.whileTrue(ButtonType.POV_N,
+                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdDynamic(Direction.kForward));
+                pilot.whileTrue(ButtonType.POV_S,
+                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdDynamic(Direction.kReverse));
 
                 /*
                  * pilot.whileTrue(ButtonType.POV_N,
@@ -160,16 +173,12 @@ public class OI {
                 copilot.whileTrue(ButtonType.RB, new IntakeAlgae());
 
                 copilot.onTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
-                copilot.onFalse(ButtonType.B, new CoralOrAlgaeLiftDown());
 
                 copilot.onTrue(ButtonType.A, new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
-                copilot.onFalse(ButtonType.A, new CoralOrAlgaeLiftDown());
 
                 copilot.onTrue(ButtonType.X, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
-                copilot.onFalse(ButtonType.X, new CoralOrAlgaeLiftDown());
 
                 copilot.onTrue(ButtonType.Y, new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
-                copilot.onFalse(ButtonType.Y, new CoralOrAlgaeLiftDown());
 
                 copilot.onTrue(ButtonType.BACK, new SetCoralMode(false)); // Algae Mode
                 copilot.onTrue(ButtonType.START, new SetCoralMode(true)); // Coral Mode
@@ -183,32 +192,8 @@ public class OI {
                 copilot.whileTrue(ButtonType.POV_E, new WristUpControl());
                 copilot.whileTrue(ButtonType.POV_W, new WristDownControl());
 
-                // copilot.whileTrue(ButtonType.LS, new ClimberExtend());
-                copilot.whileTrue(ButtonType.RS, new ClimberFold());
-
                 copilot.whileTrue(ButtonType.LS, new ScoreGamePiece(-0.1));
-
-                /*
-                 * copilot.onTrue(ButtonType.A, new
-                 * LiftWristGoToReefHeight(REEF_HEIGHT.BOTTOM)); // L1 / Processor
-                 * copilot.onTrue(ButtonType.B, new LiftWristGoToReefHeight(REEF_HEIGHT.L2)); //
-                 * L2 / Algae Removal 1
-                 * copilot.onTrue(ButtonType.X, new LiftWristGoToReefHeight(REEF_HEIGHT.L3)); //
-                 * L2 / Algae Removal 2
-                 * copilot.onTrue(ButtonType.Y, new LiftWristGoToReefHeight(REEF_HEIGHT.TOP));//
-                 * L4 / NET
-                 * copilot.whileTrue(ButtonType.POV_S, new SetFlameModeHighAltitude());
-                 * copilot.whileTrue(ButtonType.POV_N, new SetLEDOff());
-                 */
-
-                // copilot.whileTrue(ButtonType.POV_E, new WristDown());
-                // copilot.whileTrue(ButtonType.POV_W, new WristUp());
-
-                /*
-                 * copilot.onTrue(ButtonType.RT, new LiftWristIntakeAlgae()); // L1 / Processor
-                 * copilot.whileTrue(ButtonType.RT, new IntakeAlgae());
-                 */
-
+                copilot.whileTrue(ButtonType.RS, new ScoreGamePiece(0.1));
                 break;
 
             case ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE:
