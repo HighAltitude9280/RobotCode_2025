@@ -410,7 +410,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   public boolean moveMeters(double maxSpeed, double angleTarget) {
     double speed = distancePIDController.calculate(targetMeters, frontLeft.getDriveDistance());
-    speed = maxSpeed * Math.clamp(speed / maxSpeed, -1, 1);
+    speed = -maxSpeed * Math.clamp(speed / maxSpeed, -1, 1);
     setModulesStates(speed, angleTarget);
 
     double delta = getMetersTarget() - frontLeft.getDriveDistance();

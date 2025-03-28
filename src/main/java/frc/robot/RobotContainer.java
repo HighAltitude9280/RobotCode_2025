@@ -209,12 +209,17 @@ public class RobotContainer {
         NamedCommands.registerCommand("ScoreCoralL4", new ScoreCoral(REEF_HEIGHT.TOP));
         NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
         NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
+        NamedCommands.registerCommand("Nothing", new WaitCommand(0));
+
+        NamedCommands.registerCommand("ScoreCoralL1", new ScoreCoral(REEF_HEIGHT.BOTTOM));
 
         m_chooser.addOption("Right 3 L4", new PathPlannerAuto("3L4Right"));
 
         m_chooser.addOption("Left 3 L4", new PathPlannerAuto("3L4Left"));
 
-        m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
+        m_chooser.addOption("Left L1 2L4", new PathPlannerAuto("1L1 2L4 Left"));
+
+        m_chooser.addOption("AutoLeave", new AutoLeave(3.0, 0.7));
     }
 
 }

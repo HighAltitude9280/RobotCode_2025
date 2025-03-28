@@ -131,7 +131,7 @@ public class HighAltitudeConstants {
         public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
-        public static final double[] WRIST_ALGAE_POSITIONS = { 155, 155, 155, 155 };
+        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
 
         public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
@@ -293,13 +293,12 @@ public class HighAltitudeConstants {
          */
 
         // FEEDBACK //
-
-        public static final double SWERVE_DIRECTION_kP = 5; // 12
+        public static final double SWERVE_DIRECTION_kP = 0.125;
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
         public static final double SWERVE_DIRECTION_kD = 0.075; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
-        PPHolonomicDriveController(new PIDConstants(0.045, 0, 0.00),
+        PPHolonomicDriveController(new PIDConstants(0.09, 0, 0.00),
                         new PIDConstants(0.6, 0, 0.000));
 
         //// SpeedReduction constants
