@@ -159,7 +159,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     // Configure AutoBuilder
     AutoBuilder.configure(
-        this::getPoseAllianceCorrected,
+        this::getPose,
         this::resetPose,
         this::getChassisSpeeds,
         this::driveSpeed,

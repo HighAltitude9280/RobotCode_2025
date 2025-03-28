@@ -26,8 +26,8 @@ public class ScoreGamePieceLiftDown extends SequentialCommandGroup {
         new ParallelRaceGroup(
             new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED), new WaitCommand(0.5),
             new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET)),
-        new SwerveMoveMeters(-0.2, Robot.getRobotContainer().getSwerveDriveTrain().getHeadingCCWPositive(),
-            0.2),
         new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
   }
 }
+// new SwerveMoveMeters(-0.2,
+// Robot.getRobotContainer().getSwerveDriveTrain().getHeadingCCWPositive(),0.2),

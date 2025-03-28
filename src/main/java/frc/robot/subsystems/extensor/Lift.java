@@ -145,7 +145,6 @@ public class Lift extends SubsystemBase {
 
     double delta = getTarget() - getLiftPosMeters();
     this.onTarget = Math.abs(delta) < arriveOffset;
-
     if (onTarget) {
       liftOutput = HighAltitudeConstants.LIFT_kG;
     }

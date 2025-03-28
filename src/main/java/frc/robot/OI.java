@@ -10,6 +10,7 @@ import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
 import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.cancel.PathCancelCommand;
+import frc.robot.commands.cancel.ResetLiftEncoders;
 import frc.robot.commands.cancel.SubsystemsCancelCommand;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.CoralOrAlgaeLiftDown;
@@ -193,7 +194,7 @@ public class OI {
                 copilot.whileTrue(ButtonType.POV_W, new WristDownControl());
 
                 copilot.whileTrue(ButtonType.LS, new ScoreGamePiece(-0.1));
-                copilot.whileTrue(ButtonType.RS, new ScoreGamePiece(0.1));
+                copilot.whileTrue(ButtonType.RS, new ResetLiftEncoders());
                 break;
 
             case ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE:

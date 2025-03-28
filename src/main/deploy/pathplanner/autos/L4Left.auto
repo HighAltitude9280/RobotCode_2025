@@ -5,33 +5,33 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoLeave"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "L4Left"
+            "pathName": "1L4 Left"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ScoreCoral"
+            "name": "ScoreCoralL4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CoralLeft"
+            "pathName": "1Coral Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

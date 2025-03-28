@@ -46,8 +46,8 @@ public class HighAltitudeConstants {
         public static final double LIFT_UP_SPEED = 0.2;
         public static final double LIFT_DOWN_SPEED = -0.1;
 
-        public static final double LIFT_UP_CONTROL_ADDED_VALUE = 0.03;
-        public static final double LIFT_DOWN_CONTROL_ADDED_VALUE = -0.03;
+        public static final double LIFT_UP_CONTROL_ADDED_VALUE = 0.05; // 0.03
+        public static final double LIFT_DOWN_CONTROL_ADDED_VALUE = -0.05; // 0.03
 
         /*
          * Necesitas la gráfica de velocidad del encoder del Lift
@@ -68,18 +68,18 @@ public class HighAltitudeConstants {
         public static final double LIFT_kG = 0.44903; // 0.0624 //0.6 //0.72598
         public static final double LIFT_kV = 5.0705; // 0.1625 // 5.1535
 
-        public static final double LIFT_kP = 3.0959; // 3.7 //1.1653
+        public static final double LIFT_kP = 3.0959; // 3.0959
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.2683; // 0.1 //0.2683
+        public static final double LIFT_kD = 0.2683; // 0.2683
 
         public static final double LIFT_MAX_VELOCITY = 1.25; // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 2.5; // en m/s^2 // 1.3
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.05; // 0.025
-                                                              // NO DEJAR EN CERO EL OFFSET
+        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
+                                                               // NO DEJAR EN CERO EL OFFSET
 
         public static final double LIFT_MAX_POWER = 7; // 4
-        public static final double LIFT_MAX_POWER_GOING_DOWN = 3;
+        public static final double LIFT_MAX_POWER_GOING_DOWN = 7.0;
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
@@ -131,7 +131,7 @@ public class HighAltitudeConstants {
         public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 };
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
-        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
+        public static final double[] WRIST_ALGAE_POSITIONS = { 155, 155, 155, 155 };
 
         public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
@@ -316,7 +316,7 @@ public class HighAltitudeConstants {
         public static final boolean ENABLE_DYNAMIC_ACCELERATION_LIMITER = true;
 
         // The height threshold above which the drivetrain acceleration will be limited.
-        public static final double DAL_MIN_HEIGHT = 0.8;
+        public static final double DAL_MIN_HEIGHT = 0.2;
 
         // Factor used to reduce acceleration as height increases beyond the minimum
         // threshold.
@@ -404,7 +404,7 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_MAX_SPEED = 1.0;
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////

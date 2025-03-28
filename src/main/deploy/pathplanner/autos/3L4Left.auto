@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1L4Right"
+            "pathName": "1L4 Left"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1Coral Right"
+            "pathName": "1Coral Left"
           }
         },
         {
@@ -35,7 +35,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2L4Right"
+                  "pathName": "2L4 Left"
                 }
               },
               {
@@ -56,7 +56,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2Coral Right"
+            "pathName": "2Coral Left"
           }
         },
         {
@@ -72,7 +72,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "3L4Right"
+                  "pathName": "3L4 Left"
                 }
               },
               {

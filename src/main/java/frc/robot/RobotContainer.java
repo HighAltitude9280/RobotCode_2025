@@ -169,17 +169,7 @@ public class RobotContainer {
         SmartDashboard.putData("Autonomous", m_chooser);
     }
 
-    public void generateAutos() {
-
-        m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
-        m_chooser.addOption("PID TEST", new PathPlannerAuto("Translation PID"));
-
-        NamedCommands.registerCommand("ScoreCoralL4", new ScoreCoral(REEF_HEIGHT.TOP));
-
-        NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
-        NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
-
-        m_chooser.addOption("Right 3 L4", new PathPlannerAuto("3L4Right"));
+    public void generateAutoGenerator() {
 
         m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
                 new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),
@@ -194,7 +184,6 @@ public class RobotContainer {
     }
 
     public void generateAutosLeon() {
-        m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
 
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
         m_chooser.addOption("2L4 Center Right", new PathPlannerAuto(new Center2L4Right()));
@@ -211,4 +200,21 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("AutoLeave", new AutoLeave(2, 0.8).withTimeout(3.4));
     }
+
+    public void generateAutos() {
+
+        m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
+        m_chooser.addOption("PID TEST", new PathPlannerAuto("Translation PID"));
+
+        NamedCommands.registerCommand("ScoreCoralL4", new ScoreCoral(REEF_HEIGHT.TOP));
+        NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+        NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
+
+        m_chooser.addOption("Right 3 L4", new PathPlannerAuto("3L4Right"));
+
+        m_chooser.addOption("Left 3 L4", new PathPlannerAuto("3L4Left"));
+
+        m_chooser.addOption("AutoLeave", new AutoLeave(1.5, 0.7));
+    }
+
 }
