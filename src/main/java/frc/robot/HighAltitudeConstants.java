@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.pathplanner.lib.auto.AutoBuilder.TriFunction;
+import com.pathplanner.lib.commands.PathfindThenFollowPath;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -453,32 +454,33 @@ public class HighAltitudeConstants {
 
         // Order as in game manual A, B, C,...
         public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = {
-                        new Pose2d(3.18, 4.2, Rotation2d.fromDegrees(0)), // A
-                        new Pose2d(3.18, 3.85, Rotation2d.fromDegrees(0)), // B
-                        new Pose2d(3.7, 3, Rotation2d.fromDegrees(60)), // C
-                        new Pose2d(3.98, 2.83, Rotation2d.fromDegrees(60)), // D
-                        new Pose2d(4.98, 2.86, Rotation2d.fromDegrees(120)), // E
-                        new Pose2d(5.25, 2.99, Rotation2d.fromDegrees(120)), // F
-                        new Pose2d(5.78, 3.86, Rotation2d.fromDegrees(180)), // G
-                        new Pose2d(5.78, 4.17, Rotation2d.fromDegrees(180)), // H
-                        new Pose2d(5.26, 5.05, Rotation2d.fromDegrees(-120)), // I
-                        new Pose2d(4.99, 5.20, Rotation2d.fromDegrees(-120)), // J
-                        new Pose2d(3.98, 5.25, Rotation2d.fromDegrees(-60)), // K
-                        new Pose2d(3.70, 5.04, Rotation2d.fromDegrees(-60)) // L
+                        new Pose2d(3.15, 4.18, Rotation2d.fromDegrees(0)), // A
+                        new Pose2d(3.15, 3.85, Rotation2d.fromDegrees(0)), // B
+                        new Pose2d(3.67, 2.95, Rotation2d.fromDegrees(60)), // C
+                        new Pose2d(3.96, 2.77, Rotation2d.fromDegrees(60)), // D
+                        new Pose2d(5.0, 2.77, Rotation2d.fromDegrees(120)), // E
+                        new Pose2d(5.29, 2.95, Rotation2d.fromDegrees(120)), // F
+                        new Pose2d(5.82, 3.85, Rotation2d.fromDegrees(180)), // G
+                        new Pose2d(5.82, 4.19, Rotation2d.fromDegrees(180)), // H
+                        new Pose2d(5.29, 5.10, Rotation2d.fromDegrees(-120)), // I
+                        new Pose2d(5.01, 5.26, Rotation2d.fromDegrees(-120)), // J
+                        new Pose2d(3.95, 5.26, Rotation2d.fromDegrees(-60)), // K
+                        new Pose2d(3.66, 5.10, Rotation2d.fromDegrees(-60)), // L
         };
+
         public static final Pose2d PATHFINDING_RED_BRANCHES[] = {
-                        new Pose2d(14.35, 3.86, Rotation2d.fromDegrees(180)), // A
-                        new Pose2d(14.35, 4.18, Rotation2d.fromDegrees(180)), // B
-                        new Pose2d(13.85, 5.03, Rotation2d.fromDegrees(-120)), // C
-                        new Pose2d(13.56, 5.22, Rotation2d.fromDegrees(-120)), // D
-                        new Pose2d(12.54, 5.20, Rotation2d.fromDegrees(-60)), // E
-                        new Pose2d(12.28, 5.05, Rotation2d.fromDegrees(-60)), // F
-                        new Pose2d(11.77, 4.19, Rotation2d.fromDegrees(0)), // G
-                        new Pose2d(11.77, 3.85, Rotation2d.fromDegrees(0)), // H
-                        new Pose2d(12.27, 3.00, Rotation2d.fromDegrees(60)), // I
-                        new Pose2d(12.55, 2.82, Rotation2d.fromDegrees(60)), // J
-                        new Pose2d(13.55, 2.81, Rotation2d.fromDegrees(120)), // K
-                        new Pose2d(13.85, 2.99, Rotation2d.fromDegrees(120)) // L
+                        new Pose2d(14.39, 3.85, Rotation2d.fromDegrees(180)), // A
+                        new Pose2d(14.39, 4.19, Rotation2d.fromDegrees(180)), // B
+                        new Pose2d(13.87, 5.09, Rotation2d.fromDegrees(-120)), // C
+                        new Pose2d(13.58, 5.26, Rotation2d.fromDegrees(-120)), // D
+                        new Pose2d(12.54, 5.26, Rotation2d.fromDegrees(-60)), // E
+                        new Pose2d(12.25, 5.20, Rotation2d.fromDegrees(-60)), // F
+                        new Pose2d(11.71, 4.19, Rotation2d.fromDegrees(0)), // G
+                        new Pose2d(11.71, 3.86, Rotation2d.fromDegrees(0)), // H
+                        new Pose2d(12.25, 2.94, Rotation2d.fromDegrees(60)), // I
+                        new Pose2d(12.53, 2.77, Rotation2d.fromDegrees(60)), // J
+                        new Pose2d(13.58, 2.78, Rotation2d.fromDegrees(120)), // K
+                        new Pose2d(13.86, 2.95, Rotation2d.fromDegrees(120)) // L
         };
 
         public enum REEF_POSITION {
