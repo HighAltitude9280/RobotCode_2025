@@ -185,7 +185,6 @@ public class RobotContainer {
 
     public void generateAutosLeon() {
 
-        m_chooser.addOption("Leave and L4", new LeaveAndL4());
         m_chooser.addOption("2L4 Center Right", new PathPlannerAuto(new Center2L4Right()));
         m_chooser.addOption("2L4 Center Left", new PathPlannerAuto(new Center2L4Left()));
 
@@ -210,14 +209,16 @@ public class RobotContainer {
         NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
         NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
         NamedCommands.registerCommand("Nothing", new WaitCommand(0));
-
         NamedCommands.registerCommand("ScoreCoralL1", new ScoreCoral(REEF_HEIGHT.BOTTOM));
+        NamedCommands.registerCommand("CenterL4", new LeaveAndL4());
 
         m_chooser.addOption("Right 3 L4", new PathPlannerAuto("3L4Right"));
-
         m_chooser.addOption("Left 3 L4", new PathPlannerAuto("3L4Left"));
-
         m_chooser.addOption("Left L1 2L4", new PathPlannerAuto("1L1 2L4 Left"));
+
+        m_chooser.addOption("Left Leave and L4 + 1", new PathPlannerAuto("2L4CenterLeft"));
+        m_chooser.addOption("Right Leave and L4 + 1", new PathPlannerAuto("2L4CenterRight"));
+        m_chooser.addOption("Leave and L4", new LeaveAndL4());
 
         m_chooser.addOption("AutoLeave", new AutoLeave(3.0, 0.7));
     }

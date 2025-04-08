@@ -90,8 +90,8 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.14, 0.35, 0.73 }; // TODO: tunear esto en
-                                                                                       // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.145, 0.35, 0.73 }; // TODO: tunear esto en
+                                                                                        // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
 
@@ -101,7 +101,7 @@ public class HighAltitudeConstants {
 
         ////////////////////////// GRIPPER //////////////////////////
         public static final double GRIPPER_OUT_SPEED = 0.2;
-        public static final double GRIPPER_IN_SPEED = -0.4;
+        public static final double GRIPPER_IN_SPEED = -0.375;
         public static final double GRIPPER_INTAKE_SPEED = -0.2;
         public static final double GRIPPER_HOLD_SPEED = 0.1;
 
@@ -294,12 +294,12 @@ public class HighAltitudeConstants {
          */
 
         // FEEDBACK //
-        public static final double SWERVE_DIRECTION_kP = 0.125;
+        public static final double SWERVE_DIRECTION_kP = 5.0;
         public static final double SWERVE_DIRECTION_kI = 0; // 0.01
         public static final double SWERVE_DIRECTION_kD = 0.075; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
-        PPHolonomicDriveController(new PIDConstants(0.09, 0, 0.00),
+        PPHolonomicDriveController(new PIDConstants(0.18, 0, 0.00),
                         new PIDConstants(0.6, 0, 0.000));
 
         //// SpeedReduction constants
@@ -388,7 +388,7 @@ public class HighAltitudeConstants {
 
         // Pos alignment
 
-        public static final double VISION_POSE_kP = 10.0;
+        public static final double VISION_POSE_kP = 3.5;
         public static final double VISION_POSE_kI = 0;
         public static final double VISION_POSE_kD = 0;
         // In meters

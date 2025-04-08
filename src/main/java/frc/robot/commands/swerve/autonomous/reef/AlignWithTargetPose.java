@@ -13,7 +13,7 @@ import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;;
 
 public class AlignWithTargetPose extends Command {
-  
+
   private REEF_POSITION pos;
   private REEF_SIDE side;
   private Boolean left;
@@ -45,13 +45,12 @@ public class AlignWithTargetPose extends Command {
   }
 
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     left = left != null ? left : Robot.isLeftMode();
 
     if (pos == null && side != null)
-        this.pos = side.getPosition(Robot.isFrontMode());
-      
+      this.pos = side.getPosition(Robot.isFrontMode());
+
     determineTarget();
   }
 
@@ -67,8 +66,7 @@ public class AlignWithTargetPose extends Command {
         ? HighAltitudeConstants.PATHFINDING_BLUE_BRANCHES
         : HighAltitudeConstants.PATHFINDING_RED_BRANCHES;
 
-    if (pos == null) 
-    {
+    if (pos == null) {
       var targetID = Robot.getRobotContainer().getVision().getTargetID();
 
       for (int i = 0; i < reefIDs.length; i++) {
@@ -78,21 +76,20 @@ public class AlignWithTargetPose extends Command {
         }
       }
     }
-    if(pos != null)
-     targetPose = branches[pos.getBranchID(left)];
+    if (pos != null)
+      targetPose = branches[pos.getBranchID(left)];
 
   }
 
   @Override
   public void execute() {
-    if (pos == null) 
-    {
+    if (pos == null) {
       determineTarget();
       if (pos == null)
         return;
     }
     isFinished = Robot.getRobotContainer().getSwerveDriveTrain().AlignWithTargetPose(targetPose, maxLinearVelocity,
-    maxAngularVelocity);
+        maxAngularVelocity);
   }
 
   @Override
@@ -101,8 +98,7 @@ public class AlignWithTargetPose extends Command {
   }
 
   @Override
-  public boolean isFinished() 
-  {
+  public boolean isFinished() {
     return isFinished;
   }
 }

@@ -58,7 +58,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   private PIDController distancePIDController;
 
   private PIDController visionTurnController, visionSpeedController, visionStrafeController;
-  private PIDController visionPoseController, visionPoseTurnController;
+  private PIDController visionPoseXController, visionPoseYController, visionPoseTurnController;
 
   private Field2d field = new Field2d();
 
@@ -187,7 +187,10 @@ public class SwerveDriveTrain extends SubsystemBase {
         HighAltitudeConstants.VISION_TURN_kI, HighAltitudeConstants.VISION_TURN_kD);
     visionTurnController.enableContinuousInput(-180, 180);
 
-    visionPoseController = new PIDController(HighAltitudeConstants.VISION_POSE_kP,
+    visionPoseXController = new PIDController(HighAltitudeConstants.VISION_POSE_kP,
+        HighAltitudeConstants.VISION_POSE_kI, HighAltitudeConstants.VISION_POSE_kD);
+
+    visionPoseYController = new PIDController(HighAltitudeConstants.VISION_POSE_kP,
         HighAltitudeConstants.VISION_POSE_kI, HighAltitudeConstants.VISION_POSE_kD);
 
     visionPoseTurnController = new PIDController(HighAltitudeConstants.VISION_POSE_TURN_kP,
@@ -436,9 +439,9 @@ public class SwerveDriveTrain extends SubsystemBase {
     double angleTranslation = diff.getTranslation().getAngle().getRadians();
     double deltaAngle = diff.getRotation().getDegrees();
 
-    double speed = Math.abs(visionPoseController.calculate(distance, 0));
-    double speedX = Math.cos(angleTranslation) * speed;
-    double speedY = Math.sin(angleTranslation) * speed;
+    // double speed = Math.abs(visionPoseController.calculate(distance, 0));
+    double speedX = visionPoseXController.calculate(getPose().getX(), targetPose.getX());
+    double speedY = visionPoseYController.calculate(getPose().getY(), targetPose.getY());
 
     double turnSpeed = visionPoseTurnController.calculate(getPose().getRotation().getRadians(),
         targetPose.getRotation().getRadians());
