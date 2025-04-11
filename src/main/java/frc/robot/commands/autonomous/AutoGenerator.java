@@ -13,14 +13,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants;
-import frc.robot.Robot;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.ScoreGamePieceLiftDown;
-import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
 import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
 import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
-import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

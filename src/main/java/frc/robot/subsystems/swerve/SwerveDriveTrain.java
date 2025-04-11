@@ -436,18 +436,16 @@ public class SwerveDriveTrain extends SubsystemBase {
   public boolean AlignWithTargetPose(Pose2d targetPose, double maxSpeed, double maxTurnSpeed) {
     var diff = targetPose.minus(getPose());
     double distance = diff.getTranslation().getNorm();
-    double angleTranslation = diff.getTranslation().getAngle().getRadians();
     double deltaAngle = diff.getRotation().getDegrees();
 
-    // double speed = Math.abs(visionPoseController.calculate(distance, 0));
     double speedX = visionPoseXController.calculate(getPose().getX(), targetPose.getX());
     double speedY = visionPoseYController.calculate(getPose().getY(), targetPose.getY());
 
     double turnSpeed = visionPoseTurnController.calculate(getPose().getRotation().getRadians(),
         targetPose.getRotation().getRadians());
 
-    speedX = Math.clamp(speedX, -maxSpeed * Math.cos(angleTranslation), maxSpeed * Math.cos(angleTranslation));
-    speedY = Math.clamp(speedY, -maxSpeed * Math.sin(angleTranslation), maxSpeed * Math.sin(angleTranslation));
+    speedX = Math.clamp(speedX, -maxSpeed, maxSpeed);
+    speedY = Math.clamp(speedY, -maxSpeed, maxSpeed);
     turnSpeed = Math.clamp(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
 
     var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, turnSpeed,
@@ -458,6 +456,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         Math.abs(deltaAngle) < HighAltitudeConstants.VISION_POSE_TURN_ARRIVE_OFFSET;
   }
 
+  
   // Odometry
   public void updateOdometry() {
     swerveDrivePoseEstimator.update(

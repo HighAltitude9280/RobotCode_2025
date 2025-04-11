@@ -31,11 +31,12 @@ public class TestAlignWithPose extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerve.AlignWithTargetPose(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+    swerve.AlignWithTargetPose(new Pose2d(3.96, 2.77, Rotation2d.fromDegrees(60)),
+        HighAltitudeConstants.VISION_POSE_MAX_SPEED,
         HighAltitudeConstants.VISION_POSE_MAX_TURN);
   }
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or is interrupted.WW
   @Override
   public void end(boolean interrupted) {
     swerve.stopModules();

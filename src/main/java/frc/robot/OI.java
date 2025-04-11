@@ -6,46 +6,35 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
-import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
-import frc.robot.commands.autonomous.AutoLeave;
-import frc.robot.commands.cancel.PathCancelCommand;
 import frc.robot.commands.cancel.ResetLiftEncoders;
-import frc.robot.commands.cancel.SubsystemsCancelCommand;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.CoralOrAlgaeLiftDown;
-import frc.robot.commands.compound.KeepAlgaeSafe;
 import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
 import frc.robot.commands.extensor.climber.ClimberExtend;
 import frc.robot.commands.extensor.climber.ClimberFold;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
-import frc.robot.commands.extensor.gripper.IntakeUntilCoral;
 import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
+import frc.robot.commands.extensor.lift.manual.LiftDown;
 import frc.robot.commands.extensor.lift.manual.LiftDownControl;
+import frc.robot.commands.extensor.lift.manual.LiftUp;
 import frc.robot.commands.extensor.lift.manual.LiftUpControl;
+import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
+import frc.robot.commands.extensor.wrist.control.WristGoToTarget;
 import frc.robot.commands.extensor.wrist.manual.WristDownControl;
 import frc.robot.commands.extensor.wrist.manual.WristUpControl;
-import frc.robot.commands.leds.SetFlameModeHighAltitude;
-import frc.robot.commands.leds.SetLEDOff;
 import frc.robot.commands.modes.SetCoralMode;
 import frc.robot.commands.modes.SetFrontMode;
 import frc.robot.commands.modes.SetLeftMode;
 import frc.robot.commands.modes.SetReefSideMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
-import frc.robot.commands.swerve.DefaultSwerveDriveNew;
-import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
-import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
-import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetVision;
 import frc.robot.commands.swerve.autonomous.reef.PathplanToReefThenVisionPose;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.commands.swerve.test.TestAlignWithPose;
-import frc.robot.commands.swerve.test.TestDirectionPIDSwerve;
-import frc.robot.commands.swerve.test.TestDrivePIDFFSwerve;
-import frc.robot.commands.swerve.test.TestSwerve;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.AxisType;
 import frc.robot.resources.joysticks.HighAltitudeJoystick.ButtonType;
@@ -131,17 +120,21 @@ public class OI {
                 pilot.whileTrue(ButtonType.LB, new IntakeAuto());
 
                 pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
-
-                pilot.whileTrue(ButtonType.POV_E,
-                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(Direction.kForward));
-                pilot.whileTrue(ButtonType.POV_W,
-                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(Direction.kReverse));
-
-                pilot.whileTrue(ButtonType.POV_N,
-                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdDynamic(Direction.kForward));
-                pilot.whileTrue(ButtonType.POV_S,
-                        Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdDynamic(Direction.kReverse));
-
+                /*
+                 * pilot.whileTrue(ButtonType.POV_E,
+                 * Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(
+                 * Direction.kForward));
+                 * pilot.whileTrue(ButtonType.POV_W,
+                 * Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(
+                 * Direction.kReverse));
+                 * 
+                 * pilot.whileTrue(ButtonType.POV_N,
+                 * Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdDynamic(Direction.
+                 * kForward));
+                 * pilot.whileTrue(ButtonType.POV_S,
+                 * Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdDynamic(Direction.
+                 * kReverse));
+                 */
                 /*
                  * pilot.whileTrue(ButtonType.POV_N,
                  * Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kForward));
@@ -201,13 +194,19 @@ public class OI {
 
                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
-                copilot.onTrue(ButtonType.BACK, new CoralModeLiftWrist(false)); // Algae Mode
-                copilot.onTrue(ButtonType.START, new CoralModeLiftWrist(true)); // Coral Mode
+                copilot.onTrue(ButtonType.BACK, new SetCoralMode(false)); // Algae Mode
+                copilot.onTrue(ButtonType.START, new SetCoralMode(true)); // Coral Mode
 
                 copilot.whileTrue(ButtonType.LB, new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED)); // Score
                                                                                                               // Game
                                                                                                               // Piece
                 copilot.whileTrue(ButtonType.RB, new IntakeAlgae()); // Intake Algae / Reverse Coral
+
+                copilot.whileTrue(ButtonType.POV_N, new LiftUp());
+                copilot.whileTrue(ButtonType.POV_S, new LiftDown());
+
+                copilot.whileTrue(ButtonType.POV_E, new WristGoToTarget(0, 0.1));
+                copilot.whileTrue(ButtonType.POV_W, new WristGoToTarget(45, 0.1));
 
                 break;
             default:
