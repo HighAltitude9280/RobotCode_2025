@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterL4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoralL4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAlignLeftBranch"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AfterLeaveLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center2L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAlignRightBranch"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoralL4"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "Vision",
+  "choreoAuto": false
+}

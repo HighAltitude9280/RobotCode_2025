@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1L4Right"
+            "pathName": "DriveTo 1L4Right"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveToRightBranch"
           }
         },
         {
@@ -35,7 +41,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2L4Right"
+                  "pathName": "DriveTo 2L4Right"
                 }
               },
               {
@@ -45,6 +51,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveToRightBranch"
           }
         },
         {
@@ -72,7 +84,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "3L4Right"
+                  "pathName": "DriveTo 3L4Right"
                 }
               },
               {
@@ -87,6 +99,12 @@
         {
           "type": "named",
           "data": {
+            "name": "DriveToLeftBranch"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "ScoreCoralL4"
           }
         }
@@ -94,6 +112,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "Vision",
   "choreoAuto": false
 }

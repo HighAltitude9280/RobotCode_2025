@@ -443,14 +443,33 @@ public class HighAltitudeConstants {
         public static final int[] BLUE_APRILTAG_IDS = { 18, 17, 22, 21, 20, 19 };
         public static final int[] RED_APRILTAG_IDS = { 7, 8, 9, 10, 11, 6 };
 
-        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.38, 7.09,
-                        Rotation2d.fromDegrees(-54.2));
-        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(1.56, 0.80,
-                        Rotation2d.fromDegrees(54.2));
+        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2));
+        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2));
 
-        public static final Pose2d PATHFINDING_LEFT_RED_FEEDER = new Pose2d(15.98, 0.77, Rotation2d.fromDegrees(125));
-        public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER = new Pose2d(15.92, 7.301,
-                        Rotation2d.fromDegrees(-125));
+        public static final Pose2d PATHFINDING_LEFT_RED_FEEDER = new Pose2d(16.410, 0.950,
+                        Rotation2d.fromDegrees(125.8));
+        public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER = new Pose2d(16.420, 7.060,
+                        Rotation2d.fromDegrees(-125.8));
+
+        public static final Pose2d PATHFINDING_BLUE_CORAL_STATION[] = {
+                        new Pose2d(1.640, 7.440, Rotation2d.fromDegrees(-54.2)), // Left Far Side
+                        new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2)), // Left Middle Side
+                        new Pose2d(0.62, 6.7, Rotation2d.fromDegrees(-54.2)), // Left Near Side
+
+                        new Pose2d(1.54, 0.66, Rotation2d.fromDegrees(54.2)), // Right Far Side
+                        new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2)), // Right Middle Side
+                        new Pose2d(0.65, 1.32, Rotation2d.fromDegrees(54.2)), // Right Near Side
+        };
+
+        public static final Pose2d PATHFINDING_RED_CORAL_STATION[] = {
+                        new Pose2d(15.980, 0.630, Rotation2d.fromDegrees(125.8)), // Left Far Side
+                        new Pose2d(16.410, 0.950, Rotation2d.fromDegrees(125.8)), // Left Middle Side
+                        new Pose2d(16.93, 1.31, Rotation2d.fromDegrees(125.8)), // Left Near Side
+
+                        new Pose2d(15.920, 7.440, Rotation2d.fromDegrees(-125.8)), // Right Far Side
+                        new Pose2d(16.420, 7.060, Rotation2d.fromDegrees(-125.8)), // Right Middle Side
+                        new Pose2d(16.940, 6.700, Rotation2d.fromDegrees(-125.8)), // Right Near Side
+        };
 
         // Order as in game manual A, B, C,...
         public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = {

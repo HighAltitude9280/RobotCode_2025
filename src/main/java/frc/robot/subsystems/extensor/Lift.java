@@ -64,6 +64,7 @@ public class Lift extends SubsystemBase {
         RobotMap.LIFT_MOTOR_TYPES);
     liftMotors.setEncoderInverted(RobotMap.LIFT_ENCODER_IS_INVERTED);
     liftMotors.setBrakeMode(true);
+    liftMotors.setEncoder(22);
 
     liftFeedforward = new ElevatorFeedforward(HighAltitudeConstants.LIFT_kS, HighAltitudeConstants.LIFT_kG,
         HighAltitudeConstants.LIFT_kV, HighAltitudeConstants.LIFT_kA);

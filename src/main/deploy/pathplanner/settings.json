@@ -9,7 +9,10 @@
     "Right",
     "npi"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Extra",
+    "Vision"
+  ],
   "defaultMaxVel": 2.0,
   "defaultMaxAccel": 8.0,
   "defaultMaxAngVel": 180.0,

@@ -31,6 +31,7 @@ import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
 import frc.robot.commands.leds.SetLEDColor;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
+import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.CANdleSubsystem;
 import frc.robot.subsystems.extensor.Climber;
@@ -200,7 +201,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("AutoLeave", new AutoLeave(2, 0.8).withTimeout(3.4));
     }
 
-    public void generateAutos() {
+    public void generateAutosMidwest() {
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         m_chooser.addOption("PID TEST", new PathPlannerAuto("Translation PID"));
@@ -219,6 +220,30 @@ public class RobotContainer {
         m_chooser.addOption("Left Leave and L4 + 1", new PathPlannerAuto("2L4CenterLeft"));
         m_chooser.addOption("Right Leave and L4 + 1", new PathPlannerAuto("2L4CenterRight"));
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
+
+        m_chooser.addOption("AutoLeave", new AutoLeave(3.0, 0.7));
+    }
+
+    public void generateAutos() {
+
+        m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
+        NamedCommands.registerCommand("Nothing", new WaitCommand(0));
+
+        NamedCommands.registerCommand("ScoreCoralL4", new ScoreCoral(REEF_HEIGHT.TOP));
+        NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+        NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
+
+        NamedCommands.registerCommand("DriveToLeftBranch",
+                new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        HighAltitudeConstants.VISION_POSE_MAX_TURN));
+
+        NamedCommands.registerCommand("DriveToRightBranch",
+                new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        HighAltitudeConstants.VISION_POSE_MAX_TURN));
+
+        m_chooser.addOption("Right 3 L4", new PathPlannerAuto("3L4Right"));
+        m_chooser.addOption("Left 3 L4", new PathPlannerAuto("3L4Left"));
+        m_chooser.addOption("Center 2L4 LeftCS", new PathPlannerAuto("2L4CenterLeft"));
 
         m_chooser.addOption("AutoLeave", new AutoLeave(3.0, 0.7));
     }
