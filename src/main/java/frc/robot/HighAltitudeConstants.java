@@ -504,6 +504,7 @@ public class HighAltitudeConstants {
                         new Pose2d(13.58, 2.78, Rotation2d.fromDegrees(120)), // K
                         new Pose2d(13.86, 2.95, Rotation2d.fromDegrees(120)) // L
         };
+        public static final double PATHFINDING_APPROACH_OFFSET = 0.5;
 
         public enum CORAL_STATION_POSITION {
                 FAR(0), MIDDLE(1), NEAR(2);

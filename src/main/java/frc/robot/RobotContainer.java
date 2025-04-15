@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.HighAltitudeConstants.CORAL_STATION_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.commands.autonomous.AutoGenerator;
@@ -173,15 +174,16 @@ public class RobotContainer {
     public void generateAutoGenerator() {
 
         m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
-                new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, true),
-                new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, true),
-                new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, true),
-                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)))));
+                new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE)))));
+
         m_chooser.addOption("High Left", new AutoGenerator(new ArrayList<>(Arrays.asList(
-                new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true),
-                new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true),
-                new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true),
-                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, null)))));
+                new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE)))));
     }
 
     public void generateAutosLeon() {
