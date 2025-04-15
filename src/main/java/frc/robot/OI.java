@@ -30,6 +30,7 @@ import frc.robot.commands.modes.SetFrontMode;
 import frc.robot.commands.modes.SetLeftMode;
 import frc.robot.commands.modes.SetReefSideMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
+import frc.robot.commands.swerve.autonomous.feeder.DriveToCoralStation;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 import frc.robot.commands.swerve.autonomous.reef.PathplanToReefThenVisionPose;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
@@ -95,7 +96,8 @@ public class OI {
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 pilot.onTrue(ButtonType.LT, new CoralOrAlgaeLiftDown());
-                pilot.whileTrue(ButtonType.RT, new ScoreGamePiece(HighAltitudeConstants.GRIPPER_IN_SPEED));
+                pilot.whileTrue(ButtonType.RT, new DriveToCoralStation(null, null,
+                        HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 break;
             case JoakinButChambing:

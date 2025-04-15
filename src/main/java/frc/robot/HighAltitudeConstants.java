@@ -451,26 +451,29 @@ public class HighAltitudeConstants {
         public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER = new Pose2d(16.420, 7.060,
                         Rotation2d.fromDegrees(-125.8));
 
-        public static final Pose2d PATHFINDING_BLUE_CORAL_STATION[] = {
+        public static final Pose2d PATHFINDING_BLUE_LEFT_CORAL_STATION[] = {
                         new Pose2d(1.640, 7.440, Rotation2d.fromDegrees(-54.2)), // Left Far Side
                         new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2)), // Left Middle Side
                         new Pose2d(0.62, 6.7, Rotation2d.fromDegrees(-54.2)), // Left Near Side
 
+        };
+        public static final Pose2d PATHFINDING_BLUE_RIGHT_CORAL_STATION[] = {
                         new Pose2d(1.54, 0.66, Rotation2d.fromDegrees(54.2)), // Right Far Side
                         new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2)), // Right Middle Side
                         new Pose2d(0.65, 1.32, Rotation2d.fromDegrees(54.2)), // Right Near Side
         };
 
-        public static final Pose2d PATHFINDING_RED_CORAL_STATION[] = {
+        public static final Pose2d PATHFINDING_RED_LEFT_CORAL_STATION[] = {
                         new Pose2d(15.980, 0.630, Rotation2d.fromDegrees(125.8)), // Left Far Side
                         new Pose2d(16.410, 0.950, Rotation2d.fromDegrees(125.8)), // Left Middle Side
                         new Pose2d(16.93, 1.31, Rotation2d.fromDegrees(125.8)), // Left Near Side
+        };
 
+        public static final Pose2d PATHFINDING_RED_RIGHT_CORAL_STATION[] = {
                         new Pose2d(15.920, 7.440, Rotation2d.fromDegrees(-125.8)), // Right Far Side
                         new Pose2d(16.420, 7.060, Rotation2d.fromDegrees(-125.8)), // Right Middle Side
                         new Pose2d(16.940, 6.700, Rotation2d.fromDegrees(-125.8)), // Right Near Side
         };
-
         // Order as in game manual A, B, C,...
         public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = {
                         new Pose2d(3.15, 4.18, Rotation2d.fromDegrees(0)), // A
@@ -501,6 +504,20 @@ public class HighAltitudeConstants {
                         new Pose2d(13.58, 2.78, Rotation2d.fromDegrees(120)), // K
                         new Pose2d(13.86, 2.95, Rotation2d.fromDegrees(120)) // L
         };
+
+        public enum CORAL_STATION_POSITION {
+                FAR(0), MIDDLE(1), NEAR(2);
+
+                int id;
+
+                private CORAL_STATION_POSITION(int id) {
+                        this.id = id;
+                }
+
+                public int getID() {
+                        return id;
+                }
+        }
 
         public enum REEF_POSITION {
                 BC(0), BR(1), FR(2), FC(3), FL(4), BL(5);
