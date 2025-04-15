@@ -1,7 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
+// AutoGenerator.java
 package frc.robot.commands.autonomous;
 
 import java.util.ArrayList;
@@ -32,33 +29,24 @@ public class AutoGenerator extends InstantCommand {
         .orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Blue;
 
     for (var portion : autoPath) {
-      // ********* REEF Portion *********
-      // 1. Get the final REEF pose from the REEF array (depending on alliance)
-      Pose2d[] reefPositions;
-      if (blueAlliance) { 
-        reefPositions = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS;
-      } else {
-        reefPositions = HighAltitudeConstants.PATHFINDING_RED_REEF_POS;
-      }
+      // ********** REEF Portion **********
+      // 1. Get final REEF pose from the appropriate array (depending on alliance)
+      Pose2d[] reefPositions = blueAlliance ? HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS
+          : HighAltitudeConstants.PATHFINDING_RED_REEF_POS;
       Pose2d reefFinal = reefPositions[portion.getPos().getID()];
-
-      // 2. Calculate the approach pose for the REEF
-      Pose2d approachReef = portion.getApproachPose(reefFinal);
-
-      // 3. Execute PathOnTheFly to the REEF approach pose
+      // 2. Calculate approach pose for REEF (intakeMode = false)
+      Pose2d approachReef = portion.getApproachPose(reefFinal, false);
+      // 3. Execute coarse pathfinding to REEF approach pose
       commands.add(SwerveDriveTrain.pathfindToPose(approachReef));
-
-      // 4. Execute fine alignment with AlignWithTargetPose to reach the exact REEF
-      // position
-      // (ScoreCoral is executed concurrently to score the preloaded game piece)
+      // 4. Execute fine alignment for REEF using AlignWithTargetPose (and ScoreCoral)
       commands.add(new SequentialCommandGroup(
           new AlignWithTargetPose(portion.getPos(), null, portion.isLeftBranch(),
               HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN),
           new ScoreCoral(portion.getHeight())));
 
-      // ********* CORAL STATION Portion *********
-      // 5. Get the final CORAL STATION pose from the coral arrays (using
-      // coralStationPos and leftFeeder)
+      // ********** CORAL STATION Portion **********
+      // 5. Get final Coral Station pose from the corresponding array using
+      // coralStationPos
       Pose2d coralFinal;
       if (blueAlliance) {
         if (portion.isLeftFeeder() != null) {
@@ -77,19 +65,14 @@ public class AutoGenerator extends InstantCommand {
           coralFinal = HighAltitudeConstants.PATHFINDING_RED_LEFT_CORAL_STATION[portion.getCoralStationPos().getID()];
         }
       }
-
-      // 6. Calculate the approach pose for the CORAL STATION
-      Pose2d approachCoral = portion.getApproachPose(coralFinal);
-
-      // 7. Execute PathOnTheFly to the CORAL STATION approach pose
+      // 6. Calculate approach pose for Coral Station (intake mode = true)
+      Pose2d approachCoral = portion.getApproachPose(coralFinal, true);
+      // 7. Execute coarse pathfinding to the Coral Station approach pose
       commands.add(SwerveDriveTrain.pathfindToPose(approachCoral));
-
-      // 8. Execute fine alignment using DriveToCoralStation to reach the exact CORAL
-      // STATION position
+      // 8. Execute fine alignment for Coral Station using DriveToCoralStation
       commands.add(new DriveToCoralStation(portion.getCoralStationPos(), portion.isLeftFeeder(),
           HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN));
-
-      // 9. (Optional) Execute intake to pick up game piece from the feeder
+      // 9. Execute intake using IntakeAuto (to pick up the game piece)
       commands.add(new IntakeAuto());
     }
 

@@ -1,7 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
+// AutoPortion.java
 package frc.robot.commands.autonomous;
 
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
@@ -65,36 +62,43 @@ public class AutoPortion {
 
     /**
      * Computes the approach pose for the given final target pose using an offset.
+     * If intakeMode is false (normal mode for REEF), the offset is subtracted
+     * (approach from behind).
+     * If intakeMode is true (for Coral Station or feeder intake), the offset is
+     * added (approach from the front).
      * For horizontal branches (angles near 0° or 180°), only the X component is
-     * offset.
-     * For all other branches, a generic calculation is applied.
+     * offset (with inverted behavior for intake mode).
      *
-     * @param finalPose The final target pose.
+     * @param finalPose  The final target pose.
+     * @param intakeMode True to calculate the approach pose for intake (Coral
+     *                   Station), false for normal REEF.
      * @return The computed approach pose.
      */
-    public Pose2d getApproachPose(Pose2d finalPose) {
-        // Get the offset distance from HighAltitudeConstants (tunable during
-        // competition)
-        double offsetDistance = HighAltitudeConstants.PATHFINDING_APPROACH_OFFSET;
+    public Pose2d getApproachPose(Pose2d finalPose, boolean intakeMode) {
+        double offsetDistance = HighAltitudeConstants.PATHFINDING_APPROACH_OFFSET; // e.g., 0.9 m
         double angleDeg = finalPose.getRotation().getDegrees();
         double newX, newY;
 
-        // For horizontal branches: if angle is within 5° of 0° or 180° (or -180°)
+        // For horizontal branches: angles near 0° or 180° (or -180°)
         if (Math.abs(angleDeg) < 5 || Math.abs(Math.abs(angleDeg) - 180) < 5) {
-            // For angle near 0°, assume target faces positive X; subtract offset to
-            // approach from behind
             if (Math.abs(angleDeg) < 5) {
-                newX = finalPose.getX() - offsetDistance;
-            } else { // angle near 180°: facing negative X; add offset to approach from behind
-                newX = finalPose.getX() + offsetDistance;
+                // Normal mode: subtract offset in X; intake mode: add offset in X.
+                newX = intakeMode ? finalPose.getX() + offsetDistance : finalPose.getX() - offsetDistance;
+            } else { // angle near 180°
+                // Normal mode: add offset; intake mode: subtract offset.
+                newX = intakeMode ? finalPose.getX() - offsetDistance : finalPose.getX() + offsetDistance;
             }
             newY = finalPose.getY();
         } else {
-            // Generic approach: apply offset in both X and Y based on the target's
-            // orientation.
+            // For non-horizontal branches, use generic calculation.
             double angleRad = finalPose.getRotation().getRadians();
-            newX = finalPose.getX() - offsetDistance * Math.cos(angleRad);
-            newY = finalPose.getY() - offsetDistance * Math.sin(angleRad);
+            if (intakeMode) {
+                newX = finalPose.getX() + offsetDistance * Math.cos(angleRad);
+                newY = finalPose.getY() + offsetDistance * Math.sin(angleRad);
+            } else {
+                newX = finalPose.getX() - offsetDistance * Math.cos(angleRad);
+                newY = finalPose.getY() - offsetDistance * Math.sin(angleRad);
+            }
         }
         return new Pose2d(newX, newY, finalPose.getRotation());
     }
