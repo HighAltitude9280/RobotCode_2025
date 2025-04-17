@@ -63,7 +63,7 @@ public class AlignWithTargetPose extends Command {
 
     // If no valid target, finish immediately
     if (pos == null || targetPose == null) {
-      isFinished = true;
+      determineTarget();
       SmartDashboard.putString("Align/status", "No valid target, ending");
     } else {
       SmartDashboard.putString("Align/status", "Target locked");
@@ -107,6 +107,8 @@ public class AlignWithTargetPose extends Command {
       SmartDashboard.putString("Align/determine/status", "pos still null");
       targetPose = null;
     }
+    System.out.println("INIT:" + targetPose);
+    System.out.println("INIT:" + Robot.getRobotContainer().getVision().getTargetID());
   }
 
   @Override
@@ -118,7 +120,6 @@ public class AlignWithTargetPose extends Command {
     if (pos == null || targetPose == null) {
       determineTarget();
       if (pos == null || targetPose == null) {
-        isFinished = true;
         return;
       }
     }
@@ -126,6 +127,9 @@ public class AlignWithTargetPose extends Command {
     isFinished = Robot.getRobotContainer()
         .getSwerveDriveTrain()
         .AlignWithTargetPose(targetPose, maxLinearVelocity, maxAngularVelocity);
+    System.out.println("AAAAA Tupu");
+    System.out.println(targetPose);
+    System.out.println(Robot.getRobotContainer().getVision().getTargetID());
   }
 
   @Override

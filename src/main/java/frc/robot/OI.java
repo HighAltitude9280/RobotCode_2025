@@ -69,14 +69,14 @@ public class OI {
                 pilot.whileTrue(ButtonType.RS, new ClimberFold());
 
                 pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
-                pilot.whileTrue(ButtonType.POV_E,
-                        new PathplanToReefThenVisionPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 pilot.whileTrue(ButtonType.POV_W, new SetLeftMode(true));
-                pilot.whileTrue(ButtonType.POV_W,
-                        new PathplanToReefThenVisionPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                /*
+                 * pilot.whileTrue(ButtonType.POV_W,
+                 * new PathplanToReefThenVisionPose(null, null, true,
+                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                 * HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                 */
 
                 pilot.whileTrue(ButtonType.POV_N, new SetFrontMode(true));
                 pilot.whileTrue(ButtonType.POV_S, new SetFrontMode(false));

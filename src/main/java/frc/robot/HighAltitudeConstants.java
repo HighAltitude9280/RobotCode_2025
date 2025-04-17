@@ -388,7 +388,7 @@ public class HighAltitudeConstants {
 
         // Pos alignment
 
-        public static final double VISION_POSE_kP = 3.5;
+        public static final double VISION_POSE_kP = 4.0;
         public static final double VISION_POSE_kI = 0;
         public static final double VISION_POSE_kD = 0;
         // In meters
