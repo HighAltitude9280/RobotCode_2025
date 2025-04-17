@@ -64,14 +64,14 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
-        public static final double LIFT_kS = 0.0; // 0.03148;
-        public static final double LIFT_kA = 0.0; // 0.28027;
-        public static final double LIFT_kG = 0.0; // 0.44903;
-        public static final double LIFT_kV = 0.0; // 5.0705;
+        public static final double LIFT_kS = 0.03148; // 0.03148;
+        public static final double LIFT_kA = 0.28027; // 0.28027;
+        public static final double LIFT_kG = 0.44903; // 0.44903;
+        public static final double LIFT_kV = 5.0705; // 5.0705;
 
-        public static final double LIFT_kP = 1; // 3.0959
+        public static final double LIFT_kP = 3.0959; // 3.0959
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.0; // 0.2683
+        public static final double LIFT_kD = 0.2683; // 0.2683
 
         public static final double LIFT_MAX_VELOCITY = 1.25; // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 2.5; // en m/s^2 // 1.3
@@ -404,8 +404,8 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_MAX_SPEED = 1.0;
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////
         public static final double CLIMBER_FOLD_SPEED = 0.2;

@@ -243,11 +243,22 @@ public class RobotContainer {
                 new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                         HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
-        m_chooser.addOption("Right 3 L4", new PathPlannerAuto("3L4Right"));
-        m_chooser.addOption("Left 3 L4", new PathPlannerAuto("3L4Left"));
-        m_chooser.addOption("Center 2L4 LeftCS", new PathPlannerAuto("2L4CenterLeft"));
-
         m_chooser.addOption("AutoLeave", new AutoLeave(3.0, 0.7));
+
+        m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
+                new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.FR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE)))));
+
+        m_chooser.addOption("High 1Center", new PathPlannerAuto("L4CenterLeft(V)"));
+        m_chooser.addOption("High 2Center", new PathPlannerAuto("2L4CenterLeft(V)"));
+
+        m_chooser.addOption("High Left", new AutoGenerator(new ArrayList<>(Arrays.asList(
+                new AutoPortion(REEF_POSITION.FL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
+                new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE)))));
     }
 
 }

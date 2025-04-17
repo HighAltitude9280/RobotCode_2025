@@ -9,20 +9,14 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.MutDistance;
-import edu.wpi.first.units.measure.MutLinearAcceleration;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
-import edu.wpi.first.units.measure.Time;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
@@ -246,14 +240,5 @@ public class Lift extends SubsystemBase {
     // This method will be called once per scheduler run
     if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
       resetEncoders();
-
-    SmartDashboard.putNumber("Lift Encoder Target", getTarget());
-    SmartDashboard.putNumber("Lift Encoder Meters", getLiftPosMeters());
-    SmartDashboard.putNumber("Lift PID Output", this.liftOutput);
-    SmartDashboard.putNumber("Lift Setpoint Position", getLiftPIDController().getSetpoint().position);
-    SmartDashboard.putBoolean("Lift OnTarget", onTarget);
-    SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
-    SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());
-    SmartDashboard.putNumber("Lift Velocity Target", lastSpeedSetpoint);
   }
 }

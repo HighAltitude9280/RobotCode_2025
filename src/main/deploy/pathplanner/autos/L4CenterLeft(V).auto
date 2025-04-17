@@ -25,31 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AfterLeaveLeft"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center2L4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoAlignRightBranch"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoralL4"
+            "pathName": "LeaveLef"
           }
         }
       ]

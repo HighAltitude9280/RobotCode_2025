@@ -23,25 +23,9 @@
         "x": 6.360116850864827,
         "y": 6.306558529875551
       },
-      "nextControl": {
-        "x": 5.456076171055206,
-        "y": 7.467231997210829
-      },
-      "isLocked": false,
-      "linkedName": "nOlEsTorBesABALAM"
-    },
-    {
-      "anchor": {
-        "x": 1.5703893442622954,
-        "y": 7.495440573770491
-      },
-      "prevControl": {
-        "x": 2.0600361426194116,
-        "y": 7.39139026853105
-      },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LeftCoralStationFarSide"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
