@@ -90,8 +90,8 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.145, 0.35, 0.73 }; // TODO: tunear esto en
-                                                                                        // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.36, 0.75 }; // TODO: tunear esto en
+                                                                                       // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
 
@@ -332,16 +332,14 @@ public class HighAltitudeConstants {
         //////////////////////////// VISION //////////////////////////////
 
         // Keep the order of the cameras consistent across the arrays.
-        public static final String[] CAMERA_NAMES = { "ArducamFront", "ArducamBack", "Limelight3",
+        public static final String[] CAMERA_NAMES = { "ArducamBack2", "Limelight3",
                         "Limelight2Pi" };
         public static final Transform3d[] CAMERA_POSITIONS = {
                         // ArducamFront
                         new Transform3d(new Translation3d(0.221203922244, 0.25669297658, 0.20210410922),
                                         new Rotation3d(Math.toRadians(0f), Math.toRadians(-20),
                                                         Math.toRadians(-34.97059824))),
-                        // ArducamBack
-                        new Transform3d(new Translation3d(-0.261660589262, -0.273947519502, 0.215),
-                                        new Rotation3d(0f, Math.toRadians(-28.125), Math.toRadians(-149.98289197))),
+
                         // Limelight3
                         new Transform3d(new Translation3d(0.20908042075, -0.271998758978, 0.20210410922),
                                         new Rotation3d(Math.toRadians(0), Math.toRadians(-20), Math.toRadians(30))),
@@ -352,7 +350,7 @@ public class HighAltitudeConstants {
 
         // The indexes in the previous arrays of the cameras that will be used for
         // alignment.
-        public static final int[] ALIGNMENT_CAMERAS = { 2, 0 };
+        public static final int[] ALIGNMENT_CAMERAS = { 0, 1 };
 
         public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 3.5;
         public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;
@@ -388,17 +386,17 @@ public class HighAltitudeConstants {
 
         // Pos alignment
 
-        public static final double VISION_POSE_kP = 4.0;
+        public static final double VISION_POSE_kP = 5.5;
         public static final double VISION_POSE_kI = 0;
-        public static final double VISION_POSE_kD = 0;
+        public static final double VISION_POSE_kD = 0.1;
         // In meters
-        public static final double VISION_POSE_ARRIVE_OFFSET = 0.01; // 0.01
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.15; // 0.01
 
         public static final double VISION_POSE_TURN_kP = 6.0;
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
         // In radians
-        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(0);// 2
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(2.5);// 2
 
         public static final double VISION_POSE_MAX_TURN = 1.0;
         public static final double VISION_POSE_MAX_SPEED = 1.0;

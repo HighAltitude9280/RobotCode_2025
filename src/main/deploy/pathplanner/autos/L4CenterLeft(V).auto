@@ -13,19 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoAlignLeftBranch"
+            "name": "DriveToLeftBranch"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ScoreCoralL4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeaveLef"
           }
         }
       ]

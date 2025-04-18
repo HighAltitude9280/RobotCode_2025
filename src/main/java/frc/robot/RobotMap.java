@@ -83,7 +83,7 @@ public class RobotMap {
             TypeOfMotor.TALON_FX };
     public static final boolean LIFT_ENCODER_IS_INVERTED = false;
 
-    public static final boolean LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE = false;
+    public static final boolean LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE = true;
     public static final int LIFT_TOP_LIMIT_SWITCH_PORT = 9;
 
     public static final boolean LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE = false;

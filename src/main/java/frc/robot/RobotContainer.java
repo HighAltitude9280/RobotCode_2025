@@ -23,6 +23,7 @@ import frc.robot.commands.autonomous.AutoPortion;
 import frc.robot.commands.autonomous.ScoreCoral;
 import frc.robot.commands.autonomous.center.Center2L4Left;
 import frc.robot.commands.autonomous.center.Center2L4Right;
+import frc.robot.commands.autonomous.center.DriveToL4;
 import frc.robot.commands.autonomous.center.LeaveAndL4;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.ScoreGamePieceLiftDown;
@@ -35,7 +36,6 @@ import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.CANdleSubsystem;
-import frc.robot.subsystems.extensor.Climber;
 import frc.robot.subsystems.extensor.Lift;
 import frc.robot.subsystems.extensor.Wrist;
 import frc.robot.subsystems.manipulator.Gripper;
@@ -52,7 +52,6 @@ public class RobotContainer {
     private Gripper gripper;
     private Wrist wrist;
     private CANdleSubsystem candleSubsystem;
-    private Climber climber;
 
     private boolean precisionModeOn = false;
     private boolean overrideEncoders = false;
@@ -68,7 +67,6 @@ public class RobotContainer {
         gripper = new Gripper();
         wrist = new Wrist();
         candleSubsystem = new CANdleSubsystem();
-        climber = new Climber();
     }
 
     public Navx getNavx() {
@@ -97,10 +95,6 @@ public class RobotContainer {
 
     public CANdleSubsystem getCaNdleSubsystem() {
         return candleSubsystem;
-    }
-
-    public Climber getClimber() {
-        return climber;
     }
 
     public void setOverrideEncoders(boolean override) {
@@ -259,6 +253,10 @@ public class RobotContainer {
                 new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
                 new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
                 new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE)))));
+
+        m_chooser.addOption("Leave and L4", new LeaveAndL4());
+
+        m_chooser.addOption("DriveToL4", new DriveToL4());
     }
 
 }

@@ -99,12 +99,9 @@ public class AlignWithTargetPose extends Command {
     if (pos != null) {
       int branchIndex = pos.getBranchID(left);
       targetPose = branches[branchIndex];
-      SmartDashboard.putNumber("Align/determine/targetX", targetPose.getX());
-      SmartDashboard.putNumber("Align/determine/targetY", targetPose.getY());
-      SmartDashboard.putNumber("Align/determine/targetRot", targetPose.getRotation().getDegrees());
-      SmartDashboard.putString("Align/determine/status", "Pose set");
+      System.out.println(pos);
     } else {
-      SmartDashboard.putString("Align/determine/status", "pos still null");
+      System.out.println("AAAAAAAAAAAA");
       targetPose = null;
     }
     System.out.println("INIT:" + targetPose);
@@ -120,6 +117,7 @@ public class AlignWithTargetPose extends Command {
     if (pos == null || targetPose == null) {
       determineTarget();
       if (pos == null || targetPose == null) {
+        determineTarget();
         return;
       }
     }
@@ -140,6 +138,7 @@ public class AlignWithTargetPose extends Command {
 
   @Override
   public boolean isFinished() {
+
     return isFinished;
   }
 }

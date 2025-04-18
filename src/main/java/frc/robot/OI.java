@@ -11,8 +11,6 @@ import frc.robot.commands.cancel.ResetLiftEncoders;
 import frc.robot.commands.compound.LiftWristGoToTargetHeight;
 import frc.robot.commands.compound.CoralOrAlgaeLiftDown;
 import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
-import frc.robot.commands.extensor.climber.ClimberExtend;
-import frc.robot.commands.extensor.climber.ClimberFold;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
 import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
@@ -65,8 +63,6 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-                pilot.whileTrue(ButtonType.LS, new ClimberExtend());
-                pilot.whileTrue(ButtonType.RS, new ClimberFold());
 
                 pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
 
@@ -122,6 +118,14 @@ public class OI {
                 pilot.whileTrue(ButtonType.LB, new IntakeAuto());
 
                 pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
+
+                pilot.whileTrue(ButtonType.POV_W,
+                        new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
+
+                pilot.whileTrue(ButtonType.POV_E,
+                        new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
                 /*
                  * pilot.whileTrue(ButtonType.POV_E,
                  * Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(

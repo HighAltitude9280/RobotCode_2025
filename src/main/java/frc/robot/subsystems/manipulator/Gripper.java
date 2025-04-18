@@ -25,7 +25,7 @@ public class Gripper extends SubsystemBase {
   ColorSensorV3 colorSensor;
   ColorMatch colorMatcher;
 
-  private final double CURRENT_THRESOLD = -2.2;
+  private final double CURRENT_THRESOLD = -2.3;
   boolean coralInGripper;
   // Definir el color "blanco del coral"
   private final Color coralWhite = new Color(0.30, 0.45, 0.25); // Ajusta estos valores
@@ -103,6 +103,5 @@ public class Gripper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
   }
 }
