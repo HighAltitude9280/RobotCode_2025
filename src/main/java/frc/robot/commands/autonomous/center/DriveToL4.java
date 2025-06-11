@@ -4,6 +4,8 @@
 
 package frc.robot.commands.autonomous.center;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,8 +30,8 @@ public class DriveToL4 extends SequentialCommandGroup {
         new AutoLeave(2.2, 0.7).withTimeout(2), new ParallelRaceGroup(
             new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                 HighAltitudeConstants.VISION_POSE_MAX_TURN),
-            new WaitCommand(5)),
-        new ScoreCoral(REEF_HEIGHT.TOP));
+            new WaitCommand(3)),
+        new ScoreCoral(REEF_HEIGHT.TOP), new PathPlannerAuto("AfterLeaveLeft"));
   }
 
 }

@@ -33,6 +33,7 @@ import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
 import frc.robot.commands.leds.SetLEDColor;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
+import frc.robot.commands.swerve.autonomous.feeder.DriveToCoralStation;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.CANdleSubsystem;
@@ -224,9 +225,10 @@ public class RobotContainer {
 
         m_chooser.setDefaultOption("Nothing", new WaitCommand(0));
         NamedCommands.registerCommand("Nothing", new WaitCommand(0));
+        m_chooser.addOption("PID TEST", new PathPlannerAuto("Translation PID"));
 
         NamedCommands.registerCommand("ScoreCoralL4", new ScoreCoral(REEF_HEIGHT.TOP));
-        NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+        NamedCommands.registerCommand("LiftPrepare", new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
         NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
 
         NamedCommands.registerCommand("DriveToLeftBranch",
@@ -237,6 +239,11 @@ public class RobotContainer {
                 new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                         HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
+        NamedCommands.registerCommand("DriveToCoralStation", new DriveToCoralStation(null, null,
+                HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN));
+
+        NamedCommands.registerCommand("Move", new AutoLeave(2.2, 0.7).withTimeout(2.2));
+
         m_chooser.addOption("AutoLeave", new AutoLeave(3.0, 0.7));
 
         m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
@@ -245,14 +252,17 @@ public class RobotContainer {
                 new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
                 new AutoPortion(REEF_POSITION.FR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE)))));
 
-        m_chooser.addOption("High 1Center", new PathPlannerAuto("L4CenterLeft(V)"));
-        m_chooser.addOption("High 2Center", new PathPlannerAuto("2L4CenterLeft(V)"));
-
         m_chooser.addOption("High Left", new AutoGenerator(new ArrayList<>(Arrays.asList(
                 new AutoPortion(REEF_POSITION.FL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
                 new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
                 new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
                 new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE)))));
+
+        m_chooser.addOption("High 2Center", new PathPlannerAuto("2L4CenterLeft(V)"));
+
+        m_chooser.addOption("3L4 Left(V)", new PathPlannerAuto("3L4 Left(V)"));
+
+        m_chooser.addOption("3L4 Right(V)", new PathPlannerAuto("3L4Right(V)"));
 
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
 

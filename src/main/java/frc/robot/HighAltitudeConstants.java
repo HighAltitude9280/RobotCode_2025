@@ -90,8 +90,8 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.16, 0.36, 0.75 }; // TODO: tunear esto en
-                                                                                       // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.165, 0.36, 0.75 }; // TODO: tunear esto en
+                                                                                        // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
 
@@ -352,7 +352,7 @@ public class HighAltitudeConstants {
         // alignment.
         public static final int[] ALIGNMENT_CAMERAS = { 0, 1 };
 
-        public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 3.5;
+        public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 2.5;
         public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;
 
         // TODO: CONFIGURE THESE CONSTANTS
@@ -386,11 +386,11 @@ public class HighAltitudeConstants {
 
         // Pos alignment
 
-        public static final double VISION_POSE_kP = 5.5;
+        public static final double VISION_POSE_kP = 6.0;
         public static final double VISION_POSE_kI = 0;
         public static final double VISION_POSE_kD = 0.1;
         // In meters
-        public static final double VISION_POSE_ARRIVE_OFFSET = 0.15; // 0.01
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.2; // 0.01
 
         public static final double VISION_POSE_TURN_kP = 6.0;
         public static final double VISION_POSE_TURN_kI = 0;

@@ -64,7 +64,7 @@ public class AlignWithTargetPose extends Command {
     // If no valid target, finish immediately
     if (pos == null || targetPose == null) {
       determineTarget();
-      SmartDashboard.putString("Align/status", "No valid target, ending");
+      System.out.println("No Target nor pose");
     } else {
       SmartDashboard.putString("Align/status", "Target locked");
     }
@@ -110,30 +110,34 @@ public class AlignWithTargetPose extends Command {
 
   @Override
   public void execute() {
-    if (isFinished) {
-      return;
-    }
+    isFinished = false;
+
     // Ensure we have a valid target on each execute
     if (pos == null || targetPose == null) {
       determineTarget();
-      if (pos == null || targetPose == null) {
-        determineTarget();
-        return;
-      }
     }
-    // Align with target
-    isFinished = Robot.getRobotContainer()
-        .getSwerveDriveTrain()
-        .AlignWithTargetPose(targetPose, maxLinearVelocity, maxAngularVelocity);
-    System.out.println("AAAAA Tupu");
-    System.out.println(targetPose);
+
+    else if (pos != null) {
+      // Align with target
+      isFinished = Robot.getRobotContainer()
+          .getSwerveDriveTrain()
+          .AlignWithTargetPose(targetPose, maxLinearVelocity, maxAngularVelocity);
+      System.out.println("Executing");
+    } else {
+      System.out.println("valio verga");
+    }
+
+    System.out.println(targetPose + "TUPU");
     System.out.println(Robot.getRobotContainer().getVision().getTargetID());
+    if (isFinished) {
+      return;
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
     Robot.getRobotContainer().getSwerveDriveTrain().stopModules();
-    SmartDashboard.putString("Align/status", interrupted ? "Interrupted" : "Completed");
+    System.out.println("End");
   }
 
   @Override

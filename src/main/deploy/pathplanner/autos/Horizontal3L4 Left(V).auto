@@ -5,133 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "DriveTo 1L4Right"
-          }
-        },
-        {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "DriveToRightBranch"
+                  "pathName": "1L4 Left(V)"
                 }
               },
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoralL4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "1Coral Right"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
                 "type": "named",
                 "data": {
-                  "name": "DriveToCoralStation"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
+                  "name": "LiftPrepare"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DriveTo 2L4Right"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "DriveToRightBranch"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoralL4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "2Coral Right"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "DriveToCoralStation"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DriveTo 3L4Right"
           }
         },
         {
@@ -145,9 +34,140 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 2.0
+                  "name": "Wait"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoralL4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1Coral Left"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveToCoralStation"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Wait"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2L4 Left(V)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LiftPrepare"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveToLeftBranch"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Wait"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoralL4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2Coral Left"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveToCoralStation"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Wait"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3L4 Left"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LiftPrepare"
                 }
               }
             ]

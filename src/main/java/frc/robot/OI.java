@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
@@ -28,6 +29,9 @@ import frc.robot.commands.modes.SetFrontMode;
 import frc.robot.commands.modes.SetLeftMode;
 import frc.robot.commands.modes.SetReefSideMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
+import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
+import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
+import frc.robot.commands.swerve.autonomous.TurnWheels;
 import frc.robot.commands.swerve.autonomous.feeder.DriveToCoralStation;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 import frc.robot.commands.swerve.autonomous.reef.PathplanToReefThenVisionPose;
@@ -63,7 +67,6 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
-
                 pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
 
                 pilot.whileTrue(ButtonType.POV_W, new SetLeftMode(true));
@@ -84,12 +87,24 @@ public class OI {
                 pilot.whileTrue(ButtonType.Y, new WhileHeldPrecisionMode());
 
                 pilot.whileTrue(ButtonType.LB,
-                        new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        new AlignWithTargetPose(null, null, true,
+                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                pilot.onFalse(ButtonType.LB,
+                        new SequentialCommandGroup(new TurnWheels(0).withTimeout(0.5), new SwerveMoveMeters(0.2, 0,
+                                HighAltitudeConstants.VISION_POSE_MAX_SPEED).withTimeout(0.25)));
+
+                // pilot.whileTrue(ButtonType.LB, new AlignVisionMoveMeters(true));
+
+                // pilot.whileTrue(ButtonType.RB, new AlignVisionMoveMeters(false));
 
                 pilot.whileTrue(ButtonType.RB,
-                        new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        new AlignWithTargetPose(null, null, false,
+                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                pilot.onFalse(ButtonType.RB,
+                        new SequentialCommandGroup(new TurnWheels(0).withTimeout(0.5), new SwerveMoveMeters(0.2, 0,
+                                HighAltitudeConstants.VISION_POSE_MAX_SPEED).withTimeout(0.25)));
 
                 pilot.onTrue(ButtonType.LT, new CoralOrAlgaeLiftDown());
                 pilot.whileTrue(ButtonType.RT, new DriveToCoralStation(null, null,
