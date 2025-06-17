@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
-import frc.robot.commands.compound.LiftWristGoToTargetHeight;
+import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
 import frc.robot.commands.extensor.gripper.manual.StopGripper;
 import frc.robot.subsystems.extensor.Lift;
 import frc.robot.subsystems.extensor.Wrist;

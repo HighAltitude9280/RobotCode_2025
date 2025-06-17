@@ -13,6 +13,7 @@ public class Human_Drivers {
         Joakin, // Joakin use a specific configuration for his joystick
         Yare,
         Carlos,
+        OneDriver,
 
         ///// PROGRAMMING /////
         JoakinButChambing, // Joaquin use a specific configuration for testing features

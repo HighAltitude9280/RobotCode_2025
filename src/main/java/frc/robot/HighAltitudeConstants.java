@@ -384,25 +384,25 @@ public class HighAltitudeConstants {
 
         public static final double SWERVE_METERS_DISTANCE_ALIGN_TO_REEF = 0.33;
 
-        // Pos alignment
+        // TODO: Pos alignment
 
-        public static final double VISION_POSE_kP = 6.0;
+        public static final double VISION_POSE_kP = 12.0;
         public static final double VISION_POSE_kI = 0;
-        public static final double VISION_POSE_kD = 0.1;
+        public static final double VISION_POSE_kD = 0.0;
         // In meters
-        public static final double VISION_POSE_ARRIVE_OFFSET = 0.2; // 0.01
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.0; // 0.01
 
         public static final double VISION_POSE_TURN_kP = 6.0;
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
         // In radians
-        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(2.5);// 2
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(0);// 2
 
         public static final double VISION_POSE_MAX_TURN = 1.0;
         public static final double VISION_POSE_MAX_SPEED = 1.0;
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Joakin;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////

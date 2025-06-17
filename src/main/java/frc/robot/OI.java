@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
+import frc.robot.commands.autonomous.ScoreCoral;
 import frc.robot.commands.cancel.ResetLiftEncoders;
-import frc.robot.commands.compound.LiftWristGoToTargetHeight;
-import frc.robot.commands.compound.CoralOrAlgaeLiftDown;
-import frc.robot.commands.compound.notbeingused.CoralModeLiftWrist;
+import frc.robot.commands.extensor.compound.both.CoralOrAlgaeLiftDown;
+import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
+import frc.robot.commands.extensor.compound.coral.ScoreGamePieceLiftDown;
+import frc.robot.commands.extensor.compound.notbeingused.CoralModeLiftWrist;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
 import frc.robot.commands.extensor.gripper.IntakeUntilCurrentCoral;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
@@ -28,6 +30,7 @@ import frc.robot.commands.modes.SetCoralMode;
 import frc.robot.commands.modes.SetFrontMode;
 import frc.robot.commands.modes.SetLeftMode;
 import frc.robot.commands.modes.SetReefSideMode;
+import frc.robot.commands.modes.ToggleCoralMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
 import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
 import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
@@ -111,6 +114,23 @@ public class OI {
                         HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                 break;
+            case OneDriver:
+
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
+
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
+
+                pilot.whileTrue(ButtonType.Y, new WhileHeldPrecisionMode()); // binded to a paddle
+
+                pilot.whileTrue(ButtonType.X, new ToggleCoralMode());
+
+                break;
             case JoakinButChambing:
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
@@ -134,13 +154,22 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
 
-                pilot.whileTrue(ButtonType.POV_W,
-                        new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                pilot.whileTrue(ButtonType.A, new ScoreCoral(REEF_HEIGHT.L3));
 
-                pilot.whileTrue(ButtonType.POV_E,
-                        new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                pilot.whileTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+                pilot.whileTrue(ButtonType.X, new ScoreGamePieceLiftDown());
+
+                /*
+                 * pilot.whileTrue(ButtonType.POV_W,
+                 * new AlignWithTargetPose(null, null, true,
+                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                 * HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                 * 
+                 * pilot.whileTrue(ButtonType.POV_E,
+                 * new AlignWithTargetPose(null, null, false,
+                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                 * HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                 */
                 /*
                  * pilot.whileTrue(ButtonType.POV_E,
                  * Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdQuasistatic(
