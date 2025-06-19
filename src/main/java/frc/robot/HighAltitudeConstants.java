@@ -90,10 +90,10 @@ public class HighAltitudeConstants {
                         * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.165, 0.36, 0.75 }; // TODO: tunear esto en
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.165, 0.35, 0.72 }; // TODO: tunear esto en
                                                                                         // competencia
         // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.75 };
+        public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.73 };
 
         public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 
@@ -129,7 +129,7 @@ public class HighAltitudeConstants {
         public static final double WRIST_ZERO_ANGLE = 0.0;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 };
+        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 }; // 40 in comp
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
         public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
@@ -386,23 +386,23 @@ public class HighAltitudeConstants {
 
         // TODO: Pos alignment
 
-        public static final double VISION_POSE_kP = 12.0;
+        public static final double VISION_POSE_kP = 6.0;
         public static final double VISION_POSE_kI = 0;
-        public static final double VISION_POSE_kD = 0.0;
+        public static final double VISION_POSE_kD = 0.1;
         // In meters
-        public static final double VISION_POSE_ARRIVE_OFFSET = 0.0; // 0.01
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.05; // 0.01
 
-        public static final double VISION_POSE_TURN_kP = 6.0;
+        public static final double VISION_POSE_TURN_kP = 4.0;
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
         // In radians
-        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(0);// 2
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(3);// 2
 
         public static final double VISION_POSE_MAX_TURN = 1.0;
         public static final double VISION_POSE_MAX_SPEED = 1.0;
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.OneDriver;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////
@@ -474,8 +474,8 @@ public class HighAltitudeConstants {
         };
         // Order as in game manual A, B, C,...
         public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = {
-                        new Pose2d(3.15, 4.18, Rotation2d.fromDegrees(0)), // A
-                        new Pose2d(3.15, 3.85, Rotation2d.fromDegrees(0)), // B
+                        new Pose2d(3.1, 4.18, Rotation2d.fromDegrees(0)), // A
+                        new Pose2d(3.1, 3.85, Rotation2d.fromDegrees(0)), // B
                         new Pose2d(3.67, 2.95, Rotation2d.fromDegrees(60)), // C
                         new Pose2d(3.96, 2.77, Rotation2d.fromDegrees(60)), // D
                         new Pose2d(5.0, 2.77, Rotation2d.fromDegrees(120)), // E

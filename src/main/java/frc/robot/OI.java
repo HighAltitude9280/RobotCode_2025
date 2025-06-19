@@ -4,11 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
 import frc.robot.commands.autonomous.ScoreCoral;
+import frc.robot.commands.cancel.PathCancelCommand;
 import frc.robot.commands.cancel.ResetLiftEncoders;
 import frc.robot.commands.extensor.compound.both.CoralOrAlgaeLiftDown;
 import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
@@ -32,6 +35,9 @@ import frc.robot.commands.modes.SetLeftMode;
 import frc.robot.commands.modes.SetReefSideMode;
 import frc.robot.commands.modes.ToggleCoralMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
+import frc.robot.commands.oneDriver.AlignWithBranchAndScore;
+import frc.robot.commands.oneDriver.CollectAlgaeFromReef;
+import frc.robot.commands.oneDriver.DriveToPose;
 import frc.robot.commands.swerve.autonomous.AlignVisionMoveMeters;
 import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
 import frc.robot.commands.swerve.autonomous.TurnWheels;
@@ -128,7 +134,27 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.Y, new WhileHeldPrecisionMode()); // binded to a paddle
 
+                pilot.onTrue(ButtonType.LB, new AlignWithBranchAndScore(true, REEF_HEIGHT.TOP));
+                pilot.onTrue(ButtonType.LT, new AlignWithBranchAndScore(true, REEF_HEIGHT.L3));
+                pilot.onTrue(ButtonType.POV_W, new AlignWithBranchAndScore(true, REEF_HEIGHT.L2));
+
+                pilot.onTrue(ButtonType.RB, new AlignWithBranchAndScore(false, REEF_HEIGHT.TOP));
+                pilot.onTrue(ButtonType.RT, new AlignWithBranchAndScore(false, REEF_HEIGHT.L3));
+                pilot.onTrue(ButtonType.POV_E, new AlignWithBranchAndScore(false, REEF_HEIGHT.L2));
+
+                pilot.onTrue(ButtonType.POV_N, new CollectAlgaeFromReef(true));
+                pilot.whileTrue(ButtonType.POV_N, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+                pilot.onTrue(ButtonType.POV_N, new IntakeAlgae());
+
+                pilot.whileTrue(ButtonType.A, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
+
+                pilot.whileTrue(ButtonType.POV_S, new IntakeAuto());
                 pilot.whileTrue(ButtonType.X, new ToggleCoralMode());
+
+                pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.LS, ButtonType.RS);
+
+                pilot.whileTrue(ButtonType.LS, new ScoreGamePiece(-0.1));
+                pilot.whileTrue(ButtonType.RS, new ScoreGamePiece(0.1));
 
                 break;
             case JoakinButChambing:
