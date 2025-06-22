@@ -30,6 +30,6 @@ public class CollectAlgaeFromReef extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new DriveToPose(new Pose2d(2.8, 4.0, Rotation2d.fromDegrees(0))),
-        new SwerveMoveMeters(0.4, 0, 0.5));
+        new SwerveMoveMeters(0.4, 0, 0.5).withTimeout(1));
   }
 }

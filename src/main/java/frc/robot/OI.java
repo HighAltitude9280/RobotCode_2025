@@ -148,6 +148,8 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.A, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
 
+                pilot.whileTrue(ButtonType.B, new DriveToPose(new Pose2d(0.75, 3.78, Rotation2d.fromDegrees(0))));
+
                 pilot.whileTrue(ButtonType.POV_S, new IntakeAuto());
                 pilot.whileTrue(ButtonType.X, new ToggleCoralMode());
 
