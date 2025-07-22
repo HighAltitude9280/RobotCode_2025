@@ -173,6 +173,7 @@ public class OI {
                 pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
 
+                pilot.whileTrue(ButtonType.POV_W, new WhileHeldPrecisionMode());
                 pilot.whileTrue(ButtonType.X, new TogglePrecisionMode());
 
                 break;

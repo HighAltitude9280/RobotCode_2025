@@ -25,6 +25,7 @@ public class TogglePrecisionMode extends InstantCommand {
       Robot.getRobotContainer().getCaNdleSubsystem().startRainbowAnimation();
 
     else {
+      Robot.getRobotContainer().getCaNdleSubsystem().turnOff();
       Robot.getRobotContainer().getCaNdleSubsystem().setLEDColor(0, 146, 128);
     }
   }
