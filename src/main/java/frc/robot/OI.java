@@ -35,6 +35,7 @@ import frc.robot.commands.modes.SetFrontMode;
 import frc.robot.commands.modes.SetLeftMode;
 import frc.robot.commands.modes.SetReefSideMode;
 import frc.robot.commands.modes.ToggleCoralMode;
+import frc.robot.commands.modes.TogglePrecisionMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
 import frc.robot.commands.oneDriver.AlignWithBranchAndScore;
 import frc.robot.commands.oneDriver.CollectAlgaeFromReef;
@@ -160,6 +161,23 @@ public class OI {
                 pilot.whileTrue(ButtonType.RS, new ScoreGamePiece(0.1));
 
                 break;
+
+            case OnlySwerve:
+
+                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
+
+                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START, ButtonType.BACK);
+
+                pilot.whileTrue(ButtonType.X, new TogglePrecisionMode());
+
+                break;
+
             case JoakinButChambing:
 
                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
