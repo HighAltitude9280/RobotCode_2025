@@ -196,7 +196,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     visionPoseTurnController = new PIDController(HighAltitudeConstants.VISION_POSE_TURN_kP,
         HighAltitudeConstants.VISION_POSE_TURN_kI, HighAltitudeConstants.VISION_POSE_TURN_kD);
 
-    visionPoseTurnController.enableContinuousInput(-180, 180);
+    visionPoseTurnController.enableContinuousInput(-Math.PI, Math.PI);
 
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));

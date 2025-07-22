@@ -126,6 +126,7 @@ public class AlignWithTargetPose extends Command {
     } else {
       System.out.println("valio verga");
     }
+    SmartDashboard.putNumber("Taget angle",targetPose.getRotation().getDegrees());
 
     System.out.println(targetPose + "TUPU");
     System.out.println(Robot.getRobotContainer().getVision().getTargetID());

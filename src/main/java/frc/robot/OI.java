@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
+import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
 import frc.robot.commands.autonomous.ScoreCoral;
 import frc.robot.commands.cancel.PathCancelCommand;
@@ -180,12 +181,13 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.LB, new IntakeAuto());
 
-                pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
+                pilot.whileTrue(ButtonType.RB, new PathplanToReefThenVisionPose(REEF_POSITION.BC,null, true,1,1));
+                //pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
 
                 pilot.whileTrue(ButtonType.A, new ScoreCoral(REEF_HEIGHT.L3));
 
-                pilot.whileTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
-                pilot.whileTrue(ButtonType.X, new ScoreGamePieceLiftDown());
+                //pilot.whileTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+                pilot.whileTrue(ButtonType.X, new PathCancelCommand());
 
                 /*
                  * pilot.whileTrue(ButtonType.POV_W,
