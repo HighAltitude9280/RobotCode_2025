@@ -299,7 +299,7 @@ public class HighAltitudeConstants {
         public static final double SWERVE_DIRECTION_kD = 0.075; // 0.0128
 
         public static final PPHolonomicDriveController pathFollowerConfig = new // TODO: PathPlanner Constants
-        PPHolonomicDriveController(new PIDConstants(0.36, 0, 0.00),
+        PPHolonomicDriveController(new PIDConstants(4, 0, 0.00),
                         new PIDConstants(1.2, 0, 0.000));
 
         //// SpeedReduction constants
@@ -402,7 +402,11 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_MAX_SPEED = 1.0;
         //////////////////////// DRIVERS ////////////////////////
 
+<<<<<<< HEAD
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
+=======
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.OnlySwerve;
+>>>>>>> b37b783017f290a7d19cb03e14ebdd72062511b4
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////

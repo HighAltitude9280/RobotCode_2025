@@ -44,7 +44,7 @@ public class TestAlignWithPose extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return swerve.AlignWithTargetPose(new Pose2d(1.0, 0.0, Rotation2d.fromDegrees(0)),
+    return swerve.AlignWithTargetPose(new Pose2d(15.5, 4.0, Rotation2d.fromDegrees(179.99)),
         HighAltitudeConstants.VISION_POSE_MAX_SPEED,
         HighAltitudeConstants.VISION_POSE_MAX_TURN);
 
