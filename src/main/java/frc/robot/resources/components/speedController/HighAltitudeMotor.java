@@ -239,7 +239,7 @@ public class HighAltitudeMotor {
                 return sparkMax.getEncoder().getVelocity();
 
             case SPARK_MAX_BRUSHLESS:
-                
+
                 return sparkMax.getEncoder().getVelocity();
 
             case SPARK_FLEX:
@@ -471,8 +471,7 @@ public class HighAltitudeMotor {
         return inverted;
     }
 
-    public double get()
-    {
+    public double get() {
         switch (motorToUse) {
 
             case TALON_SRX:
@@ -484,7 +483,7 @@ public class HighAltitudeMotor {
                 return talonFX.get();
 
             case SPARK_MAX_BRUSHED:
-                
+
                 return sparkMax.getAppliedOutput();
 
             case SPARK_MAX_BRUSHLESS:
@@ -499,8 +498,7 @@ public class HighAltitudeMotor {
         }
     }
 
-    public double getBusVoltage()
-    {
+    public double getBusVoltage() {
         switch (motorToUse) {
 
             case TALON_SRX:
@@ -508,11 +506,11 @@ public class HighAltitudeMotor {
                 return talonSRX.getBusVoltage();
 
             case TALON_FX:
-        
+
                 return talonFX.getSupplyVoltage().getValueAsDouble();
 
             case SPARK_MAX_BRUSHED:
-                
+
                 return sparkMax.getBusVoltage();
 
             case SPARK_MAX_BRUSHLESS:
@@ -525,7 +523,7 @@ public class HighAltitudeMotor {
             default:
                 return 0;
         }
-    }    
+    }
 
     public void setVoltage(double volts) {
         switch (motorToUse) {

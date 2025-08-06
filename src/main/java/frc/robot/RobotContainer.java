@@ -20,6 +20,7 @@ import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.commands.autonomous.AutoGenerator;
 import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.autonomous.AutoPortion;
+import frc.robot.commands.autonomous.AutoTest;
 import frc.robot.commands.autonomous.ScoreCoral;
 import frc.robot.commands.autonomous.center.Center2L4Left;
 import frc.robot.commands.autonomous.center.Center2L4Right;
@@ -267,6 +268,8 @@ public class RobotContainer {
         m_chooser.addOption("Leave and L4", new LeaveAndL4());
 
         m_chooser.addOption("DriveToL4", new DriveToL4());
+
+        m_chooser.addOption("AutoTest", new AutoTest());
     }
 
 }

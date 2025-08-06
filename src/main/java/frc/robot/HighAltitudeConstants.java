@@ -64,14 +64,14 @@ public class HighAltitudeConstants {
          * 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños,
          * que quede smooth
          */
-        public static final double LIFT_kS = 0.03148; // 0.03148;
-        public static final double LIFT_kA = 0.28027; // 0.28027;
+        public static final double LIFT_kS = 0.0; // 0.03148;
+        public static final double LIFT_kA = 0.0; // 0.28027;
         public static final double LIFT_kG = 0.44903; // 0.44903;
-        public static final double LIFT_kV = 5.0705; // 5.0705;
+        public static final double LIFT_kV = 0.0; // 5.0705;
 
-        public static final double LIFT_kP = 3.0959; // 3.0959
+        public static final double LIFT_kP = 0.0; // 3.0959
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.2683; // 0.2683
+        public static final double LIFT_kD = 0.0; // 0.2683
 
         public static final double LIFT_MAX_VELOCITY = 1.25; // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 2.5; // en m/s^2 // 1.3
@@ -390,7 +390,7 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_kI = 0;
         public static final double VISION_POSE_kD = 0.1;
         // In meters
-        public static final double VISION_POSE_ARRIVE_OFFSET = 0.1; // 0.01
+        public static final double VISION_POSE_ARRIVE_OFFSET = 0.05; // 0.01
 
         public static final double VISION_POSE_TURN_kP = 4.0;
         public static final double VISION_POSE_TURN_kI = 0;
@@ -430,7 +430,7 @@ public class HighAltitudeConstants {
                         new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60))// BL
         };
         public static final Pose2d[] PATHFINDING_RED_REEF_POS = {
-                        new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)), // BC
+                        new Pose2d(15.25, 4.015, Rotation2d.fromDegrees(180)), // BC
                         new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)), // BR
                         new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)), // FR
                         new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)), // FC
