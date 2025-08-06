@@ -150,7 +150,7 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.A, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
 
-                pilot.whileTrue(ButtonType.B, new DriveToPose(new Pose2d(0.75, 3.78, Rotation2d.fromDegrees(0))));
+                pilot.whileTrue(ButtonType.B, new DriveToPose(new Pose2d(15.8, 4, Rotation2d.fromDegrees(0))));
 
                 pilot.whileTrue(ButtonType.POV_S, new IntakeAuto());
                 pilot.whileTrue(ButtonType.X, new ToggleCoralMode());
@@ -200,12 +200,12 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.LB, new IntakeAuto());
 
-                pilot.whileTrue(ButtonType.RB, new PathplanToReefThenVisionPose(REEF_POSITION.BC,null, true,1,1));
-                //pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
+                pilot.whileTrue(ButtonType.RB, new PathplanToReefThenVisionPose(REEF_POSITION.BC, null, true, 1, 1));
+                // pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
 
                 pilot.whileTrue(ButtonType.A, new ScoreCoral(REEF_HEIGHT.L3));
 
-                //pilot.whileTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+                // pilot.whileTrue(ButtonType.B, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
                 pilot.whileTrue(ButtonType.X, new PathCancelCommand());
 
                 /*

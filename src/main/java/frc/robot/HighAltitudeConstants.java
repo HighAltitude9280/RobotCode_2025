@@ -402,7 +402,7 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_MAX_SPEED = 1.0;
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.OneDriver;
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
 
         //////////////////////// CLIMBER ////////////////////////
