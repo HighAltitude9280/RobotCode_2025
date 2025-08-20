@@ -327,7 +327,7 @@ public class HighAltitudeConstants {
 
         public static final double SWERVE_DISTANCE_kP = 3.5;
         public static final double SWERVE_DISTANCE_kD = 0;
-        public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.015;
+        public static final double SWERVE_DRIVE_DISTANCE_ARRIVE_OFFSET = 0.01;
 
         //////////////////////////// VISION //////////////////////////////
 
@@ -396,7 +396,7 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
         // In radians
-        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(3);// 2
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(2);// 2
 
         public static final double VISION_POSE_MAX_TURN = 1.0;
         public static final double VISION_POSE_MAX_SPEED = 1.0;
@@ -455,6 +455,7 @@ public class HighAltitudeConstants {
                         new Pose2d(0.62, 6.7, Rotation2d.fromDegrees(-54.2)), // Left Near Side
 
         };
+        
         public static final Pose2d PATHFINDING_BLUE_RIGHT_CORAL_STATION[] = {
                         new Pose2d(1.54, 0.66, Rotation2d.fromDegrees(54.2)), // Right Far Side
                         new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2)), // Right Middle Side

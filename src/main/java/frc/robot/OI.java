@@ -85,7 +85,7 @@ public class OI {
                  * pilot.whileTrue(ButtonType.POV_W,
                  * new PathplanToReefThenVisionPose(null, null, true,
                  * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                 * HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                 * HighAltitudeConstants.VISION_POSE_MAX_TURN));                 * 
                  */
 
                 pilot.whileTrue(ButtonType.POV_N, new SetFrontMode(true));
