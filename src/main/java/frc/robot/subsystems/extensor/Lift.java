@@ -210,7 +210,7 @@ public class Lift extends SubsystemBase {
   private void logSysId(SysIdRoutineLog log) {
     var motor = liftMotors.getMotors().get(0);
 
-    voltage.mut_replace(motor.get() * motor.getBusVoltage(), Volts);
+    voltage.mut_replace(motor.getSpeed() * motor.getBusVoltage(), Volts);
     distance.mut_replace(getLiftPosMeters(), Meters);
     velocity.mut_replace(getLiftVelocityMPS(), MetersPerSecond);
 

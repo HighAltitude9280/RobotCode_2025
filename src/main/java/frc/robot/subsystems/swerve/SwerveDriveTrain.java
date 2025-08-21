@@ -220,10 +220,10 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   private void logDriveSysID(SysIdRoutineLog log) {
-    brVoltage.mut_replace(backRight.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
-    blVoltage.mut_replace(backLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
-    frVoltage.mut_replace(frontRight.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
-    flVoltage.mut_replace(frontLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
+    brVoltage.mut_replace(backRight.getDriveMotor().getSpeed() * RobotController.getBatteryVoltage(), Volts);
+    blVoltage.mut_replace(backLeft.getDriveMotor().getSpeed() * RobotController.getBatteryVoltage(), Volts);
+    frVoltage.mut_replace(frontRight.getDriveMotor().getSpeed() * RobotController.getBatteryVoltage(), Volts);
+    flVoltage.mut_replace(frontLeft.getDriveMotor().getSpeed() * RobotController.getBatteryVoltage(), Volts);
 
     brDistance.mut_replace(backRight.getDriveDistance(), Meters);
     blDistance.mut_replace(backLeft.getDriveDistance(), Meters);
