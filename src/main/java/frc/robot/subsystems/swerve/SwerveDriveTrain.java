@@ -9,8 +9,11 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.resources.math.Math;
 
+import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Volt;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -31,6 +34,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVelocity;
@@ -202,9 +206,12 @@ public class SwerveDriveTrain extends SubsystemBase {
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
     SmartDashboard.putData("Field", field);
 
-    speedLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
-    strafeLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
-    turnLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND);
+    speedLimiter = new SlewRateLimiter(
+        HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND.in(MetersPerSecondPerSecond));
+    strafeLimiter = new SlewRateLimiter(
+        HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND.in(MetersPerSecondPerSecond));
+    turnLimiter = new SlewRateLimiter(
+        HighAltitudeConstants.SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND.in(RadiansPerSecondPerSecond));
 
     drivesysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(),
@@ -456,7 +463,6 @@ public class SwerveDriveTrain extends SubsystemBase {
         Math.abs(deltaAngle) < HighAltitudeConstants.VISION_POSE_TURN_ARRIVE_OFFSET;
   }
 
-  
   // Odometry
   public void updateOdometry() {
     swerveDrivePoseEstimator.update(

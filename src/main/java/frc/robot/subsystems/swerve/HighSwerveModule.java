@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.swerve;
 
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.math.MathSharedStore;
@@ -182,7 +184,8 @@ public class HighSwerveModule {
 
     double liftPos = Robot.getRobotContainer().getLift().getLiftPosMeters();
     if (HighAltitudeConstants.ENABLE_DYNAMIC_ACCELERATION_LIMITER && liftPos > HighAltitudeConstants.DAL_MIN_HEIGHT) {
-      double maxAcceleration = HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND *
+      double maxAcceleration = HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND
+          .in(MetersPerSecondPerSecond) *
           (1 - HighAltitudeConstants.DAL_HEIGHT_MULTIPLIER * (liftPos - HighAltitudeConstants.DAL_MIN_HEIGHT));
 
       controlSwerveSpeed(state.speedMetersPerSecond, maxAcceleration);
@@ -275,17 +278,16 @@ public class HighSwerveModule {
     lastTimeStamp = currentTime;
     return driveAcceleration;
   }
-  
-  public void setDriveBrakeMode(boolean brake)
-  {
+
+  public void setDriveBrakeMode(boolean brake) {
     driveMotor.setBrakeMode(brake);
   }
-  public void setDirectionBrakeMode(boolean brake)
-  {
+
+  public void setDirectionBrakeMode(boolean brake) {
     directionMotor.setBrakeMode(brake);
   }
-  public void setBrakeModeAllMotors(boolean brake)
-  {
+
+  public void setBrakeModeAllMotors(boolean brake) {
     setDriveBrakeMode(brake);
     setDirectionBrakeMode(brake);
   }

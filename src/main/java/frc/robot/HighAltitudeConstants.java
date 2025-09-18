@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecondPerSecond;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +23,9 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.units.measure.AngularAcceleration;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearAcceleration;
 import frc.robot.resources.Human_Drivers.HumanDrivers;
 
 /** Add your docs here. */
@@ -183,8 +190,10 @@ public class HighAltitudeConstants {
         // Arbitrary. Higher numbers will cause the swerve to react more violently to
         // joysitck inputs and may not be ideal. Lower numbers will cause the swerve to
         // have a very slow reaction to joystick inputs, and may not be ideal.
-        public static final double SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = 15.0; // 20.0
-        public static final double SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = 10.0;
+        public static final LinearAcceleration SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = MetersPerSecondPerSecond
+                        .of(15.0); // 20.0
+        public static final AngularAcceleration SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = RadiansPerSecondPerSecond
+                        .of(10.0);
 
         // Other
 
@@ -455,7 +464,7 @@ public class HighAltitudeConstants {
                         new Pose2d(0.62, 6.7, Rotation2d.fromDegrees(-54.2)), // Left Near Side
 
         };
-        
+
         public static final Pose2d PATHFINDING_BLUE_RIGHT_CORAL_STATION[] = {
                         new Pose2d(1.54, 0.66, Rotation2d.fromDegrees(54.2)), // Right Far Side
                         new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2)), // Right Middle Side
