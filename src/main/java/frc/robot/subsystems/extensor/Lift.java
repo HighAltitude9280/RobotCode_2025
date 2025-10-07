@@ -8,7 +8,6 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
-
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -54,17 +53,18 @@ public class Lift extends SubsystemBase {
   public Lift() {
 
     liftMotors = new HighAltitudeMotorGroup(RobotMap.LIFT_MOTOR_PORTS,
-        RobotMap.LIFT_INVERTED_MOTORS_PORTS,
-        RobotMap.LIFT_MOTOR_TYPES);
+        RobotMap.LIFT_INVERTED_MOTORS_PORTS, RobotMap.LIFT_MOTOR_TYPES);
     liftMotors.setEncoderInverted(RobotMap.LIFT_ENCODER_IS_INVERTED);
     liftMotors.setBrakeMode(true);
     liftMotors.setEncoder(22);
 
-    liftFeedforward = new ElevatorFeedforward(HighAltitudeConstants.LIFT_kS, HighAltitudeConstants.LIFT_kG,
-        HighAltitudeConstants.LIFT_kV, HighAltitudeConstants.LIFT_kA);
+    liftFeedforward =
+        new ElevatorFeedforward(HighAltitudeConstants.LIFT_kS, HighAltitudeConstants.LIFT_kG,
+            HighAltitudeConstants.LIFT_kV, HighAltitudeConstants.LIFT_kA);
 
-    liftProfiledPIDController = new ProfiledPIDController(HighAltitudeConstants.LIFT_kP, HighAltitudeConstants.LIFT_kI,
-        HighAltitudeConstants.LIFT_kD, new TrapezoidProfile.Constraints(HighAltitudeConstants.LIFT_MAX_VELOCITY,
+    liftProfiledPIDController = new ProfiledPIDController(HighAltitudeConstants.LIFT_kP,
+        HighAltitudeConstants.LIFT_kI, HighAltitudeConstants.LIFT_kD,
+        new TrapezoidProfile.Constraints(HighAltitudeConstants.LIFT_MAX_VELOCITY,
             HighAltitudeConstants.LIFT_MAX_ACCELERATION));
 
     if (RobotMap.LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE)
@@ -77,8 +77,8 @@ public class Lift extends SubsystemBase {
     lastSpeedSetpoint = 0;
     lastSetpointTimestamp = Timer.getFPGATimestamp();
 
-    sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(Volts.of(1).per(Seconds),
-        Volts.of(1.75), Seconds.of(10)),
+    sysIdRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(Volts.of(1).per(Seconds), Volts.of(1.75), Seconds.of(10)),
         new SysIdRoutine.Mechanism(this::driveSysID, this::logSysId, this));
   }
 
@@ -112,8 +112,7 @@ public class Lift extends SubsystemBase {
   }
 
   public double getLiftPosMeters() {
-    return getLiftEncoderPosition()
-        * HighAltitudeConstants.LIFT_METERS_PER_PULSE;
+    return getLiftEncoderPosition() * HighAltitudeConstants.LIFT_METERS_PER_PULSE;
   }
 
   public double getLiftVelocityMPS() { // de RPM a Metersper Pulse
@@ -130,7 +129,8 @@ public class Lift extends SubsystemBase {
     double targetSpeed = liftProfiledPIDController.getSetpoint().velocity;
 
     double currentTime = Timer.getFPGATimestamp();
-    double targetAcceleration = (targetSpeed - lastSpeedSetpoint) / (currentTime - lastSetpointTimestamp);
+    double targetAcceleration =
+        (targetSpeed - lastSpeedSetpoint) / (currentTime - lastSetpointTimestamp);
 
     double feedforwardVal = liftFeedforward.calculate(targetSpeed, targetAcceleration);
 
@@ -227,7 +227,8 @@ public class Lift extends SubsystemBase {
     SmartDashboard.putNumber("Lift Encoder Target", getTarget());
     SmartDashboard.putNumber("Lift Encoder Meters", getLiftPosMeters());
     SmartDashboard.putNumber("Lift PID Output", this.liftOutput);
-    SmartDashboard.putNumber("Lift Setpoint Position", getLiftPIDController().getSetpoint().position);
+    SmartDashboard.putNumber("Lift Setpoint Position",
+        getLiftPIDController().getSetpoint().position);
     SmartDashboard.putBoolean("Lift OnTarget", onTarget);
     SmartDashboard.putNumber("Lift Encoder Position", getLiftEncoderPosition());
     SmartDashboard.putNumber("Lift Velocity MPS", getLiftVelocityMPS());

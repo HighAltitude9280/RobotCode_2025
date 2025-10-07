@@ -4,9 +4,14 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.FeetPerSecond;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +29,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.units.measure.AngularAcceleration;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Voltage;
 import frc.robot.resources.Human_Drivers.HumanDrivers;
 
 /** Add your docs here. */
@@ -150,26 +158,28 @@ public class HighAltitudeConstants {
 
         ////////////////////////// SWERVE //////////////////////////
 
-        public static final double MAX_VOLTAGE = 11.5;
+        public static final Voltage MAX_VOLTAGE = Volts.of(11.5);
         // ponlo a 3 para pruebas
 
         /// CONSTANTS FOR MK4i L4 Config DRIVE MOTOR ///
         // In meters
-        public static final double SWERVE_WHEEL_DIAMETER = 4.0 * 0.0254;
+        public static final Distance SWERVE_WHEEL_DIAMETER = Inches.of(4);
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. (Driven / Driver) //pinion
         public static final double SWERVE_DRIVE_GEAR_RATIO = (50.0 * 16.0 * 45.0) / (16.0 * 28.0 * 15.0);
 
-        // ft/s //ft -> in //im -> m
-        public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 19.5 * 12 * 0.0254;
+        // ft/s
+        public static final LinearVelocity SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = FeetPerSecond.of(19.5);
 
-        public static final double SWERVE_DIRECTION_MAX_ANGULAR_SPEED_RADS_PER_SECOND = 5.0;
+        // Previous Name: SWERVE_DIRECTION_MAX_ANGULAR_SPEED_RADS_PER_SECOND
+        public static final AngularVelocity SWERVE_DIRECTION_MAX_ANGULAR_SPEED = RadiansPerSecond
+                        .of(5.0);
 
         /////////// KINEMATICS
-        // Distance left - right (meters)
-        public static final double SWERVE_TRACK_WIDTH = 21 * 0.0254; // este es de llanta a llanta
-        // Distance front - back (meters)
-        public static final double SWERVE_WHEEL_BASE = 23 * 0.0254;
+        // Distance left - right
+        public static final Distance SWERVE_TRACK_WIDTH = Inches.of(21); // este es de llanta a llanta
+        // Distance front - back
+        public static final Distance SWERVE_WHEEL_BASE = Inches.of(23);
 
         // FL, FR, BL, BR. Remember these cartesian coordinates consider the x axis to
         // be headed where the robot is pointing to. The y-axis direction could be a
@@ -181,18 +191,23 @@ public class HighAltitudeConstants {
         // I will use CCW and the allegedly correct x y coordinates.
         // For some reason, that did not work. The kinematics seem to work correctly
         // when "left" is negative
+        // The Wheel Base and Track Width bust be on Meters
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
-                        new Translation2d(SWERVE_WHEEL_BASE / 2, SWERVE_TRACK_WIDTH / 2),
-                        new Translation2d(SWERVE_WHEEL_BASE / 2, -SWERVE_TRACK_WIDTH / 2),
-                        new Translation2d(-SWERVE_WHEEL_BASE / 2, SWERVE_TRACK_WIDTH / 2),
-                        new Translation2d(-SWERVE_WHEEL_BASE / 2, -SWERVE_TRACK_WIDTH / 2));
+                        new Translation2d(SWERVE_WHEEL_BASE.in(Meters) / 2, SWERVE_TRACK_WIDTH.in(Meters) / 2),
+                        new Translation2d(SWERVE_WHEEL_BASE.in(Meters) / 2, -SWERVE_TRACK_WIDTH.in(Meters) / 2),
+                        new Translation2d(-SWERVE_WHEEL_BASE.in(Meters) / 2, SWERVE_TRACK_WIDTH.in(Meters) / 2),
+                        new Translation2d(-SWERVE_WHEEL_BASE.in(Meters) / 2, -SWERVE_TRACK_WIDTH.in(Meters) / 2));
 
         // Arbitrary. Higher numbers will cause the swerve to react more violently to
         // joysitck inputs and may not be ideal. Lower numbers will cause the swerve to
         // have a very slow reaction to joystick inputs, and may not be ideal.
-        public static final LinearAcceleration SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND = MetersPerSecondPerSecond
+
+        // Previous name: SWERVE_MAX_ACCELERATION
+        public static final LinearAcceleration SWERVE_MAX_ACCELERATION = MetersPerSecondPerSecond
                         .of(15.0); // 20.0
-        public static final AngularAcceleration SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND = RadiansPerSecondPerSecond
+
+        // Previous name: SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND
+        public static final AngularAcceleration SWERVE_MAX_ANGULAR_ACCELERATION = RadiansPerSecondPerSecond
                         .of(10.0);
 
         // Other
@@ -235,14 +250,14 @@ public class HighAltitudeConstants {
 
         // Use this constants to convert from encoder position to meters
         // encoder position * this constant = meters
-        public static final double SWERVE_DRIVE_METERS_PER_REV = (Math.PI * SWERVE_WHEEL_DIAMETER)
+        public static final double SWERVE_DRIVE_METERS_PER_REV = (Math.PI * SWERVE_WHEEL_DIAMETER.in(Meters))
                         / (SWERVE_DRIVE_GEAR_RATIO);
 
         // encoder position * this constant = meters
         public static final double SWERVE_DRIVE_PER_VELOCITY_UNITS = SWERVE_DRIVE_METERS_PER_REV;
 
-        public static final double SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND = SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND
-                        * 0.8;
+        public static final LinearVelocity SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND = MetersPerSecond
+                        .of(SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND.in(MetersPerSecond) * 0.8);
 
         // Arbitrary to make controlling the swerve easier in teleop
         /*

@@ -4,25 +4,30 @@
 
 package frc.robot.subsystems.swerve;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
-
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.CANcoder;
-
 import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.resources.components.speedController.HighAltitudeMotor;
 import frc.robot.resources.components.speedController.HighAltitudeMotor.TypeOfMotor;
 import frc.robot.resources.math.Math;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 
 /** Add your docs here. */
 public class HighSwerveModule {
@@ -51,14 +56,14 @@ public class HighSwerveModule {
   private boolean isTalonEncoderReversed;
   private CANcoder absoluteEncoderController;
 
-  private double lastTimeStamp = 0;
-  private double prevSpeed = 0;
+  private Time lastTimeStamp = Seconds.mutable(0);
+  private LinearVelocity prevSpeed = MetersPerSecond.mutable(0);
 
   public HighSwerveModule(int driveMotorPort, TypeOfMotor driveTypeOfMotor,
       boolean isDriveMotorReversed, boolean isDriveEncoderReversed,
 
-      int directionMotorPort, TypeOfMotor directionTypeOfMotor,
-      boolean isDirectionMotorReversed, boolean isDirectionEncoderReversed,
+      int directionMotorPort, TypeOfMotor directionTypeOfMotor, boolean isDirectionMotorReversed,
+      boolean isDirectionEncoderReversed,
 
       int encodedTalonPort, double encoderOffsetPulses, boolean isTalonEncoderReversed) {
 
@@ -69,10 +74,11 @@ public class HighSwerveModule {
 
     // DIRECTION CONTROL //
     // 0.128, 0.01, 0.0128
-    directionProfiledPIDController = new ProfiledPIDController(HighAltitudeConstants.SWERVE_DIRECTION_kP,
-        HighAltitudeConstants.SWERVE_DIRECTION_kI, HighAltitudeConstants.SWERVE_DIRECTION_kD,
-        new TrapezoidProfile.Constraints(HighAltitudeConstants.SWERVE_DIRECTION_MAX_VELOCITY,
-            HighAltitudeConstants.SWERVE_DIRECTION_MAX_ACCELERATION));
+    directionProfiledPIDController =
+        new ProfiledPIDController(HighAltitudeConstants.SWERVE_DIRECTION_kP,
+            HighAltitudeConstants.SWERVE_DIRECTION_kI, HighAltitudeConstants.SWERVE_DIRECTION_kD,
+            new TrapezoidProfile.Constraints(HighAltitudeConstants.SWERVE_DIRECTION_MAX_VELOCITY,
+                HighAltitudeConstants.SWERVE_DIRECTION_MAX_ACCELERATION));
 
     // enableContinousInput() calculates the route with less error
     directionProfiledPIDController.enableContinuousInput(-Math.PI, Math.PI);
@@ -94,14 +100,14 @@ public class HighSwerveModule {
     driveMotor.setBrakeMode(true);
     this.isDriveEncoderReversed = isDriveEncoderReversed;
 
-    lastTimeStamp = MathSharedStore.getTimestamp();
+    lastTimeStamp = Seconds.of(MathSharedStore.getTimestamp());
   }
 
   ///// CANCODER /////
 
   public double getAbsoluteEncoderRAD() {
-    return (getAbsoluteEncoderRaw() - encoderOffSetPulses) *
-        HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE
+    return (getAbsoluteEncoderRaw() - encoderOffSetPulses)
+        * HighAltitudeConstants.SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE
         * (isTalonEncoderReversed ? -1.0 : 1.0);
   }
 
@@ -133,17 +139,18 @@ public class HighSwerveModule {
   /**
    * @return drive encoder distance in meters.
    */
-  public double getDriveDistance() {
-    return driveMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REV
-        * (isDriveEncoderReversed ? -1.0 : 1.0);
+  public Distance getDriveDistance() {
+    return Meters.of(driveMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DRIVE_METERS_PER_REV
+        * (isDriveEncoderReversed ? -1.0 : 1.0));
   }
 
   /**
    * @return drive encoder velocity in meters per second.
    */
-  public double getDriveVelocity() {
-    return driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_PER_VELOCITY_UNITS
-        * (isDriveEncoderReversed ? -1.0 : 1.0);
+  public LinearVelocity getDriveVelocity() {
+    return MetersPerSecond
+        .of(driveMotor.getEncVelocity() * HighAltitudeConstants.SWERVE_DRIVE_PER_VELOCITY_UNITS
+            * (isDriveEncoderReversed ? -1.0 : 1.0));
   }
 
   public double getDirectionEncoder() {
@@ -151,7 +158,8 @@ public class HighSwerveModule {
   }
 
   public double getDirection() {
-    return directionMotor.getEncPosition() * HighAltitudeConstants.SWERVE_DIRECTION_RADIANS_PER_PULSE
+    return directionMotor.getEncPosition()
+        * HighAltitudeConstants.SWERVE_DIRECTION_RADIANS_PER_PULSE
         * (isDirectionEncoderReversed ? -1.0 : 1.0);
   }
 
@@ -168,11 +176,13 @@ public class HighSwerveModule {
   // Getters for the position and state of the module
 
   public SwerveModulePosition getPosition() {
-    return new SwerveModulePosition(getDriveDistance(), Rotation2d.fromRadians(getAbsoluteEncoderRAD()));
+    return new SwerveModulePosition(getDriveDistance(),
+        Rotation2d.fromRadians(getAbsoluteEncoderRAD()));
   }
 
   public SwerveModuleState getState() {
-    return new SwerveModuleState(getDriveVelocity(), Rotation2d.fromRadians(getAbsoluteEncoderRAD()));
+    return new SwerveModuleState(getDriveVelocity(),
+        Rotation2d.fromRadians(getAbsoluteEncoderRAD()));
   }
 
   // STATE SETTER
@@ -183,10 +193,12 @@ public class HighSwerveModule {
     controlSwerveDirection(state.angle.getRadians());
 
     double liftPos = Robot.getRobotContainer().getLift().getLiftPosMeters();
-    if (HighAltitudeConstants.ENABLE_DYNAMIC_ACCELERATION_LIMITER && liftPos > HighAltitudeConstants.DAL_MIN_HEIGHT) {
-      double maxAcceleration = HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND
-          .in(MetersPerSecondPerSecond) *
-          (1 - HighAltitudeConstants.DAL_HEIGHT_MULTIPLIER * (liftPos - HighAltitudeConstants.DAL_MIN_HEIGHT));
+    if (HighAltitudeConstants.ENABLE_DYNAMIC_ACCELERATION_LIMITER
+        && liftPos > HighAltitudeConstants.DAL_MIN_HEIGHT) {
+      double maxAcceleration =
+          HighAltitudeConstants.SWERVE_MAX_ACCELERATION.in(MetersPerSecondPerSecond)
+              * (1 - HighAltitudeConstants.DAL_HEIGHT_MULTIPLIER
+                  * (liftPos - HighAltitudeConstants.DAL_MIN_HEIGHT));
 
       controlSwerveSpeed(state.speedMetersPerSecond, maxAcceleration);
     }
@@ -198,32 +210,34 @@ public class HighSwerveModule {
    * 
    * @param mps The desired speed, in m/s
    */
-  public void controlSwerveSpeed(double mps) {
-    double feedforward = driveFeedforward.calculate(mps);
+  public void controlSwerveSpeed(LinearVelocity mps) {
+    double feedforward = driveFeedforward.calculate(mps.in(MetersPerSecond));
 
-    double pidOutput = drivePIDController.calculate(getDriveVelocity(), mps);
+    double pidOutput = drivePIDController.calculate(getDriveVelocity().in(MetersPerSecond),
+        mps.in(MetersPerSecond));
 
     double driveOutput = pidOutput + feedforward;
 
-    driveOutput = Math.clamp(driveOutput, -HighAltitudeConstants.MAX_VOLTAGE, HighAltitudeConstants.MAX_VOLTAGE);
+    driveOutput = Math.clamp(driveOutput, -HighAltitudeConstants.MAX_VOLTAGE.in(Volts),
+        HighAltitudeConstants.MAX_VOLTAGE.in(Volts));
 
     driveMotor.setVoltage(driveOutput);
     prevSpeed = mps;
   }
 
   /**
-   * Set the speed of the swerve module while ensuring the
-   * acceleration does not exceed the specified limit.
+   * Set the speed of the swerve module while ensuring the acceleration does not exceed the
+   * specified limit.
    * 
-   * @param mps             The desired speed, in m/s
+   * @param mps The desired speed, in m/s
    * @param maxAcceleration The maximum acceleration, in m/s^2
    */
-  public void controlSwerveSpeed(double mps, double maxAcceleration) {
-    double currentTime = MathSharedStore.getTimestamp();
-    double elapsedTime = currentTime - lastTimeStamp;
+  public void controlSwerveSpeed(LinearVelocity mps, LinearAcceleration maxAcceleration) {
+    Time currentTime = Seconds.of(MathSharedStore.getTimestamp());
+    Time elapsedTime = currentTime.minus(lastTimeStamp);
 
-    double filtered_mps = prevSpeed +
-        Math.clamp(mps - prevSpeed, -maxAcceleration * elapsedTime, maxAcceleration * elapsedTime);
+    LinearVelocity filtered_mps = prevSpeed + Math.clamp(mps.minus(prevSpeed).in(MetersPerSecond),
+        maxAcceleration.times(elapsedTime).times(-1), maxAcceleration.times(elapsedTime));
 
     lastTimeStamp = currentTime;
     controlSwerveSpeed(filtered_mps);
@@ -235,13 +249,12 @@ public class HighSwerveModule {
    * @param angleTarget the target angle in radians.
    */
   public void controlSwerveDirection(double angleTarget) {
-    double pidVal = directionProfiledPIDController.calculate(getAbsoluteEncoderRAD(),
-        angleTarget);
+    double pidVal = directionProfiledPIDController.calculate(getAbsoluteEncoderRAD(), angleTarget);
 
     double directionOutput = pidVal;
 
-    directionOutput = Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE,
-        HighAltitudeConstants.MAX_VOLTAGE);
+    directionOutput = Math.clamp(directionOutput, -HighAltitudeConstants.MAX_VOLTAGE.in(Volts),
+        HighAltitudeConstants.MAX_VOLTAGE.in(Volts));
 
     // directionOutput = Math.clamp(-HighAltitudeConstants.MAX_VOLTAGE,
     // HighAltitudeConstants.MAX_VOLTAGE);
@@ -267,13 +280,13 @@ public class HighSwerveModule {
     directionMotor.set(0);
   }
 
-  public double getDriveAcceleration() {
-    double currentTime = MathSharedStore.getTimestamp();
-    double elapsedTime = currentTime - lastTimeStamp;
+  public LinearAcceleration getDriveAcceleration() {
+    Time currentTime = Seconds.of(MathSharedStore.getTimestamp());
+    Time elapsedTime = currentTime.minus(lastTimeStamp);
 
-    double deltaSpeed = getDriveVelocity() - prevSpeed;
+    LinearVelocity deltaSpeed = getDriveVelocity().minus(prevSpeed);
 
-    double driveAcceleration = deltaSpeed / elapsedTime;
+    LinearAcceleration driveAcceleration = deltaSpeed.div(elapsedTime);
     prevSpeed = getDriveVelocity();
     lastTimeStamp = currentTime;
     return driveAcceleration;
@@ -298,7 +311,8 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "getDriveDistanceMeters", getDriveDistance());
     SmartDashboard.putNumber(identifier + "DirPos", getDirection());
     SmartDashboard.putNumber(identifier + "AbsPos", getAbsoluteEncoderRAD());
-    SmartDashboard.putNumber(identifier + "AbsRawPos", absoluteEncoderController.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber(identifier + "AbsRawPos",
+        absoluteEncoderController.getPosition().getValueAsDouble());
   }
 
   public void putControlTunningValues(String identifier) {
@@ -318,11 +332,13 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "Direction Angle SetPoint", directionPIDAngleSetPoint);
 
     // 6. Setpoint of the ProfiledPIDController Velocity
-    SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint", directionPIDVelocitySetPoint);
+    SmartDashboard.putNumber(identifier + "Direction Velocity SetPoint",
+        directionPIDVelocitySetPoint);
 
     SmartDashboard.putNumber(identifier + "Direction Output", directionOutput);
 
-    SmartDashboard.putNumber(identifier + "Direction ERROR", directionPIDAngleTarget - getAbsoluteEncoderRAD());
+    SmartDashboard.putNumber(identifier + "Direction ERROR",
+        directionPIDAngleTarget - getAbsoluteEncoderRAD());
 
     SmartDashboard.putNumber(identifier + "Drive Acceleration", getDriveAcceleration());
 
@@ -335,6 +351,7 @@ public class HighSwerveModule {
     SmartDashboard.putNumber(identifier + "DriveEncPos", driveMotor.getEncPosition());
     SmartDashboard.putNumber(identifier + "DirEncPos", getDirectionEncoder());
     SmartDashboard.putNumber(identifier + "AbsEncPos",
-        absoluteEncoderController.getPosition().getValueAsDouble() * (isTalonEncoderReversed ? -1.0 : 1.0));
+        absoluteEncoderController.getPosition().getValueAsDouble()
+            * (isTalonEncoderReversed ? -1.0 : 1.0));
   }
 }
