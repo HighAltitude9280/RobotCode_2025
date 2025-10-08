@@ -45,7 +45,7 @@ public class DefaultSwerveDriveNew extends Command {
       // 1. Read input
       speed = OI.getInstance().getDefaultSwerveDriveSpeed() * 0.3;
       strafe = OI.getInstance().getDefaultSwerveDriveStrafe() * 0.3;
-      turn = OI.getInstance().getDefaultSwerveDriveTurn() * 0.2;
+      turn = OI.getInstance().getDefaultSwerveDriveTurn() * 0.5;
 
     }
 
@@ -54,8 +54,7 @@ public class DefaultSwerveDriveNew extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
