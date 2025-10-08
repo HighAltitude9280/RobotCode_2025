@@ -6,10 +6,8 @@ package frc.robot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,12 +24,9 @@ import frc.robot.commands.autonomous.center.Center2L4Right;
 import frc.robot.commands.autonomous.center.DriveToL4;
 import frc.robot.commands.autonomous.center.LeaveAndL4;
 import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
-import frc.robot.commands.extensor.compound.coral.ScoreGamePieceLiftDown;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
-import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
-import frc.robot.commands.leds.SetLEDColor;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.commands.swerve.autonomous.feeder.DriveToCoralStation;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
@@ -55,7 +50,6 @@ public class RobotContainer {
     private CANdleSubsystem candleSubsystem;
 
     private boolean precisionModeOn = false;
-    private boolean overrideEncoders = false;
     private boolean generalBrakingMode = true;
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -98,13 +92,6 @@ public class RobotContainer {
         return candleSubsystem;
     }
 
-    public void setOverrideEncoders(boolean override) {
-        overrideEncoders = override;
-    }
-
-    public boolean getOverrideEncoders() {
-        return overrideEncoders;
-    }
 
     public void setPrecisionMode(boolean precisionMode) {
         precisionModeOn = precisionMode;
@@ -168,17 +155,27 @@ public class RobotContainer {
 
     public void generateAutoGenerator() {
 
-        m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
-                new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE)))));
+        m_chooser.addOption("High Right",
+                new AutoGenerator(new ArrayList<>(Arrays.asList(
+                        new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE)))));
 
-        m_chooser.addOption("High Left", new AutoGenerator(new ArrayList<>(Arrays.asList(
-                new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE)))));
+        m_chooser.addOption("High Left",
+                new AutoGenerator(new ArrayList<>(Arrays.asList(
+                        new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BC, false, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE)))));
     }
 
     public void generateAutosLeon() {
@@ -232,31 +229,44 @@ public class RobotContainer {
         NamedCommands.registerCommand("AutoIntake", new IntakeAuto());
 
         NamedCommands.registerCommand("DriveToLeftBranch",
-                new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                new AlignWithTargetPose(null, null, true,
+                        HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                         HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
         NamedCommands.registerCommand("DriveToRightBranch",
-                new AlignWithTargetPose(null, null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                new AlignWithTargetPose(null, null, false,
+                        HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                         HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
-        NamedCommands.registerCommand("DriveToCoralStation", new DriveToCoralStation(null, null,
-                HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN));
+        NamedCommands.registerCommand("DriveToCoralStation",
+                new DriveToCoralStation(null, null, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                        HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
         NamedCommands.registerCommand("Move", new AutoLeave(2.2, 0.7).withTimeout(2.2));
 
         m_chooser.addOption("AutoLeave", new AutoLeave(3.0, 0.7));
 
-        m_chooser.addOption("High Right", new AutoGenerator(new ArrayList<>(Arrays.asList(
-                new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.FR, false, REEF_HEIGHT.TOP, false, CORAL_STATION_POSITION.MIDDLE)))));
+        m_chooser.addOption("High Right",
+                new AutoGenerator(new ArrayList<>(Arrays.asList(
+                        new AutoPortion(REEF_POSITION.FR, true, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BR, true, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BR, false, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.FR, false, REEF_HEIGHT.TOP, false,
+                                CORAL_STATION_POSITION.MIDDLE)))));
 
-        m_chooser.addOption("High Left", new AutoGenerator(new ArrayList<>(Arrays.asList(
-                new AutoPortion(REEF_POSITION.FL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE),
-                new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true, CORAL_STATION_POSITION.MIDDLE)))));
+        m_chooser.addOption("High Left",
+                new AutoGenerator(new ArrayList<>(Arrays.asList(
+                        new AutoPortion(REEF_POSITION.FL, true, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BL, true, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.BL, false, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE),
+                        new AutoPortion(REEF_POSITION.FL, false, REEF_HEIGHT.TOP, true,
+                                CORAL_STATION_POSITION.MIDDLE)))));
 
         m_chooser.addOption("High 2Center", new PathPlannerAuto("2L4CenterLeft(V)"));
 
