@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.HighAltitudeConstants;
-import frc.robot.Robot;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
+import frc.robot.Robot;
 
 public class AlignWithTargetPose extends Command {
 
@@ -21,16 +21,18 @@ public class AlignWithTargetPose extends Command {
   private final double maxLinearVelocity, maxAngularVelocity;
   private Pose2d targetPose;
   private boolean isFinished = false;
+  private Pose2d lastGoodTargetPose = null;
+  private double lastGoodTs = Double.NEGATIVE_INFINITY;
+  private boolean abort = false;
+  private static final double TARGET_TTL_SEC = 0.35;
 
   /**
    * Command to align the robot using pose.
    *
-   * @param position           The position to align the robot to (nullable for
-   *                           detection mode).
-   * @param side               The reef side (nullable for detection mode).
-   * @param left               True for left branch, false for right (nullable for
-   *                           detection mode).
-   * @param maxLinearVelocity  Max linear velocity in m/s.
+   * @param position The position to align the robot to (nullable for detection mode).
+   * @param side The reef side (nullable for detection mode).
+   * @param left True for left branch, false for right (nullable for detection mode).
+   * @param maxLinearVelocity Max linear velocity in m/s.
    * @param maxAngularVelocity Max angular velocity in rad/s.
    */
   public AlignWithTargetPose(REEF_POSITION position, REEF_SIDE side, Boolean left,
@@ -45,6 +47,8 @@ public class AlignWithTargetPose extends Command {
 
   @Override
   public void initialize() {
+    abort = false;
+    isFinished = false;
     // Determine branch side: use provided or default
     left = (left != null) ? left : Robot.isLeftMode();
     // Determine pos from side if needed
@@ -53,7 +57,8 @@ public class AlignWithTargetPose extends Command {
     }
 
     // Log alliance, branch, and side
-    DriverStation.Alliance alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
+    DriverStation.Alliance alliance =
+        DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
     SmartDashboard.putString("Align/alliance", alliance.toString());
     SmartDashboard.putBoolean("Align/leftBranch", left);
     SmartDashboard.putString("Align/reefSide", side != null ? side.name() : "null");
@@ -71,13 +76,14 @@ public class AlignWithTargetPose extends Command {
   }
 
   private void determineTarget() {
-    DriverStation.Alliance alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
-    int[] reefIDs = (alliance == DriverStation.Alliance.Red)
-        ? HighAltitudeConstants.RED_APRILTAG_IDS
-        : HighAltitudeConstants.BLUE_APRILTAG_IDS;
-    var branches = (alliance == DriverStation.Alliance.Red)
-        ? HighAltitudeConstants.PATHFINDING_RED_BRANCHES
-        : HighAltitudeConstants.PATHFINDING_BLUE_BRANCHES;
+    DriverStation.Alliance alliance =
+        DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
+    int[] reefIDs =
+        (alliance == DriverStation.Alliance.Red) ? HighAltitudeConstants.RED_APRILTAG_IDS
+            : HighAltitudeConstants.BLUE_APRILTAG_IDS;
+    var branches =
+        (alliance == DriverStation.Alliance.Red) ? HighAltitudeConstants.PATHFINDING_RED_BRANCHES
+            : HighAltitudeConstants.PATHFINDING_BLUE_BRANCHES;
 
     // Log detection mode
     SmartDashboard.putString("Align/determine/alliance", alliance.toString());
@@ -119,14 +125,13 @@ public class AlignWithTargetPose extends Command {
 
     else if (pos != null) {
       // Align with target
-      isFinished = Robot.getRobotContainer()
-          .getSwerveDriveTrain()
-          .AlignWithTargetPose(targetPose, maxLinearVelocity, maxAngularVelocity);
+      isFinished = Robot.getRobotContainer().getSwerveDriveTrain().AlignWithTargetPose(targetPose,
+          maxLinearVelocity, maxAngularVelocity);
       System.out.println("Executing");
     } else {
       System.out.println("valio verga");
     }
-    SmartDashboard.putNumber("Taget angle",targetPose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Taget angle", targetPose.getRotation().getDegrees());
 
     System.out.println(targetPose + "TUPU");
     System.out.println(Robot.getRobotContainer().getVision().getTargetID());

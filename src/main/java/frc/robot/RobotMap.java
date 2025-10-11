@@ -19,7 +19,8 @@ public class RobotMap {
     public static final boolean SWERVE_FRONT_LEFT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_FRONT_LEFT_DIRECTION_MOTOR_PORT = 17;
-    public static final TypeOfMotor SWERVE_FRONT_LEFT_DIRECTION_MOTOR_TYPE = TypeOfMotor.SPARK_MAX_BRUSHLESS;
+    public static final TypeOfMotor SWERVE_FRONT_LEFT_DIRECTION_MOTOR_TYPE =
+            TypeOfMotor.SPARK_MAX_BRUSHLESS;
     public static final boolean SWERVE_FRONT_LEFT_DIRECTION_MOTOR_INVERTED = true;
     public static final boolean SWERVE_FRONT_LEFT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
@@ -35,7 +36,8 @@ public class RobotMap {
     public static final boolean SWERVE_FRONT_RIGHT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_PORT = 11;
-    public static final TypeOfMotor SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_TYPE = TypeOfMotor.SPARK_MAX_BRUSHLESS;
+    public static final TypeOfMotor SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_TYPE =
+            TypeOfMotor.SPARK_MAX_BRUSHLESS;
     public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_MOTOR_INVERTED = true;
     public static final boolean SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
@@ -51,7 +53,8 @@ public class RobotMap {
     public static final boolean SWERVE_BACK_LEFT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_BACK_LEFT_DIRECTION_MOTOR_PORT = 15;
-    public static final TypeOfMotor SWERVE_BACK_LEFT_DIRECTION_MOTOR_TYPE = TypeOfMotor.SPARK_MAX_BRUSHLESS;
+    public static final TypeOfMotor SWERVE_BACK_LEFT_DIRECTION_MOTOR_TYPE =
+            TypeOfMotor.SPARK_MAX_BRUSHLESS;
     public static final boolean SWERVE_BACK_LEFT_DIRECTION_MOTOR_INVERTED = true;
     public static final boolean SWERVE_BACK_LEFT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
@@ -67,7 +70,8 @@ public class RobotMap {
     public static final boolean SWERVE_BACK_RIGHT_DRIVE_ENCODER_INVERTED = false;
     // DIRECTION
     public static final int SWERVE_BACK_RIGHT_DIRECTION_MOTOR_PORT = 13;
-    public static final TypeOfMotor SWERVE_BACK_RIGHT_DIRECTION_MOTOR_TYPE = TypeOfMotor.SPARK_MAX_BRUSHLESS;
+    public static final TypeOfMotor SWERVE_BACK_RIGHT_DIRECTION_MOTOR_TYPE =
+            TypeOfMotor.SPARK_MAX_BRUSHLESS;
     public static final boolean SWERVE_BACK_RIGHT_DIRECTION_MOTOR_INVERTED = true;
     public static final boolean SWERVE_BACK_RIGHT_DIRECTION_ENCODER_INVERTED = false;
     // CANCODER
@@ -77,10 +81,10 @@ public class RobotMap {
 
     ////////////////////////// lIFT //////////////////////////
 
-    public static final int[] LIFT_MOTOR_PORTS = { 21, 22 };
+    public static final int[] LIFT_MOTOR_PORTS = {21, 22};
     public static final int[] LIFT_INVERTED_MOTORS_PORTS = {};
-    public static final TypeOfMotor[] LIFT_MOTOR_TYPES = { TypeOfMotor.TALON_FX,
-            TypeOfMotor.TALON_FX };
+    public static final TypeOfMotor[] LIFT_MOTOR_TYPES =
+            {TypeOfMotor.TALON_FX, TypeOfMotor.TALON_FX};
     public static final boolean LIFT_ENCODER_IS_INVERTED = false;
 
     public static final boolean LIFT_TOP_LIMIT_SWITCH_IS_AVAILABLE = true;
@@ -91,9 +95,9 @@ public class RobotMap {
 
     ////////////////////////// GRIPPER //////////////////////////
 
-    public static final int[] GRIPPER_MOTOR_PORTS = { 31 };
+    public static final int[] GRIPPER_MOTOR_PORTS = {31};
     public static final int[] GRIPPER_INVERTED_MOTORS_PORTS = {};
-    public static final TypeOfMotor[] GRIPPER_MOTOR_TYPES = { TypeOfMotor.TALON_FX };
+    public static final TypeOfMotor[] GRIPPER_MOTOR_TYPES = {TypeOfMotor.TALON_FX};
     public static final boolean GRIPPER_ENCODER_IS_INVERTED = false;
 
     public static final boolean GRIPPER_DIGITAL_INPUT_IS_AVAILABLE = false;
@@ -101,15 +105,15 @@ public class RobotMap {
     public static final boolean GRIPPER_I2C_PORT_IS_AVAILABLE = false;
 
     ////////////////////////// WRIST //////////////////////////
-    public static final int[] WRIST_MOTOR_PORTS = { 41 };
-    public static final int[] WRIST_INVERTED_MOTORS_PORTS = { 41 };
-    public static final TypeOfMotor[] WRIST_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
+    public static final int[] WRIST_MOTOR_PORTS = {41};
+    public static final int[] WRIST_INVERTED_MOTORS_PORTS = {41};
+    public static final TypeOfMotor[] WRIST_MOTOR_TYPES = {TypeOfMotor.SPARK_MAX_BRUSHLESS};
     public static final boolean WRIST_ENCODER_IS_INVERTED = false;
 
     ///////////////////////// CLIMBER ////////////////////////
-    public static final int[] CLIMBER_MOTOR_PORTS = { 51 };
+    public static final int[] CLIMBER_MOTOR_PORTS = {51};
     public static final int[] CLIMBER_INVERTED_MOTORS_PORTS = {};
-    public static final TypeOfMotor[] CLIMBER_MOTOR_TYPES = { TypeOfMotor.SPARK_MAX_BRUSHLESS };
+    public static final TypeOfMotor[] CLIMBER_MOTOR_TYPES = {TypeOfMotor.SPARK_MAX_BRUSHLESS};
 
     // TODO: poner puertos
     public static final int CLIMBER_SERVO_2_PORT = 1;
