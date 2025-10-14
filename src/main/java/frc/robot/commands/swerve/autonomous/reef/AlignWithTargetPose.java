@@ -55,21 +55,19 @@ public class AlignWithTargetPose extends Command {
     SmartDashboard.putBoolean("Align/leftBranch", left);
     SmartDashboard.putString("Align/reefSide", side != null ? side.name() : "null");
 
-    // 1) Intentar target fresca (preset o detección estable) y cachearla
-    boolean hasFresh = determineTargetFreshAndCache();
-    if (!hasFresh) {
-      // 2) Intentar latched si es segura (TTL + deriva)
-      targetPose = pickLatchedIfSafe();
-    }
-
     if (targetPose == null) {
-      DriverStation.reportWarning("[Align] No target nor safe cache at init; abort.", false);
-      stopAndFinish();
-      return;
+      boolean hasFresh = determineTargetFreshAndCache();
+      if (!hasFresh) {
+        targetPose = pickLatchedIfSafe();
+      }
+      if (targetPose == null) {
+        DriverStation.reportWarning("[Align] No valid target; aborting.", false);
+        stopAndFinish();
+        return;
+      }
     }
-    SmartDashboard.putString("Align/status", hasFresh ? "Target locked" : "Using latched");
   }
-
+  
   @Override
   public void execute() {
     if (abort) return;
