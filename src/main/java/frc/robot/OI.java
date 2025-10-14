@@ -203,13 +203,19 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.X, new PathCancelCommand());
 
-                pilot.onTrue(ButtonType.POV_N, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
+                pilot.whileTrue(ButtonType.A,
+                new WristGoToTarget(10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                
+                pilot.whileTrue(ButtonType.B,
+                new WristGoToTarget(-10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
 
-                pilot.onTrue(ButtonType.POV_E, new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
+                //pilot.onTrue(ButtonType.POV_N, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
 
-                pilot.onTrue(ButtonType.POV_S, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+                //pilot.onTrue(ButtonType.POV_E, new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
 
-                pilot.onTrue(ButtonType.POV_W, new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
+                //pilot.onTrue(ButtonType.POV_S, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+
+                ///pilot.onTrue(ButtonType.POV_W, new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
                 
 
                 /*
@@ -222,13 +228,13 @@ public class OI {
                  * Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kForward));
                  * pilot.whileTrue(ButtonType.POV_W,
                  * Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kReverse));
-                 * 
-                 * pilot.whileTrue(ButtonType.A,
-                 * new WristGoToTarget(10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
-                 * 
-                 * pilot.whileTrue(ButtonType.B,
-                 * new WristGoToTarget(-10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
                  */
+                 pilot.whileTrue(ButtonType.A,
+             new WristGoToTarget(10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+             
+             pilot.whileTrue(ButtonType.B,
+             new WristGoToTarget(-10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+            
 
                 // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
                 // pilot.whileTrue(ButtonType.LB, new TestDrivePIDFFSwerve(1));

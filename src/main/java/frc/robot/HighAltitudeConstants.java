@@ -69,7 +69,7 @@ public class HighAltitudeConstants {
         public static final double LIFT_MAX_VELOCITY = 1.25; // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 2.5; // en m/s^2 // 1.3
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.1; // 0.025
+        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
                                                              // NO DEJAR EN CERO EL OFFSET
 
         public static final double LIFT_MAX_POWER = 7.0; // 4

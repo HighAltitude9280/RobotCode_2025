@@ -145,7 +145,7 @@ public class Lift extends SubsystemBase {
       liftOutput = HighAltitudeConstants.LIFT_kG;
     }
 
-    if (Math.abs(getTarget() - HighAltitudeConstants.LIFT_CORAL_POSITIONS[0]) < 1.05 * arriveOffset) {
+    if ((Math.abs(getTarget() - HighAltitudeConstants.LIFT_CORAL_POSITIONS[0]) < 0.01) && (onTarget)) {
       liftOutput = 0;
     } else {
       liftMotors.setVoltage(liftOutput);
