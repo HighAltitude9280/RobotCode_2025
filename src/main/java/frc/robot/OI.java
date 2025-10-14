@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_SIDE;
@@ -75,7 +76,8 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.POV_W, new SetLeftMode(true));
                 /*
-                 * pilot.whileTrue(ButtonType.POV_W, new PathplanToReefThenVisionPose(null, null,
+                 * pilot.whileTrue(ButtonType.POV_W, new PathplanToReefThenVisionPose(null,
+                 * null,
                  * true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                  * HighAltitudeConstants.VISION_POSE_MAX_TURN)); *
                  */
@@ -97,7 +99,7 @@ public class OI {
                         new SequentialCommandGroup(new TurnWheels(0).withTimeout(0.5),
                                 new SwerveMoveMeters(0.2, 0,
                                         HighAltitudeConstants.VISION_POSE_MAX_SPEED)
-                                                .withTimeout(0.25)));
+                                        .withTimeout(0.25)));
 
                 // pilot.whileTrue(ButtonType.LB, new AlignVisionMoveMeters(true));
 
@@ -111,7 +113,7 @@ public class OI {
                         new SequentialCommandGroup(new TurnWheels(0).withTimeout(0.5),
                                 new SwerveMoveMeters(0.2, 0,
                                         HighAltitudeConstants.VISION_POSE_MAX_SPEED)
-                                                .withTimeout(0.25)));
+                                        .withTimeout(0.25)));
 
                 pilot.onTrue(ButtonType.LT, new CoralOrAlgaeLiftDown());
                 pilot.whileTrue(ButtonType.RT,
@@ -199,24 +201,34 @@ public class OI {
 
                 pilot.whileTrue(ButtonType.LT, new IntakeAlgae());
 
-
                 pilot.whileTrue(ButtonType.X, new PathCancelCommand());
 
-                pilot.whileTrue(ButtonType.POV_N,
-                        Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kForward));
-                pilot.whileTrue(ButtonType.POV_S,
-                        Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kReverse));
+                pilot.onTrue(ButtonType.POV_N, new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
 
-                pilot.whileTrue(ButtonType.POV_E,
-                        Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kForward));
-                pilot.whileTrue(ButtonType.POV_W,
-                        Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kReverse));
+                pilot.onTrue(ButtonType.POV_E, new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
 
-                pilot.whileTrue(ButtonType.A,
-                        new WristGoToTarget(10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                pilot.onTrue(ButtonType.POV_S, new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
 
-                pilot.whileTrue(ButtonType.B,
-                        new WristGoToTarget(-10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                pilot.onTrue(ButtonType.POV_W, new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
+                
+
+                /*
+                 * pilot.whileTrue(ButtonType.POV_N,
+                 * Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kForward));
+                 * pilot.whileTrue(ButtonType.POV_S,
+                 * Robot.getRobotContainer().getLift().sysIdQuasistatic(Direction.kReverse));
+                 * 
+                 * pilot.whileTrue(ButtonType.POV_E,
+                 * Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kForward));
+                 * pilot.whileTrue(ButtonType.POV_W,
+                 * Robot.getRobotContainer().getLift().sysIdDynamic(Direction.kReverse));
+                 * 
+                 * pilot.whileTrue(ButtonType.A,
+                 * new WristGoToTarget(10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                 * 
+                 * pilot.whileTrue(ButtonType.B,
+                 * new WristGoToTarget(-10, HighAltitudeConstants.WRIST_DRIVE_SPEED));
+                 */
 
                 // pilot.whileTrue(ButtonType.Y, new TestDirectionPIDSwerve());
                 // pilot.whileTrue(ButtonType.LB, new TestDrivePIDFFSwerve(1));
@@ -225,7 +237,8 @@ public class OI {
                 // pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.RB, ButtonType.LB);
                 // pilot.whileTrue(ButtonType.RB, new TestAlignWithPose());
                 /*
-                 * pilot.whileTrue(ButtonType.RB, new PathplanToReefThenVisionPose(REEF_POSITION.BC,
+                 * pilot.whileTrue(ButtonType.RB, new
+                 * PathplanToReefThenVisionPose(REEF_POSITION.BC,
                  * null, true, 1, 1));
                  */
 
@@ -255,8 +268,6 @@ public class OI {
                  * Robot.getRobotContainer().getSwerveDriveTrain().driveSysIdDynamic(Direction.
                  * kReverse));
                  */
-
-
 
                 // pilot.whileTrue(ButtonType.B, new TestSwerve());
                 break;
@@ -345,7 +356,8 @@ public class OI {
                  * copilot.whileTrue(ButtonType.POV_W, new LiftSetMetersTarget(0.77)); // L4
                  * copilot.whileTrue(ButtonType.POV_S, new LiftSetMetersTarget(0.10)); // L2
                  * copilot.whileTrue(ButtonType.POV_N, new LiftSetMetersTarget(0.35)); // L3
-                 * copilot.whileTrue(ButtonType.POV_E, new LiftSetMetersTarget(0.5)); // Alga Arriba
+                 * copilot.whileTrue(ButtonType.POV_E, new LiftSetMetersTarget(0.5)); // Alga
+                 * Arriba
                  * disque
                  */
                 break;

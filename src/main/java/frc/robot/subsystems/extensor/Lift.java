@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.HighAltitudeConstants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 import frc.robot.resources.math.Math;
@@ -144,7 +145,11 @@ public class Lift extends SubsystemBase {
       liftOutput = HighAltitudeConstants.LIFT_kG;
     }
 
-    liftMotors.setVoltage(liftOutput);
+    if (Math.abs(getTarget() - HighAltitudeConstants.LIFT_CORAL_POSITIONS[0]) < 1.05 * arriveOffset) {
+      liftOutput = 0;
+    } else {
+      liftMotors.setVoltage(liftOutput);
+    }
     // liftMotors.setAll(liftOutput);
 
     currentTarget = metersTarget;
@@ -240,5 +245,6 @@ public class Lift extends SubsystemBase {
     // This method will be called once per scheduler run
     if (RobotMap.LIFT_BOTTOM_LIMIT_SWITCH_IS_AVAILABLE && getBottomLimitSwitch())
       resetEncoders();
+    putTuningValues();
   }
 }

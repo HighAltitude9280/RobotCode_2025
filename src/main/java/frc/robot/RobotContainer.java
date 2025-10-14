@@ -25,6 +25,7 @@ import frc.robot.commands.autonomous.center.DriveToL4;
 import frc.robot.commands.autonomous.center.LeaveAndL4;
 import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
+import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.commands.swerve.autonomous.feeder.DriveToCoralStation;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
@@ -120,8 +121,8 @@ public class RobotContainer {
         // wrist.setDefaultCommand(new
         // WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
 
-        // lift.setDefaultCommand(new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
-        // HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
+        lift.setDefaultCommand(new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
+        HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
 
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 
