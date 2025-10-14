@@ -7,7 +7,11 @@ package frc.robot.commands.extensor.wrist.control;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+/*
+ * You should consider using the more terse Command factories API instead
+ * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#
+ * defining-commands
+ */
 public class WristDefaultCommand extends Command {
   /** Creates a new WristMantainTo. */
 
@@ -16,8 +20,8 @@ public class WristDefaultCommand extends Command {
   public WristDefaultCommand(double maxPower) {
     addRequirements(Robot.getRobotContainer().getWrist());
 
-      this.target = Double.NaN;
-      this.maxPower = maxPower;
+    this.target = Double.NaN;
+    this.maxPower = maxPower;
   }
 
   public WristDefaultCommand(double angleTarget, double maxPower) {

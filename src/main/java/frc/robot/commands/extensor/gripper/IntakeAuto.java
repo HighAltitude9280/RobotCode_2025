@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// NOTE: Consider using this command inline, rather than writing a subclass. For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IntakeAuto extends SequentialCommandGroup {
@@ -16,8 +16,7 @@ public class IntakeAuto extends SequentialCommandGroup {
   public IntakeAuto() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-        new ScoreGamePiece(-0.4).withTimeout(0.4), new IntakeUntilCurrentCoral(), new WaitCommand(.1),
-        new ScoreGamePiece(-0.1).withTimeout(0.3));
+    addCommands(new ScoreGamePiece(-0.4).withTimeout(0.4), new IntakeUntilCurrentCoral(),
+        new WaitCommand(.1), new ScoreGamePiece(-0.1).withTimeout(0.3));
   }
 }

@@ -19,10 +19,8 @@ import frc.robot.resources.Human_Drivers.HumanDrivers;
 public class HighAltitudeConstants {
 
         /**
-         * Enum used to indicate the height to grab/leave game pieces. Bottom
-         * corresponds to L1 for
-         * coral or processor for algae. Top corresponds to L4 for coral or net for
-         * algae.
+         * Enum used to indicate the height to grab/leave game pieces. Bottom corresponds to L1 for
+         * coral or processor for algae. Top corresponds to L4 for coral or net for algae.
          */
         public enum REEF_HEIGHT {
                 BOTTOM(0), L2(1), L3(2), TOP(3);
@@ -48,46 +46,44 @@ public class HighAltitudeConstants {
         /*
          * Necesitas la gráfica de velocidad del encoder del Lift
          * 
-         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad
-         * esté en target
+         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad esté en target
          * 
-         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda
-         * sin que se
-         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar
-         * picos
+         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda sin que se
+         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos
          * extraños, que quede smooth
          */
-        public static final double LIFT_kS = 0.03148; // 0.03148;
-        public static final double LIFT_kA = 0.28027; // 0.28027;
-        public static final double LIFT_kG = 0.44903; // 0.44903;
-        public static final double LIFT_kV = 5.0705; // 5.0705;
+        public static final double LIFT_kS = 0.0; // 0.03148;
+        public static final double LIFT_kA = 0.0; // 0.28027;
+        public static final double LIFT_kG = 0.0; // 0.44903;
+        public static final double LIFT_kV = 0.005; // 5.0705;
 
-        public static final double LIFT_kP = 3.0959; // 3.0959
+        public static final double LIFT_kP = 0.0; // 3.0959
         public static final double LIFT_kI = 0.0;
-        public static final double LIFT_kD = 0.2683; // 0.2683
+        public static final double LIFT_kD = 0.0; // 0.2683
 
         public static final double LIFT_MAX_VELOCITY = 1.25; // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 2.5; // en m/s^2 // 1.3
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
-                                                               // NO DEJAR EN CERO EL OFFSET
+        public static final double LIFT_ARRIVE_OFFSET = 0.0; // 0.025
+                                                             // NO DEJAR EN CERO EL OFFSET
 
         public static final double LIFT_MAX_POWER = 7; // 4
         public static final double LIFT_MAX_POWER_GOING_DOWN = 7.0;
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
-        public static final double LIFT_SPROCKET_REVS_PER_PULSE = LIFT_REV_PER_NEO_PULSE * LIFT_RATIO;
+        public static final double LIFT_SPROCKET_REVS_PER_PULSE =
+                        LIFT_REV_PER_NEO_PULSE * LIFT_RATIO;
         public static final double LIFT_INCHES_PER_SPROCKET_REV = 4.5;
-        public static final double LIFT_METERS_PER_PULSE = LIFT_INCHES_PER_SPROCKET_REV * LIFT_SPROCKET_REVS_PER_PULSE
-                        * 0.0254;
+        public static final double LIFT_METERS_PER_PULSE =
+                        LIFT_INCHES_PER_SPROCKET_REV * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.15, 0.34, 0.72 }; // TODO: tunear
-                                                                                       // esto en
-                                                                                       // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = {0.0, 0.15, 0.34, 0.72}; // TODO: tunear
+                                                                                     // esto en
+                                                                                     // competencia
         // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] LIFT_ALGAE_POSITIONS = { 0.1, 0.28, 0.47, 0.73 };
+        public static final double[] LIFT_ALGAE_POSITIONS = {0.1, 0.28, 0.47, 0.73};
 
         public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 
@@ -109,24 +105,28 @@ public class HighAltitudeConstants {
 
         public static final double WRIST_DRIVE_SPEED = 0.15;
 
-        public static final double WRIST_kP = 0.1;
-        public static final double WRIST_kI = 0.0;
-        public static final double WRIST_kD = 0.001;
+        public static final double WRIST_kP = 0.1; // 0.1
+        public static final double WRIST_kI = 0.0; // 0.0
+        public static final double WRIST_kD = 0.0; // 0.001
 
-        public static final double WRIST_RATIO = (1.0 * 12.0) / (15.0 * 32.0);
+        public static final double WRIST_ARRIVE_OFFSET = 0.0; // 2.0
+
+
+        public static final double WRIST_RATIO = (1.0 * 12.0) / (15.0 * 48.0);
+
         public static final double WRIST_NEO_ENCODER_UNITS_PER_REV = 1.0;
-        public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV = WRIST_RATIO
-                        / WRIST_NEO_ENCODER_UNITS_PER_REV;
-        public static final double WRIST_ARRIVE_OFFSET = 2.0;
-        public static final double WRIST_DEGREES_PER_PULSE = 360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
+        public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV =
+                        WRIST_RATIO / WRIST_NEO_ENCODER_UNITS_PER_REV;
+        public static final double WRIST_DEGREES_PER_PULSE =
+                        360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
 
         public static final double WRIST_ZERO_ANGLE = 0.0;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 }; // 40 in comp
+        public static final double[] WRIST_CORAL_POSITIONS = {0, 0, 0, 40}; // 40 in comp
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
-        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
+        public static final double[] WRIST_ALGAE_POSITIONS = {145, 145, 145, 145};
 
         public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
@@ -145,7 +145,8 @@ public class HighAltitudeConstants {
         public static final double SWERVE_WHEEL_DIAMETER = 4.0 * 0.0254;
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. (Driven / Driver) //pinion
-        public static final double SWERVE_DRIVE_GEAR_RATIO = (50.0 * 16.0 * 45.0) / (16.0 * 28.0 * 15.0);
+        public static final double SWERVE_DRIVE_GEAR_RATIO =
+                        (50.0 * 16.0 * 45.0) / (16.0 * 28.0 * 15.0);
 
         // ft/s //ft -> in //im -> m
         public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 19.5 * 12 * 0.0254;
@@ -184,8 +185,8 @@ public class HighAltitudeConstants {
 
         public static final double SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION = 1f;
         // encoder * this value = radians
-        public static final double SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE = (2.0 * Math.PI)
-                        / SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION;
+        public static final double SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE =
+                        (2.0 * Math.PI) / SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION;
 
         /////////// DRIVING MOTOR /////////// TODO: DRIVING MOTOR
 
@@ -193,13 +194,10 @@ public class HighAltitudeConstants {
         /*
          * Necesitas la gráfica de velocidad del encoder del driveMotor
          * 
-         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad
-         * esté en target
+         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad esté en target
          * 
-         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda
-         * sin que se
-         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar
-         * picos
+         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda sin que se
+         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos
          * extraños, que quede smooth
          */
 
@@ -218,14 +216,14 @@ public class HighAltitudeConstants {
 
         // Use this constants to convert from encoder position to meters
         // encoder position * this constant = meters
-        public static final double SWERVE_DRIVE_METERS_PER_REV = (Math.PI * SWERVE_WHEEL_DIAMETER)
-                        / (SWERVE_DRIVE_GEAR_RATIO);
+        public static final double SWERVE_DRIVE_METERS_PER_REV =
+                        (Math.PI * SWERVE_WHEEL_DIAMETER) / (SWERVE_DRIVE_GEAR_RATIO);
 
         // encoder position * this constant = meters
         public static final double SWERVE_DRIVE_PER_VELOCITY_UNITS = SWERVE_DRIVE_METERS_PER_REV;
 
-        public static final double SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND = SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND
-                        * 0.8;
+        public static final double SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND =
+                        SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND * 0.8;
 
         // Arbitrary to make controlling the swerve easier in teleop
         /*
@@ -251,13 +249,12 @@ public class HighAltitudeConstants {
 
         // Use this constant to convert from motor velocity to meters per second
         // encoder velocity * this constant = radians/second
-        public static final double SWERVE_DIRECTION_RADIANS_PER_SEC_PER_VELOCITY_UNITS = (1000
-                        * SWERVE_DIRECTION_RADIANS_PER_PULSE)
-                        / SWERVE_DIRECTION_VELOCITY_SAMPLE_RATE_MS;
+        public static final double SWERVE_DIRECTION_RADIANS_PER_SEC_PER_VELOCITY_UNITS =
+                        (1000 * SWERVE_DIRECTION_RADIANS_PER_PULSE)
+                                        / SWERVE_DIRECTION_VELOCITY_SAMPLE_RATE_MS;
 
         /*
-         * public static final double
-         * SWERVE_DIRECTION_TELEOP_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND =
+         * public static final double SWERVE_DIRECTION_TELEOP_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND =
          * 2 * Math.PI * 0.75;
          */
 
@@ -271,15 +268,12 @@ public class HighAltitudeConstants {
 
         // HOW TO GET THE VALUES //
         /*
-         * Necesitas las graficas: a) Gráfica del ángulo del CANCoder d) Setpoint del
-         * ángulo del
+         * Necesitas las graficas: a) Gráfica del ángulo del CANCoder d) Setpoint del ángulo del
          * CANCoder
          * 
-         * PASO 1: 1. PID en 0 2. Poner la kP lo más grande que pueda sin que se pase
-         * del target
+         * PASO 1: 1. PID en 0 2. Poner la kP lo más grande que pueda sin que se pase del target
          * 
-         * PASO 2: 3. Poner la kD lo más alto que pueda, sin que empiece a dar picos
-         * extraños, que
+         * PASO 2: 3. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños, que
          * quede smooth
          */
 
@@ -322,7 +316,7 @@ public class HighAltitudeConstants {
         //////////////////////////// VISION //////////////////////////////
 
         // Keep the order of the cameras consistent across the arrays.
-        public static final String[] CAMERA_NAMES = { "ArducamBack2", "Limelight3", "Limelight2Pi" };
+        public static final String[] CAMERA_NAMES = {"ArducamBack2", "Limelight3", "Limelight2Pi"};
         public static final Transform3d[] CAMERA_POSITIONS = {
                         // ArducamFront
                         new Transform3d(new Translation3d(0.221203922244, 0.25669297658,
@@ -339,11 +333,11 @@ public class HighAltitudeConstants {
                         new Transform3d(new Translation3d(-0.037639273664, 0.0235341,
                                         0.989082539932),
                                         new Rotation3d(Math.toRadians(0f), Math.toRadians(-30),
-                                                        Math.toRadians(180))) };
+                                                        Math.toRadians(180)))};
 
         // The indexes in the previous arrays of the cameras that will be used for
         // alignment.
-        public static final int[] ALIGNMENT_CAMERAS = { 0, 1 };
+        public static final int[] ALIGNMENT_CAMERAS = {0, 1};
 
         public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 2.5;
         public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;
@@ -395,16 +389,54 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_MAX_SPEED = 1.0;
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.OnlySwerve;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
 
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Carlos;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.OnlySwerve;
 
         //////////////////////// ALIGN WITH TARGET POSE ////////////////////////
-        
+
+        /*
+         * 
+         */
         // Prioridades: confiable (fail-soft) y rápido (reactivo con límites)
+        /*
+         * ==== LATCHED_POSE_MAX_AGE_SEC (TTL de la última pose válida) ==== Paso 1: arranca en 0.35
+         * s (auto: 0.45–0.60 s). Paso 2: si corta con pérdidas cortas (100–150 ms) → súbela +0.05
+         * s. Paso 3: si durante la pérdida entra chueco → bájala −0.05 s. Sugerido: teleop
+         * 0.30–0.40 s, auto 0.40–0.60 s.
+         */
+
+        /*
+         * ==== LATCHED_POSE_MAX_TRANSLATION_DRIFT_M (deriva lineal permitida con latched) ==== Paso
+         * 1: arranca en 0.07 m. Paso 2: si aborta “antes de tiempo” y aún estabas bien alineado →
+         * súbela +0.01–0.03 m (hasta ~0.10 m). Paso 3: si entra chueco durante la pérdida → bájala
+         * −0.01–0.02 m (hasta ~0.05–0.06 m). Regla: mecanismo estricto 0.05–0.07 m, tolerante
+         * 0.07–0.10 m.
+         */
+
+        /*
+         * ==== LATCHED_POSE_MAX_HEADING_DRIFT_DEG (deriva angular permitida con latched) ==== Paso
+         * 1: arranca en 3.0° (estrecho: 2–2.5°, tolerante: 4–5°). Paso 2: si corta muy pronto y aún
+         * “entrabas” → súbela +0.5–1.0°. Paso 3: si sale ladeado al reenganchar → bájala −0.5–1.0°.
+         */
+
+        /*
+         * ==== COMMAND_TIMEOUT_SEC (corte de seguridad por tiempo) ==== Paso 1: arranca en 1.8 s.
+         * Paso 2: si corta justo antes de completar seguido → súbelo +0.2 s (o usa timeout dinámico
+         * por distancia). Paso 3: si nunca se acerca al límite → bájalo −0.2 s para ser más
+         * estricto.
+         */
+
+        /*
+         * ==== TAG_DETECTION_LOCK_CYCLES (anti “ping-pong” de AprilTag) ==== Paso 1: arranca en 2
+         * ciclos (≈40 ms a 50 Hz). Paso 2: si cambia de rama por frames ruidosos → súbelo a 3. Paso
+         * 3: si tarda en decidir objetivo → bájalo a 1 (con más riesgo de ping-pong).
+         */
         public static final double LATCHED_POSE_MAX_AGE_SEC = 0.35; // frescura de pose latched
-        public static final double LATCHED_POSE_MAX_TRANSLATION_DRIFT_M = 0.07; // deriva lineal permitida
-        public static final double LATCHED_POSE_MAX_HEADING_DRIFT_DEG = 3.0; // deriva angular permitida
+        public static final double LATCHED_POSE_MAX_TRANSLATION_DRIFT_M = 0.07; // deriva lineal
+                                                                                // permitida
+        public static final double LATCHED_POSE_MAX_HEADING_DRIFT_DEG = 3.0; // deriva angular
+                                                                             // permitida
         public static final double COMMAND_TIMEOUT_SEC = 1.8; // timeout duro
         public static final int TAG_DETECTION_LOCK_CYCLES = 2; // detección estable para lock
 
@@ -428,95 +460,99 @@ public class HighAltitudeConstants {
                         new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120)), // FL
                         new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60))// BL
         };
-        public static final Pose2d[] PATHFINDING_RED_REEF_POS = {
-                        new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)), // BC
-                        new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)), // BR
-                        new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)), // FR
-                        new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)), // FC
-                        new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60)), // FL
-                        new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120))// BL
-        };
+        public static final Pose2d[] PATHFINDING_RED_REEF_POS =
+                        {new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)), // BC
+                                        new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)), // BR
+                                        new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)), // FR
+                                        new Pose2d(11.5, 3.987, Rotation2d.fromDegrees(0)), // FC
+                                        new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60)), // FL
+                                        new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120))// BL
+                        };
 
-        public static final int[] BLUE_APRILTAG_IDS = { 18, 17, 22, 21, 20, 19 };
-        public static final int[] RED_APRILTAG_IDS = { 7, 8, 9, 10, 11, 6 };
+        public static final int[] BLUE_APRILTAG_IDS = {18, 17, 22, 21, 20, 19};
+        public static final int[] RED_APRILTAG_IDS = {7, 8, 9, 10, 11, 6};
 
-        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2));
-        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2));
+        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER =
+                        new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2));
+        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER =
+                        new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2));
 
-        public static final Pose2d PATHFINDING_LEFT_RED_FEEDER = new Pose2d(16.410, 0.950,
-                        Rotation2d.fromDegrees(125.8));
-        public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER = new Pose2d(16.420, 7.060,
-                        Rotation2d.fromDegrees(-125.8));
+        public static final Pose2d PATHFINDING_LEFT_RED_FEEDER =
+                        new Pose2d(16.410, 0.950, Rotation2d.fromDegrees(125.8));
+        public static final Pose2d PATHFINDING_RIGHT_RED_FEEDER =
+                        new Pose2d(16.420, 7.060, Rotation2d.fromDegrees(-125.8));
 
-        public static final Pose2d PATHFINDING_BLUE_LEFT_CORAL_STATION[] = {
-                        new Pose2d(1.640, 7.440, Rotation2d.fromDegrees(-54.2)), // Left Far Side
-                        new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2)), // Left
-                                                                               // Middle
-                                                                               // Side
-                        new Pose2d(0.62, 6.7, Rotation2d.fromDegrees(-54.2)), // Left
-                                                                              // Near
-                                                                              // Side
+        public static final Pose2d PATHFINDING_BLUE_LEFT_CORAL_STATION[] =
+                        {new Pose2d(1.640, 7.440, Rotation2d.fromDegrees(-54.2)), // Left Far Side
+                                        new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2)), // Left
+                                                                                               // Middle
+                                                                                               // Side
+                                        new Pose2d(0.62, 6.7, Rotation2d.fromDegrees(-54.2)), // Left
+                                                                                              // Near
+                                                                                              // Side
 
-        };
+                        };
 
-        public static final Pose2d PATHFINDING_BLUE_RIGHT_CORAL_STATION[] = {
-                        new Pose2d(1.54, 0.66, Rotation2d.fromDegrees(54.2)), // Right Far Side
-                        new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2)), // Right
-                                                                              // Middle
-                                                                              // Side
-                        new Pose2d(0.65, 1.32, Rotation2d.fromDegrees(54.2)), // Right
-                                                                              // Near
-                                                                              // Side
-        };
+        public static final Pose2d PATHFINDING_BLUE_RIGHT_CORAL_STATION[] =
+                        {new Pose2d(1.54, 0.66, Rotation2d.fromDegrees(54.2)), // Right Far Side
+                                        new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2)), // Right
+                                                                                              // Middle
+                                                                                              // Side
+                                        new Pose2d(0.65, 1.32, Rotation2d.fromDegrees(54.2)), // Right
+                                                                                              // Near
+                                                                                              // Side
+                        };
 
-        public static final Pose2d PATHFINDING_RED_LEFT_CORAL_STATION[] = {
-                        new Pose2d(15.980, 0.630, Rotation2d.fromDegrees(125.8)), // Left Far Side
-                        new Pose2d(16.410, 0.950, Rotation2d.fromDegrees(125.8)), // Left
-                                                                                  // Middle
-                                                                                  // Side
-                        new Pose2d(16.93, 1.31, Rotation2d.fromDegrees(125.8)), // Left
-                                                                                // Near
-                                                                                // Side
-        };
+        public static final Pose2d PATHFINDING_RED_LEFT_CORAL_STATION[] =
+                        {new Pose2d(15.980, 0.630, Rotation2d.fromDegrees(125.8)), // Left Far Side
+                                        new Pose2d(16.410, 0.950, Rotation2d.fromDegrees(125.8)), // Left
+                                                                                                  // Middle
+                                                                                                  // Side
+                                        new Pose2d(16.93, 1.31, Rotation2d.fromDegrees(125.8)), // Left
+                                                                                                // Near
+                                                                                                // Side
+                        };
 
-        public static final Pose2d PATHFINDING_RED_RIGHT_CORAL_STATION[] = {
-                        new Pose2d(15.920, 7.440, Rotation2d.fromDegrees(-125.8)), // Right Far
-                                                                                   // Side
-                        new Pose2d(16.420, 7.060, Rotation2d.fromDegrees(-125.8)), // Right
-                                                                                   // Middle
-                                                                                   // Side
-                        new Pose2d(16.940, 6.700, Rotation2d.fromDegrees(-125.8)), // Right
-                                                                                   // Near
-                                                                                   // Side
-        };
+        public static final Pose2d PATHFINDING_RED_RIGHT_CORAL_STATION[] =
+                        {new Pose2d(15.920, 7.440, Rotation2d.fromDegrees(-125.8)), // Right Far
+                                                                                    // Side
+                                        new Pose2d(16.420, 7.060, Rotation2d.fromDegrees(-125.8)), // Right
+                                                                                                   // Middle
+                                                                                                   // Side
+                                        new Pose2d(16.940, 6.700, Rotation2d.fromDegrees(-125.8)), // Right
+                                                                                                   // Near
+                                                                                                   // Side
+                        };
         // Order as in game manual A, B, C,...
-        public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = { new Pose2d(3.125, 4.18, Rotation2d.fromDegrees(0)), // A
-                        new Pose2d(3.125, 3.85, Rotation2d.fromDegrees(0)), // B
-                        new Pose2d(3.67, 2.95, Rotation2d.fromDegrees(60)), // C
-                        new Pose2d(3.96, 2.77, Rotation2d.fromDegrees(60)), // D
-                        new Pose2d(5.0, 2.77, Rotation2d.fromDegrees(120)), // E
-                        new Pose2d(5.29, 2.95, Rotation2d.fromDegrees(120)), // F
-                        new Pose2d(5.82, 3.85, Rotation2d.fromDegrees(180)), // G
-                        new Pose2d(5.82, 4.19, Rotation2d.fromDegrees(180)), // H
-                        new Pose2d(5.29, 5.10, Rotation2d.fromDegrees(-120)), // I
-                        new Pose2d(5.01, 5.26, Rotation2d.fromDegrees(-120)), // J
-                        new Pose2d(3.95, 5.26, Rotation2d.fromDegrees(-60)), // K
-                        new Pose2d(3.66, 5.10, Rotation2d.fromDegrees(-60)), // L
-        };
+        public static final Pose2d PATHFINDING_BLUE_BRANCHES[] =
+                        {new Pose2d(3.125, 4.18, Rotation2d.fromDegrees(0)), // A
+                                        new Pose2d(3.125, 3.85, Rotation2d.fromDegrees(0)), // B
+                                        new Pose2d(3.67, 2.95, Rotation2d.fromDegrees(60)), // C
+                                        new Pose2d(3.96, 2.77, Rotation2d.fromDegrees(60)), // D
+                                        new Pose2d(5.0, 2.77, Rotation2d.fromDegrees(120)), // E
+                                        new Pose2d(5.29, 2.95, Rotation2d.fromDegrees(120)), // F
+                                        new Pose2d(5.82, 3.85, Rotation2d.fromDegrees(180)), // G
+                                        new Pose2d(5.82, 4.19, Rotation2d.fromDegrees(180)), // H
+                                        new Pose2d(5.29, 5.10, Rotation2d.fromDegrees(-120)), // I
+                                        new Pose2d(5.01, 5.26, Rotation2d.fromDegrees(-120)), // J
+                                        new Pose2d(3.95, 5.26, Rotation2d.fromDegrees(-60)), // K
+                                        new Pose2d(3.66, 5.10, Rotation2d.fromDegrees(-60)), // L
+                        };
 
-        public static final Pose2d PATHFINDING_RED_BRANCHES[] = { new Pose2d(14.39, 3.85, Rotation2d.fromDegrees(180)), // A
-                        new Pose2d(14.39, 4.19, Rotation2d.fromDegrees(180)), // B
-                        new Pose2d(13.87, 5.09, Rotation2d.fromDegrees(-120)), // C
-                        new Pose2d(13.58, 5.26, Rotation2d.fromDegrees(-120)), // D
-                        new Pose2d(12.54, 5.26, Rotation2d.fromDegrees(-60)), // E
-                        new Pose2d(12.25, 5.20, Rotation2d.fromDegrees(-60)), // F
-                        new Pose2d(11.71, 4.19, Rotation2d.fromDegrees(0)), // G
-                        new Pose2d(11.71, 3.86, Rotation2d.fromDegrees(0)), // H
-                        new Pose2d(12.25, 2.94, Rotation2d.fromDegrees(60)), // I
-                        new Pose2d(12.53, 2.77, Rotation2d.fromDegrees(60)), // J
-                        new Pose2d(13.58, 2.78, Rotation2d.fromDegrees(120)), // K
-                        new Pose2d(13.86, 2.95, Rotation2d.fromDegrees(120)) // L
-        };
+        public static final Pose2d PATHFINDING_RED_BRANCHES[] =
+                        {new Pose2d(14.39, 3.85, Rotation2d.fromDegrees(180)), // A
+                                        new Pose2d(14.39, 4.19, Rotation2d.fromDegrees(180)), // B
+                                        new Pose2d(13.87, 5.09, Rotation2d.fromDegrees(-120)), // C
+                                        new Pose2d(13.58, 5.26, Rotation2d.fromDegrees(-120)), // D
+                                        new Pose2d(12.54, 5.26, Rotation2d.fromDegrees(-60)), // E
+                                        new Pose2d(12.25, 5.20, Rotation2d.fromDegrees(-60)), // F
+                                        new Pose2d(11.71, 4.19, Rotation2d.fromDegrees(0)), // G
+                                        new Pose2d(11.71, 3.86, Rotation2d.fromDegrees(0)), // H
+                                        new Pose2d(12.25, 2.94, Rotation2d.fromDegrees(60)), // I
+                                        new Pose2d(12.53, 2.77, Rotation2d.fromDegrees(60)), // J
+                                        new Pose2d(13.58, 2.78, Rotation2d.fromDegrees(120)), // K
+                                        new Pose2d(13.86, 2.95, Rotation2d.fromDegrees(120)) // L
+                        };
         public static final double PATHFINDING_APPROACH_OFFSET = 0.9;
 
         public enum CORAL_STATION_POSITION {
@@ -551,13 +587,12 @@ public class HighAltitudeConstants {
                 }
         }
 
-        public static REEF_POSITION[] REEF_POSITIONS = { REEF_POSITION.BC, REEF_POSITION.BR,
-                        REEF_POSITION.FR, REEF_POSITION.FC, REEF_POSITION.FL, REEF_POSITION.BL };
+        public static REEF_POSITION[] REEF_POSITIONS = {REEF_POSITION.BC, REEF_POSITION.BR,
+                        REEF_POSITION.FR, REEF_POSITION.FC, REEF_POSITION.FL, REEF_POSITION.BL};
 
         public enum REEF_SIDE {
                 LEFT(REEF_POSITION.BL, REEF_POSITION.FL), CENTER(REEF_POSITION.BC,
-                                REEF_POSITION.FC),
-                RIGHT(REEF_POSITION.BR, REEF_POSITION.FR);
+                                REEF_POSITION.FC), RIGHT(REEF_POSITION.BR, REEF_POSITION.FR);
 
                 private REEF_POSITION back, front;
 

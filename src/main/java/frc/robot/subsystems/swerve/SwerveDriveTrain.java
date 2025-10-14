@@ -4,24 +4,15 @@
 
 package frc.robot.subsystems.swerve;
 
-import frc.robot.HighAltitudeConstants;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.resources.math.Math;
-
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Volt;
 import static edu.wpi.first.units.Units.Volts;
-
 import java.util.ArrayList;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -33,7 +24,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
-import edu.wpi.first.units.measure.MutVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -44,6 +34,10 @@ import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.HighAltitudeConstants;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.resources.math.Math;
 
 public class SwerveDriveTrain extends SubsystemBase {
   /** Creates a new SwerveDriveTrain. */
@@ -66,7 +60,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   public boolean cleanUpMode = false;
   private double targetMeters;
 
-  private double visionYaw, visionTargetYaw, visionArea, visionTargetArea, visionAngle, visionTargetAngle;
+  private double visionYaw, visionTargetYaw, visionArea, visionTargetArea, visionAngle,
+      visionTargetAngle;
 
   private SysIdRoutine drivesysIdRoutine;
 
@@ -86,8 +81,7 @@ public class SwerveDriveTrain extends SubsystemBase {
   MutLinearVelocity brVelocity = MetersPerSecond.mutable(0);
 
   public SwerveDriveTrain() {
-    frontLeft = new HighSwerveModule(
-        RobotMap.SWERVE_FRONT_LEFT_DRIVE_MOTOR_PORT,
+    frontLeft = new HighSwerveModule(RobotMap.SWERVE_FRONT_LEFT_DRIVE_MOTOR_PORT,
         RobotMap.SWERVE_FRONT_LEFT_DRIVE_MOTOR_TYPE,
         RobotMap.SWERVE_FRONT_LEFT_DRIVE_MOTOR_INVERTED,
         RobotMap.SWERVE_FRONT_LEFT_DRIVE_ENCODER_INVERTED,
@@ -98,8 +92,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         RobotMap.SWERVE_FRONT_LEFT_ENCODED_TALON_PORT,
         RobotMap.SWERVE_FRONT_LEFT_DIRECTION_ENCODER_OFFSET_PULSES,
         RobotMap.SWERVE_FRONT_LEFT_ENCODED_TALON_INVERTED);
-    frontRight = new HighSwerveModule(
-        RobotMap.SWERVE_FRONT_RIGHT_DRIVE_MOTOR_PORT,
+    frontRight = new HighSwerveModule(RobotMap.SWERVE_FRONT_RIGHT_DRIVE_MOTOR_PORT,
         RobotMap.SWERVE_FRONT_RIGHT_DRIVE_MOTOR_TYPE,
         RobotMap.SWERVE_FRONT_RIGHT_DRIVE_MOTOR_INVERTED,
         RobotMap.SWERVE_FRONT_RIGHT_DRIVE_ENCODER_INVERTED,
@@ -110,10 +103,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         RobotMap.SWERVE_FRONT_RIGHT_ENCODED_TALON_PORT,
         RobotMap.SWERVE_FRONT_RIGHT_DIRECTION_ENCODER_OFFSET_PULSES,
         RobotMap.SWERVE_FRONT_RIGHT_ENCODED_TALON_INVERTED);
-    backLeft = new HighSwerveModule(
-        RobotMap.SWERVE_BACK_LEFT_DRIVE_MOTOR_PORT,
-        RobotMap.SWERVE_BACK_LEFT_DRIVE_MOTOR_TYPE,
-        RobotMap.SWERVE_BACK_LEFT_DRIVE_MOTOR_INVERTED,
+    backLeft = new HighSwerveModule(RobotMap.SWERVE_BACK_LEFT_DRIVE_MOTOR_PORT,
+        RobotMap.SWERVE_BACK_LEFT_DRIVE_MOTOR_TYPE, RobotMap.SWERVE_BACK_LEFT_DRIVE_MOTOR_INVERTED,
         RobotMap.SWERVE_BACK_LEFT_DRIVE_ENCODER_INVERTED,
         RobotMap.SWERVE_BACK_LEFT_DIRECTION_MOTOR_PORT,
         RobotMap.SWERVE_BACK_LEFT_DIRECTION_MOTOR_TYPE,
@@ -122,8 +113,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         RobotMap.SWERVE_BACK_LEFT_ENCODED_TALON_PORT,
         RobotMap.SWERVE_BACK_LEFT_DIRECTION_ENCODER_OFFSET_PULSES,
         RobotMap.SWERVE_BACK_LEFT_ENCODED_TALON_INVERTED);
-    backRight = new HighSwerveModule(
-        RobotMap.SWERVE_BACK_RIGHT_DRIVE_MOTOR_PORT,
+    backRight = new HighSwerveModule(RobotMap.SWERVE_BACK_RIGHT_DRIVE_MOTOR_PORT,
         RobotMap.SWERVE_BACK_RIGHT_DRIVE_MOTOR_TYPE,
         RobotMap.SWERVE_BACK_RIGHT_DRIVE_MOTOR_INVERTED,
         RobotMap.SWERVE_BACK_RIGHT_DRIVE_ENCODER_INVERTED,
@@ -141,13 +131,11 @@ public class SwerveDriveTrain extends SubsystemBase {
     modules.add(backLeft);
     modules.add(backRight);
 
-    swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(HighAltitudeConstants.SWERVE_KINEMATICS, new Rotation2d(0),
-        new SwerveModulePosition[] {
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
-        }, new Pose2d(0.0, 0.0, new Rotation2d(0)));
+    swerveDrivePoseEstimator =
+        new SwerveDrivePoseEstimator(HighAltitudeConstants.SWERVE_KINEMATICS, new Rotation2d(0),
+            new SwerveModulePosition[] {frontLeft.getPosition(), frontRight.getPosition(),
+                backLeft.getPosition(), backRight.getPosition()},
+            new Pose2d(0.0, 0.0, new Rotation2d(0)));
 
     RobotConfig config = null;
     try {
@@ -158,21 +146,14 @@ public class SwerveDriveTrain extends SubsystemBase {
     }
 
     // Configure AutoBuilder
-    AutoBuilder.configure(
-        this::getPose,
-        this::resetPose,
-        this::getChassisSpeeds,
-        this::driveSpeed,
-        HighAltitudeConstants.pathFollowerConfig,
-        config,
-        () -> {
+    AutoBuilder.configure(this::getPose, this::resetPose, this::getChassisSpeeds, this::driveSpeed,
+        HighAltitudeConstants.pathFollowerConfig, config, () -> {
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
             return alliance.get() == DriverStation.Alliance.Red;
           }
           return false;
-        },
-        this);
+        }, this);
 
     distancePIDController = new PIDController(HighAltitudeConstants.SWERVE_DISTANCE_kP, 0,
         HighAltitudeConstants.SWERVE_DISTANCE_kD);
@@ -202,12 +183,14 @@ public class SwerveDriveTrain extends SubsystemBase {
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
     SmartDashboard.putData("Field", field);
 
-    speedLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
-    strafeLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
-    turnLimiter = new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND);
+    speedLimiter =
+        new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
+    strafeLimiter =
+        new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ACCELERATION_UNITS_PER_SECOND);
+    turnLimiter =
+        new SlewRateLimiter(HighAltitudeConstants.SWERVE_MAX_ANGULAR_ACCELERATION_UNITS_PER_SECOND);
 
-    drivesysIdRoutine = new SysIdRoutine(
-        new SysIdRoutine.Config(),
+    drivesysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(),
         new SysIdRoutine.Mechanism(this::driveSysID, this::logDriveSysID, this));
 
   }
@@ -220,10 +203,14 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   private void logDriveSysID(SysIdRoutineLog log) {
-    brVoltage.mut_replace(backRight.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
-    blVoltage.mut_replace(backLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
-    frVoltage.mut_replace(frontRight.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
-    flVoltage.mut_replace(frontLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(), Volts);
+    brVoltage.mut_replace(backRight.getDriveMotor().get() * RobotController.getBatteryVoltage(),
+        Volts);
+    blVoltage.mut_replace(backLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(),
+        Volts);
+    frVoltage.mut_replace(frontRight.getDriveMotor().get() * RobotController.getBatteryVoltage(),
+        Volts);
+    flVoltage.mut_replace(frontLeft.getDriveMotor().get() * RobotController.getBatteryVoltage(),
+        Volts);
 
     brDistance.mut_replace(backRight.getDriveDistance(), Meters);
     blDistance.mut_replace(backLeft.getDriveDistance(), Meters);
@@ -235,9 +222,12 @@ public class SwerveDriveTrain extends SubsystemBase {
     frVelocity.mut_replace(frontRight.getDriveVelocity(), MetersPerSecond);
     flVelocity.mut_replace(frontLeft.getDriveVelocity(), MetersPerSecond);
 
-    log.motor("Front right").voltage(frVoltage).linearPosition(frDistance).linearVelocity(frVelocity);
-    log.motor("Front left").voltage(flVoltage).linearPosition(flDistance).linearVelocity(flVelocity);
-    log.motor("Back right").voltage(brVoltage).linearPosition(brDistance).linearVelocity(brVelocity);
+    log.motor("Front right").voltage(frVoltage).linearPosition(frDistance)
+        .linearVelocity(frVelocity);
+    log.motor("Front left").voltage(flVoltage).linearPosition(flDistance)
+        .linearVelocity(flVelocity);
+    log.motor("Back right").voltage(brVoltage).linearPosition(brDistance)
+        .linearVelocity(brVelocity);
     log.motor("Back left").voltage(blVoltage).linearPosition(blDistance).linearVelocity(blVelocity);
   }
 
@@ -298,15 +288,15 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   // 5. Set the states to the swerve modules
   public void driveSpeed(ChassisSpeeds chassisSpeeds) {
-    SwerveModuleState[] moduleStates = HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] moduleStates =
+        HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     setModuleStates(moduleStates);
   }
 
   /**
-   * Turns the robot until it's heading the given angle using the angle reported
-   * by the odometry.
+   * Turns the robot until it's heading the given angle using the angle reported by the odometry.
    * 
-   * @param angle    The target angle to which the robot is going to turn.
+   * @param angle The target angle to which the robot is going to turn.
    * @param maxPower Maximum speed (from 0 to 1).
    * 
    * @return True if the robot has arrived to the target.
@@ -318,9 +308,9 @@ public class SwerveDriveTrain extends SubsystemBase {
   /**
    * Turns the robot until it's heading the given angle.
    * 
-   * @param angle    The target angle to which the robot is going to turn.
+   * @param angle The target angle to which the robot is going to turn.
    * @param maxPower Maximum speed (from 0 to 1).
-   * @param gyro     True to turn using gyro, false to use odometry.
+   * @param gyro True to turn using gyro, false to use odometry.
    * 
    * @return True if the robot has arrived to the target.
    */
@@ -347,7 +337,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states,
+        HighAltitudeConstants.SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND);
     frontLeft.setState(states[0]);
     frontRight.setState(states[1]);
     backLeft.setState(states[2]);
@@ -382,20 +373,20 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     setModulesStates(0, angleTargetRads);
 
-    boolean FL = (Math.abs(angleTargetRads
-        - (frontLeft.getAbsoluteEncoderRAD() - java.lang.Math.floor(frontLeft.getAbsoluteEncoderRAD() / Math.PI)
+    boolean FL = (Math.abs(angleTargetRads - (frontLeft.getAbsoluteEncoderRAD()
+        - java.lang.Math.floor(frontLeft.getAbsoluteEncoderRAD() / Math.PI)
             * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
 
-    boolean FR = (Math.abs(angleTargetRads
-        - (frontRight.getAbsoluteEncoderRAD() - java.lang.Math.floor(frontRight.getAbsoluteEncoderRAD() / Math.PI)
+    boolean FR = (Math.abs(angleTargetRads - (frontRight.getAbsoluteEncoderRAD()
+        - java.lang.Math.floor(frontRight.getAbsoluteEncoderRAD() / Math.PI)
             * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
 
-    boolean BL = (Math.abs(angleTargetRads
-        - (backLeft.getAbsoluteEncoderRAD() - java.lang.Math.floor(backLeft.getAbsoluteEncoderRAD() / Math.PI)
+    boolean BL = (Math.abs(angleTargetRads - (backLeft.getAbsoluteEncoderRAD()
+        - java.lang.Math.floor(backLeft.getAbsoluteEncoderRAD() / Math.PI)
             * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
 
-    boolean BR = (Math.abs(angleTargetRads
-        - (backRight.getAbsoluteEncoderRAD() - java.lang.Math.floor(backRight.getAbsoluteEncoderRAD() / Math.PI)
+    boolean BR = (Math.abs(angleTargetRads - (backRight.getAbsoluteEncoderRAD()
+        - java.lang.Math.floor(backRight.getAbsoluteEncoderRAD() / Math.PI)
             * Math.PI)) <= HighAltitudeConstants.SWERVE_TURN_WHEELS_RADIANS_ARRIVE_OFFSET);
 
     onTarget = FL && FR && BL && BR;
@@ -428,8 +419,8 @@ public class SwerveDriveTrain extends SubsystemBase {
   /**
    * Moves to a target pose in a straight line.
    * 
-   * @param targetPose   The target pose.
-   * @param maxSpeed     The maximum linear speed in m/s.
+   * @param targetPose The target pose.
+   * @param maxSpeed The maximum linear speed in m/s.
    * @param maxTurnSpeed The maximum angular velocity in rad/s
    * @return True if considered on target.
    */
@@ -448,24 +439,20 @@ public class SwerveDriveTrain extends SubsystemBase {
     speedY = Math.clamp(speedY, -maxSpeed, maxSpeed);
     turnSpeed = Math.clamp(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
 
-    var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, turnSpeed,
-        getPose().getRotation());
+    var speeds =
+        ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, turnSpeed, getPose().getRotation());
     driveSpeed(speeds);
 
-    return distance < HighAltitudeConstants.VISION_POSE_ARRIVE_OFFSET &&
-        Math.abs(deltaAngle) < HighAltitudeConstants.VISION_POSE_TURN_ARRIVE_OFFSET;
+    return distance < HighAltitudeConstants.VISION_POSE_ARRIVE_OFFSET
+        && Math.abs(deltaAngle) < HighAltitudeConstants.VISION_POSE_TURN_ARRIVE_OFFSET;
   }
 
-  
+
   // Odometry
   public void updateOdometry() {
-    swerveDrivePoseEstimator.update(
-        getRotation2dCCWPositive(),
-        new SwerveModulePosition[] {
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition() });
+    swerveDrivePoseEstimator.update(getRotation2dCCWPositive(),
+        new SwerveModulePosition[] {frontLeft.getPosition(), frontRight.getPosition(),
+            backLeft.getPosition(), backRight.getPosition()});
     field.setRobotPose(getPose());
   }
 
@@ -479,7 +466,8 @@ public class SwerveDriveTrain extends SubsystemBase {
     var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
     var currentPos = getPose();
     if (alliance == DriverStation.Alliance.Red)
-      return new Pose2d(currentPos.getX(), currentPos.getY(), currentPos.getRotation().plus(new Rotation2d(Math.PI)));
+      return new Pose2d(currentPos.getX(), currentPos.getY(),
+          currentPos.getRotation().plus(new Rotation2d(Math.PI)));
     else
       return currentPos;
   }
@@ -490,15 +478,15 @@ public class SwerveDriveTrain extends SubsystemBase {
 
   public Pose2d getPoseInverted() {
     var currentPos = getPose();
-    return new Pose2d(currentPos.getX(), currentPos.getY(), currentPos.getRotation().plus(new Rotation2d(Math.PI)));
+    return new Pose2d(currentPos.getX(), currentPos.getY(),
+        currentPos.getRotation().plus(new Rotation2d(Math.PI)));
   }
 
   public void resetPose(Pose2d pose) {
-    swerveDrivePoseEstimator.resetPosition(getRotation2dCCWPositive(), new SwerveModulePosition[] {
-        frontLeft.getPosition(),
-        frontRight.getPosition(),
-        backLeft.getPosition(),
-        backRight.getPosition() }, pose);
+    swerveDrivePoseEstimator.resetPosition(getRotation2dCCWPositive(),
+        new SwerveModulePosition[] {frontLeft.getPosition(), frontRight.getPosition(),
+            backLeft.getPosition(), backRight.getPosition()},
+        pose);
   }
 
   // Getters for the modules
@@ -543,22 +531,22 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   public static Command pathfindToPose(Pose2d targetPose) {
-    PathConstraints constraints = new PathConstraints(
-        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
-        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
-        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
-        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
+    PathConstraints constraints =
+        new PathConstraints(HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
+            HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
+            HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
+            HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
 
     return AutoBuilder.pathfindToPose(targetPose, constraints);
   }
 
   public static Command pathfindThenPath(PathPlannerPath path) {
 
-    PathConstraints constraints = new PathConstraints(
-        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
-        HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
-        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
-        HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
+    PathConstraints constraints =
+        new PathConstraints(HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
+            HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
+            HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
+            HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
 
     return AutoBuilder.pathfindThenFollowPath(path, constraints);
   }
@@ -567,16 +555,12 @@ public class SwerveDriveTrain extends SubsystemBase {
     return HighAltitudeConstants.SWERVE_KINEMATICS.toChassisSpeeds(
         // supplier for chassisSpeed, order of motors need to be the same as the
         // consumer of ChassisSpeed
-        frontLeft.getState(),
-        frontRight.getState(),
-        backLeft.getState(),
-        backRight.getState());
+        frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState());
   }
 
   // see drive constants for details
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-    setModuleStates(
-        HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
+    setModuleStates(HighAltitudeConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds));
   }
 
   public boolean pointToTarget(Pose2d target, double maxPower) {
@@ -616,25 +600,24 @@ public class SwerveDriveTrain extends SubsystemBase {
   }
 
   /**
-   * Aligns with a target whose real angle is known. Note that this method will
-   * disable field oriented driving
+   * Aligns with a target whose real angle is known. Note that this method will disable field
+   * oriented driving
    * 
-   * @param angle          The real angle of the target in degrees.
-   * @param yaw            The current yaw reported by the sensors.
-   * @param area           The current area of the target reported by the sensors.
-   * @param yawOffset      The target yaw.
-   * @param targetArea     The target area
-   * @param maxTurnPower   The maximum turning power that will be passed (in
-   *                       percentage, from 0 to 1).
-   * @param maxSpeedPower  The maximum power that will be passed as speed (in
-   *                       percentage, from 0 to 1).
-   * @param maxStrafePower The maximum power that will be passed as strafe (in
-   *                       percentage, from 0 to 1).
+   * @param angle The real angle of the target in degrees.
+   * @param yaw The current yaw reported by the sensors.
+   * @param area The current area of the target reported by the sensors.
+   * @param yawOffset The target yaw.
+   * @param targetArea The target area
+   * @param maxTurnPower The maximum turning power that will be passed (in percentage, from 0 to 1).
+   * @param maxSpeedPower The maximum power that will be passed as speed (in percentage, from 0 to
+   *        1).
+   * @param maxStrafePower The maximum power that will be passed as strafe (in percentage, from 0 to
+   *        1).
    * 
    * @return True if it's considered onTarget
    */
-  public boolean alignWithTarget(double angle, double yaw, double area, double targetYaw, double targetArea,
-      double maxTurnPower, double maxSpeedPower, double maxStrafePower) {
+  public boolean alignWithTarget(double angle, double yaw, double area, double targetYaw,
+      double targetArea, double maxTurnPower, double maxSpeedPower, double maxStrafePower) {
 
     double turnPower = visionTurnController.calculate(getPose().getRotation().getDegrees(), angle);
     turnPower = Math.clamp(turnPower, -maxTurnPower, maxTurnPower);

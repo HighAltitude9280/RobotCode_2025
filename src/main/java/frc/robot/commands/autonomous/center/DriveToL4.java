@@ -5,8 +5,6 @@
 package frc.robot.commands.autonomous.center;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -17,7 +15,7 @@ import frc.robot.commands.autonomous.ScoreCoral;
 import frc.robot.commands.modes.SetCoralMode;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// NOTE: Consider using this command inline, rather than writing a subclass. For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DriveToL4 extends SequentialCommandGroup {
@@ -25,9 +23,8 @@ public class DriveToL4 extends SequentialCommandGroup {
   public DriveToL4() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-        new SetCoralMode(true),
-        new AutoLeave(2.2, 0.7).withTimeout(2), new ParallelRaceGroup(
+    addCommands(new SetCoralMode(true), new AutoLeave(2.2, 0.7).withTimeout(2),
+        new ParallelRaceGroup(
             new AlignWithTargetPose(null, null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                 HighAltitudeConstants.VISION_POSE_MAX_TURN),
             new WaitCommand(3)),
