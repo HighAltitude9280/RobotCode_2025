@@ -6,12 +6,8 @@ package frc.robot.commands.oneDriver;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
-import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
 import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

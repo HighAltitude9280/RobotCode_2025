@@ -6,7 +6,9 @@ package frc.robot.subsystems.manipulator;
 
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.RobotMap;
@@ -75,5 +77,6 @@ public class Gripper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Digital Input Gripper", getDigitalInput());
   }
 }

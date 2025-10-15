@@ -6,8 +6,10 @@ package frc.robot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +28,7 @@ import frc.robot.commands.autonomous.center.LeaveAndL4;
 import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
+import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.commands.swerve.autonomous.feeder.DriveToCoralStation;
 import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
@@ -91,7 +94,6 @@ public class RobotContainer {
         return candleSubsystem;
     }
 
-
     public void setPrecisionMode(boolean precisionMode) {
         precisionModeOn = precisionMode;
     }
@@ -118,11 +120,10 @@ public class RobotContainer {
         // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee
         // el default command).
 
-        // wrist.setDefaultCommand(new
-        // WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
+        wrist.setDefaultCommand(new WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
 
         lift.setDefaultCommand(new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
-        HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
+                HighAltitudeConstants.LIFT_ARRIVE_OFFSET));
 
         switch (HighAltitudeConstants.CURRENT_PILOT) {
 

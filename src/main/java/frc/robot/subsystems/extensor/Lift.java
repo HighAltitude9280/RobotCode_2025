@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.HighAltitudeConstants;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.resources.components.speedController.HighAltitudeMotorGroup;
 import frc.robot.resources.math.Math;
@@ -144,9 +143,13 @@ public class Lift extends SubsystemBase {
     if (onTarget) {
       liftOutput = HighAltitudeConstants.LIFT_kG;
     }
-
-    if ((Math.abs(getTarget() - HighAltitudeConstants.LIFT_CORAL_POSITIONS[0]) < 0.01) && (onTarget)) {
-      liftOutput = 0;
+    if (metersTarget == HighAltitudeConstants.LIFT_CORAL_POSITIONS[0] && !onTarget) {
+      if (getLiftPosMeters() < 0.1) {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        liftOutput = 0;
+      } else {
+        liftMotors.setVoltage(liftOutput);
+      }
     } else {
       liftMotors.setVoltage(liftOutput);
     }

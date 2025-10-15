@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -59,18 +60,18 @@ public class HighAltitudeConstants {
          */
         public static final double LIFT_kS = 0.057012; // 0.03148;
         public static final double LIFT_kA = 0.34997; // 0.28027;
-        public static final double LIFT_kG = 0.49398; // 0.44903;
+        public static final double LIFT_kG = 0.4602675;// 0.49398; // 0.44903;
         public static final double LIFT_kV = 5.0644; // 5.0705;
 
         public static final double LIFT_kP = 3.988; // 3.0959
         public static final double LIFT_kI = 0;
         public static final double LIFT_kD = 0.23765; // 0.2683
 
-        public static final double LIFT_MAX_VELOCITY = 1.25; // en m/s //0.65
-        public static final double LIFT_MAX_ACCELERATION = 2.5; // en m/s^2 // 1.3
+        public static final double LIFT_MAX_VELOCITY = 1.5;// 1.25 // en m/s //0.65
+        public static final double LIFT_MAX_ACCELERATION = 3.0; // en m/s^2 // 1.3
 
         public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
-                                                             // NO DEJAR EN CERO EL OFFSET
+                                                               // NO DEJAR EN CERO EL OFFSET
 
         public static final double LIFT_MAX_POWER = 7.0; // 4
         public static final double LIFT_MAX_POWER_GOING_DOWN = 7.0;
@@ -83,9 +84,9 @@ public class HighAltitudeConstants {
                         * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.15, 0.34, 0.72 }; // TODO: tunear
-                                                                                       // esto en
-                                                                                       // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.32, 0.51, 0.7 }; // TODO: tunear
+                                                                                      // esto en
+                                                                                      // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = { 0.0, 0.28, 0.47, 0.73 };
 
@@ -95,8 +96,8 @@ public class HighAltitudeConstants {
 
         ////////////////////////// GRIPPER //////////////////////////
         public static final double GRIPPER_OUT_SPEED = 0.2;
-        public static final double GRIPPER_IN_SPEED = -0.375;
-        public static final double GRIPPER_INTAKE_SPEED = -0.2;
+        public static final double GRIPPER_IN_SPEED = -0.5625;
+        public static final double GRIPPER_INTAKE_SPEED = -0.3; // -0.2
         public static final double GRIPPER_HOLD_SPEED = 0.1;
 
         ////////////////////////// WRIST //////////////////////////
@@ -107,13 +108,13 @@ public class HighAltitudeConstants {
         public static final double WRIST_UP_CONTROL_ADDED_VALUE = 10;
         public static final double WRIST_DOWN_CONTROL_ADDED_VALUE = -10;
 
-        public static final double WRIST_DRIVE_SPEED = 0.15;
+        public static final double WRIST_DRIVE_SPEED = 0.225;
 
         public static final double WRIST_kP = 0.1; // 0.1
         public static final double WRIST_kI = 0.0; // 0.0
         public static final double WRIST_kD = 0.0; // 0.001
 
-        public static final double WRIST_ARRIVE_OFFSET = 0.0; // 2.0
+        public static final double WRIST_ARRIVE_OFFSET = 1.5; // 2.0
 
         public static final double WRIST_RATIO = (1.0 * 12.0) / (15.0 * 48.0);
 
@@ -122,20 +123,20 @@ public class HighAltitudeConstants {
                         / WRIST_NEO_ENCODER_UNITS_PER_REV;
         public static final double WRIST_DEGREES_PER_PULSE = 360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
 
-        public static final double WRIST_ZERO_ANGLE = 0.0;
+        public static final double WRIST_ZERO_ANGLE = -88;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 40 }; // 40 in comp
+        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 20 }; // 40 in comp
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
-        public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
+        public static final double[] WRIST_ALGAE_POSITIONS = { 40, 40, 40, 40 };
 
         public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
         // After grabbing algae, wrist should return to this position to keep in inside
         // FP.
         public static final double WRIST_ALGAE_SAFE_POSITION = 0;
-        public static final double WRIST_ALGAE_POSITION = 145;
+        public static final double WRIST_ALGAE_POSITION = 80;
 
         ////////////////////////// SWERVE //////////////////////////
 
@@ -324,17 +325,17 @@ public class HighAltitudeConstants {
         //////////////////////////// VISION //////////////////////////////
 
         // Keep the order of the cameras consistent across the arrays.
-        public static final String[] CAMERA_NAMES = { "ArducamBack2", "Limelight3", "Limelight2Pi" };
+        public static final String[] CAMERA_NAMES = { "ArducamBack2", "Limelight2Pi" };
         public static final Transform3d[] CAMERA_POSITIONS = {
                         // ArducamFront
-                        new Transform3d(new Translation3d(0.221203922244, 0.25669297658,
-                                        0.20210410922),
+                        new Transform3d(new Translation3d(0.223774, 0.261112,
+                                        0.20917466),
                                         new Rotation3d(Math.toRadians(0f), Math.toRadians(-20),
-                                                        Math.toRadians(-34.97059824))),
+                                                        Math.toRadians(-24.97059824))),
 
                         // Limelight3
-                        new Transform3d(new Translation3d(0.20908042075, -0.271998758978,
-                                        0.20210410922),
+                        new Transform3d(new Translation3d(0.202692, -0.27051,
+                                        0.21686527),
                                         new Rotation3d(Math.toRadians(0), Math.toRadians(-20),
                                                         Math.toRadians(30))),
                         // Limelight2Pi

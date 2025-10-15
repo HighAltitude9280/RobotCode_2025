@@ -4,14 +4,13 @@
 
 package frc.robot.commands.swerve.autonomous.reef;
 
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.HighAltitudeConstants;
-import frc.robot.Robot;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
-import frc.robot.HighAltitudeConstants.REEF_SIDE;;
+import frc.robot.HighAltitudeConstants.REEF_SIDE;
+import frc.robot.Robot;;
 
 public class AlignWithTargetVision extends Command {
   private boolean isFinished = false;
@@ -92,27 +91,27 @@ public class AlignWithTargetVision extends Command {
   public void execute() {
     /**
      * 
-     if (Double.isNaN(targetAngle)) {
-      determineTarget();
-      if (Double.isNaN(targetAngle))
-      return;
-    }
-    
-    double yaw = Robot.getRobotContainer().getVision().getTargetYaw(targetID);
-    double area = Robot.getRobotContainer().getVision().getTargetSize(targetID);
-    
-    yaw = Double.isNaN(yaw) ? targetYaw : yaw;
-    area = Double.isNaN(area) ? HighAltitudeConstants.VISION_AREA_TARGET : area;
-    
-    
-    isFinished = Robot.getRobotContainer().getSwerveDriveTrain().alignWithTarget(
-      targetAngle, yaw, area, targetYaw,
-      HighAltitudeConstants.VISION_AREA_TARGET,
-      maxTurnPower, maxSpeedPower, maxStrafePower);
-      */
-    }
-    
-    @Override
+     * if (Double.isNaN(targetAngle)) {
+     * determineTarget();
+     * if (Double.isNaN(targetAngle))
+     * return;
+     * }
+     * 
+     * double yaw = Robot.getRobotContainer().getVision().getTargetYaw(targetID);
+     * double area = Robot.getRobotContainer().getVision().getTargetSize(targetID);
+     * 
+     * yaw = Double.isNaN(yaw) ? targetYaw : yaw;
+     * area = Double.isNaN(area) ? HighAltitudeConstants.VISION_AREA_TARGET : area;
+     * 
+     * 
+     * isFinished = Robot.getRobotContainer().getSwerveDriveTrain().alignWithTarget(
+     * targetAngle, yaw, area, targetYaw,
+     * HighAltitudeConstants.VISION_AREA_TARGET,
+     * maxTurnPower, maxSpeedPower, maxStrafePower);
+     */
+  }
+
+  @Override
   public void end(boolean interrupted) {
     Robot.getRobotContainer().getSwerveDriveTrain().stopModules();
     Robot.getRobotContainer().getSwerveDriveTrain().setIsFieldOriented(true);

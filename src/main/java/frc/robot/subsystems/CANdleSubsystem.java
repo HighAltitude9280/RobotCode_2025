@@ -7,7 +7,6 @@ import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.FireAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
-import com.ctre.phoenix.led.StrobeAnimation;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,7 +17,7 @@ public class CANdleSubsystem extends SubsystemBase {
   private Animation flareAnimation;
 
   private final Random random;
-  private final int ledCount = 34; // Adjust based on LED count
+  private final int ledCount = 33; // Adjust based on LED count
   private final int baseR = 0; // Red (0)
   private final int baseG = 146; // Green (146)
   private final int baseB = 128; // Blue (128)
@@ -43,9 +42,6 @@ public class CANdleSubsystem extends SubsystemBase {
     // Initialize fire animation
     fireAnimation = new FireAnimation(0.3, 0.3, ledCount, 0.5, 0.2);
     // Speed, Intensity, LEDs, Sparking, Reverse Direction
-
-    flareAnimation = new StrobeAnimation(0, 255, 0, 0, 0.1, ledCount);
-    // Red, Green, Blue, White, Speed, LED Count, Twinkle Percent
 
     random = new Random();
   }
