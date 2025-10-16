@@ -136,24 +136,25 @@ public class Lift extends SubsystemBase {
 
     double liftOutput = pidVal + feedforwardVal;
 
-    liftOutput = Math.clamp(liftOutput, -maxVoltage, maxVoltage);
+    if ((getLiftPosMeters() + getTarget()) < 0.1) {
+      liftOutput = Math.clamp(liftOutput, -maxVoltage * HighAltitudeConstants.caralho_var,
+          maxVoltage * HighAltitudeConstants.caralho_var);
+    } else {
+      liftOutput = Math.clamp(liftOutput, -maxVoltage, maxVoltage);
+    }
 
     double delta = getTarget() - getLiftPosMeters();
     this.onTarget = Math.abs(delta) < arriveOffset;
     if (onTarget) {
       liftOutput = HighAltitudeConstants.LIFT_kG;
     }
-    if (metersTarget == HighAltitudeConstants.LIFT_CORAL_POSITIONS[0] && !onTarget) {
-      if (getLiftPosMeters() < 0.1) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        liftOutput = 0;
-      } else {
-        liftMotors.setVoltage(liftOutput);
-      }
+
+    if ((getTarget() == 0) && onTarget) {
+      liftOutput = 0;
     } else {
       liftMotors.setVoltage(liftOutput);
+
     }
-    // liftMotors.setAll(liftOutput);
 
     currentTarget = metersTarget;
     lastSpeedSetpoint = targetSpeed;

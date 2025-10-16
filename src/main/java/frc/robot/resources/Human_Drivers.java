@@ -14,10 +14,11 @@ public class Human_Drivers {
         Yare,
         Carlos,
         OneDriver,
-        OnlySwerve, //for Drivers Practice
+        OnlySwerve, // for Drivers Practice
 
         ///// PROGRAMMING /////
         JoakinButChambing, // Joaquin use a specific configuration for testing features
         ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE,
+        LiftWristTest,
     }
 }

@@ -24,6 +24,7 @@ public class Gripper extends SubsystemBase {
   ColorMatch colorMatcher;
 
   private final double CURRENT_THRESOLD = -2.3;
+  private final double CURRENT_THRESOLD_ALGAE = 3.6;
   boolean coralInGripper;
 
   /** Creates a new Gripper. */
@@ -52,9 +53,24 @@ public class Gripper extends SubsystemBase {
     return current > CURRENT_THRESOLD;
   }
 
+  /** Verifica si la corriente del motor ha superado el umbral */
+  public boolean isCurrentThresholdExceededAlgae() {
+    double current = gripperMotors.getMotors().get(0).getOutput();
+    System.out.println("CurrentTUPU:" + current);
+    return current < CURRENT_THRESOLD_ALGAE;
+  }
+
   public void gripperInCurrent() {
     if (!isCurrentThresholdExceeded())
       gripperMotors.setAll(HighAltitudeConstants.GRIPPER_INTAKE_SPEED);
+    else {
+      stopGripper();
+    }
+  }
+
+  public void gripperAlgaeCurrent() {
+    if (!isCurrentThresholdExceededAlgae())
+      gripperMotors.setAll(HighAltitudeConstants.GRIPPER_OUT_SPEED);
     else {
       stopGripper();
     }

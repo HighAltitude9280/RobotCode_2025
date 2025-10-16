@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.HighAltitudeConstants.CORAL_STATION_POSITION;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstants.REEF_POSITION;
+import frc.robot.Robot.GameMode;
 import frc.robot.commands.autonomous.AutoGenerator;
 import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.autonomous.AutoPortion;
@@ -64,6 +65,20 @@ public class RobotContainer {
         gripper = new Gripper();
         wrist = new Wrist();
         candleSubsystem = new CANdleSubsystem();
+    }
+
+    private GameMode gameMode = GameMode.CORAL_LX; // default
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public void setGameMode(GameMode mode) {
+        this.gameMode = mode;
+        SmartDashboard.putString("OI/Mode", mode.name());
+
+        int[] rgb = HighAltitudeConstants.ledFor(mode);
+        candleSubsystem.setLEDColor(rgb[0], rgb[1], rgb[2]);
     }
 
     public Navx getNavx() {

@@ -14,10 +14,13 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import frc.robot.Robot.GameMode;
 import frc.robot.resources.Human_Drivers.HumanDrivers;
 
 /** Add your docs here. */
 public class HighAltitudeConstants {
+
+        public static final double caralho_var = 0.15;
 
         /**
          * Enum used to indicate the height to grab/leave game pieces. Bottom
@@ -58,7 +61,7 @@ public class HighAltitudeConstants {
          * picos
          * extraños, que quede smooth
          */
-        public static final double LIFT_kS = 0.057012; // 0.03148;
+        public static final double LIFT_kS = 0.065;// 0.057012; // 0.03148;
         public static final double LIFT_kA = 0.34997; // 0.28027;
         public static final double LIFT_kG = 0.4602675;// 0.49398; // 0.44903;
         public static final double LIFT_kV = 5.0644; // 5.0705;
@@ -70,17 +73,18 @@ public class HighAltitudeConstants {
         public static final double LIFT_MAX_VELOCITY = 1.5;// 1.25 // en m/s //0.65
         public static final double LIFT_MAX_ACCELERATION = 3.0; // en m/s^2 // 1.3
 
-        public static final double LIFT_ARRIVE_OFFSET = 0.025; // 0.025
-                                                               // NO DEJAR EN CERO EL OFFSET
+        public static final double LIFT_ARRIVE_OFFSET = 0.02; // 0.025
+                                                              // NO DEJAR EN CERO EL OFFSET
 
-        public static final double LIFT_MAX_POWER = 7.0; // 4
+        public static final double LIFT_MAX_POWER = 7.5; // 4
         public static final double LIFT_MAX_POWER_GOING_DOWN = 7.0;
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
         public static final double LIFT_SPROCKET_REVS_PER_PULSE = LIFT_REV_PER_NEO_PULSE * LIFT_RATIO;
         public static final double LIFT_INCHES_PER_SPROCKET_REV = 4.5;
-        public static final double LIFT_METERS_PER_PULSE = LIFT_INCHES_PER_SPROCKET_REV * LIFT_SPROCKET_REVS_PER_PULSE
+        public static final double LIFT_METERS_PER_PULSE = LIFT_INCHES_PER_SPROCKET_REV
+                        * LIFT_SPROCKET_REVS_PER_PULSE
                         * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
@@ -95,7 +99,7 @@ public class HighAltitudeConstants {
         public static final double LIFT_TRANSITION_POSITION = 0.47;
 
         ////////////////////////// GRIPPER //////////////////////////
-        public static final double GRIPPER_OUT_SPEED = 0.2;
+        public static final double GRIPPER_OUT_SPEED = 0.3;
         public static final double GRIPPER_IN_SPEED = -0.5625;
         public static final double GRIPPER_INTAKE_SPEED = -0.3; // -0.2
         public static final double GRIPPER_HOLD_SPEED = 0.1;
@@ -123,7 +127,7 @@ public class HighAltitudeConstants {
                         / WRIST_NEO_ENCODER_UNITS_PER_REV;
         public static final double WRIST_DEGREES_PER_PULSE = 360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
 
-        public static final double WRIST_ZERO_ANGLE = -88;
+        public static final double WRIST_ZERO_ANGLE = -85;
 
         // In the same order as the enum: L1, L2, L3, L4
         public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 20 }; // 40 in comp
@@ -400,7 +404,7 @@ public class HighAltitudeConstants {
 
         public static final HumanDrivers CURRENT_PILOT = HumanDrivers.JoakinButChambing;
 
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.OnlySwerve;
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.LiftWristTest;
 
         //////////////////////// ALIGN WITH TARGET POSE ////////////////////////
 
@@ -496,8 +500,10 @@ public class HighAltitudeConstants {
         public static final int[] BLUE_APRILTAG_IDS = { 18, 17, 22, 21, 20, 19 };
         public static final int[] RED_APRILTAG_IDS = { 7, 8, 9, 10, 11, 6 };
 
-        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.16, 7.09, Rotation2d.fromDegrees(-54.2));
-        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(1.13, 1.01, Rotation2d.fromDegrees(54.2));
+        public static final Pose2d PATHFINDING_LEFT_BLUE_FEEDER = new Pose2d(1.16, 7.09,
+                        Rotation2d.fromDegrees(-54.2));
+        public static final Pose2d PATHFINDING_RIGHT_BLUE_FEEDER = new Pose2d(1.13, 1.01,
+                        Rotation2d.fromDegrees(54.2));
 
         public static final Pose2d PATHFINDING_LEFT_RED_FEEDER = new Pose2d(16.410, 0.950,
                         Rotation2d.fromDegrees(125.8));
@@ -546,7 +552,8 @@ public class HighAltitudeConstants {
                                                                                    // Side
         };
         // Order as in game manual A, B, C,...
-        public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = { new Pose2d(3.125, 4.18, Rotation2d.fromDegrees(0)), // A
+        public static final Pose2d PATHFINDING_BLUE_BRANCHES[] = {
+                        new Pose2d(3.125, 4.18, Rotation2d.fromDegrees(0)), // A
                         new Pose2d(3.125, 3.85, Rotation2d.fromDegrees(0)), // B
                         new Pose2d(3.67, 2.95, Rotation2d.fromDegrees(60)), // C
                         new Pose2d(3.96, 2.77, Rotation2d.fromDegrees(60)), // D
@@ -560,7 +567,8 @@ public class HighAltitudeConstants {
                         new Pose2d(3.66, 5.10, Rotation2d.fromDegrees(-60)), // L
         };
 
-        public static final Pose2d PATHFINDING_RED_BRANCHES[] = { new Pose2d(14.39, 3.85, Rotation2d.fromDegrees(180)), // A
+        public static final Pose2d PATHFINDING_RED_BRANCHES[] = {
+                        new Pose2d(14.39, 3.85, Rotation2d.fromDegrees(180)), // A
                         new Pose2d(14.39, 4.19, Rotation2d.fromDegrees(180)), // B
                         new Pose2d(13.87, 5.09, Rotation2d.fromDegrees(-120)), // C
                         new Pose2d(13.58, 5.26, Rotation2d.fromDegrees(-120)), // D
@@ -625,6 +633,113 @@ public class HighAltitudeConstants {
                 public REEF_POSITION getPosition(boolean front) {
                         return front ? this.front : this.back;
                 }
+        }
+
+        public static final class LedColors {
+                public static final int[] CORAL_L1 = { 255, 10, 10 };
+                public static final int[] CORAL_LX = { 255, 127, 80 };
+                public static final int[] ALGA = { 0, 200, 100 };
+                public static final int[] MANUAL = { 0, 120, 255 };
+                public static final int[] ERROR = { 255, 0, 30 };
+        }
+
+        public static int[] ledFor(GameMode mode) {
+                return switch (mode) {
+                        case CORAL_L1 -> LedColors.CORAL_L1;
+                        case CORAL_LX -> LedColors.CORAL_LX;
+                        case ALGA -> LedColors.ALGA;
+                        case MANUAL -> LedColors.MANUAL;
+                };
+        }
+
+        // Orden FIJO (13):
+        // 0: IntakeRear
+        // 1: L1 Intake
+        // 2: L1 Score
+        // 3: L2
+        // 4: L3
+        // 5: L4
+        // 6: Algae Intake Floor
+        // 7: Algae Hold
+        // 8: Processor Scoring
+        // 9: Net PrePos
+        // 10: Net Scoring
+        // 11: L2 Algae Removal
+        // 12: L3 Algae Removal
+
+        public static final class PoseIdx {
+                public static final int INTAKE_REAR = 0;
+                public static final int L1_INTAKE = 1;
+                public static final int L1_SCORE = 2;
+                public static final int L2 = 3;
+                public static final int L3 = 4;
+                public static final int L4 = 5;
+                public static final int ALGAE_INTAKE_FLOOR = 6;
+                public static final int ALGAE_HOLD = 7;
+                public static final int PROCESSOR_SCORE = 8;
+                public static final int NET_PREPOS = 9;
+                public static final int NET_SCORE = 10;
+                public static final int ALGAE_REMOVE_L2 = 11;
+                public static final int ALGAE_REMOVE_L3 = 12;
+                public static final int COUNT = 13;
+        }
+
+        // Arreglos ÚNICOS (en el mismo orden de arriba)
+        // lift en metros, wrist en grados (ajusta tus valores reales)
+        public static final double[] LIFT_POSE = new double[PoseIdx.COUNT];
+        public static final double[] WRIST_POSE = new double[PoseIdx.COUNT];
+
+        static {
+                // TODO: ajustar en comp
+                // Coral
+                // Lift
+                LIFT_POSE[PoseIdx.INTAKE_REAR] = 0.0;
+                LIFT_POSE[PoseIdx.L1_INTAKE] = 0.00;
+                LIFT_POSE[PoseIdx.L1_SCORE] = 0.00;
+                LIFT_POSE[PoseIdx.L2] = 0.32;
+                LIFT_POSE[PoseIdx.L3] = 0.51;
+                LIFT_POSE[PoseIdx.L4] = 0.71;
+
+                // Wrist
+                WRIST_POSE[PoseIdx.INTAKE_REAR] = 0.0;
+                WRIST_POSE[PoseIdx.L1_INTAKE] = 0.0;
+                WRIST_POSE[PoseIdx.L1_SCORE] = 0.0;
+                WRIST_POSE[PoseIdx.L2] = 0.0;
+                WRIST_POSE[PoseIdx.L3] = 0.0;
+                WRIST_POSE[PoseIdx.L4] = 20.0;
+
+                // Algae
+                // Lift
+                LIFT_POSE[PoseIdx.ALGAE_INTAKE_FLOOR] = 0.0;
+                LIFT_POSE[PoseIdx.ALGAE_HOLD] = 0.0;
+
+                LIFT_POSE[PoseIdx.PROCESSOR_SCORE] = 0.0;
+                LIFT_POSE[PoseIdx.NET_PREPOS] = 0.6;
+                LIFT_POSE[PoseIdx.NET_SCORE] = 0.7;
+
+                LIFT_POSE[PoseIdx.ALGAE_REMOVE_L2] = 0.28;
+                LIFT_POSE[PoseIdx.ALGAE_REMOVE_L3] = 0.47;
+
+                // Wrist
+                WRIST_POSE[PoseIdx.ALGAE_INTAKE_FLOOR] = 67.5;
+                WRIST_POSE[PoseIdx.ALGAE_HOLD] = 0.0;
+
+                WRIST_POSE[PoseIdx.PROCESSOR_SCORE] = 20.0; // “Processor” de tu array
+                WRIST_POSE[PoseIdx.NET_PREPOS] = 0.0;
+                WRIST_POSE[PoseIdx.NET_SCORE] = 40.0; // “Net” de tu array
+
+                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L2] = 20.0;
+                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L3] = 20.0;
+
+        }
+
+        // Helpers (con nombres claros)
+        public static double liftForPose(int idx) {
+                return LIFT_POSE[idx];
+        }
+
+        public static double wristForPose(int idx) {
+                return WRIST_POSE[idx];
         }
 
 }

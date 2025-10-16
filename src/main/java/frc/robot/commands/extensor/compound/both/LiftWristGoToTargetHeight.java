@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
+import frc.robot.Robot;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
 import frc.robot.commands.extensor.lift.control.LiftGoToTarget;
 import frc.robot.commands.extensor.wrist.control.WristGoToTarget;
-import frc.robot.Robot;
 import frc.robot.subsystems.extensor.Lift;
 import frc.robot.subsystems.extensor.Wrist;
 

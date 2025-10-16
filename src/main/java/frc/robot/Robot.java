@@ -64,6 +64,10 @@ public class Robot extends TimedRobot {
     reef_mode = mode;
   }
 
+  public enum GameMode {
+    CORAL_L1, CORAL_LX, ALGA, MANUAL
+  }
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -154,7 +158,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
@@ -166,11 +171,11 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     getRobotContainer().putAutoChooser();
 
-    if(robotContainer.getVision().targetsVisible())
+    if (robotContainer.getVision().targetsVisible())
 
       robotContainer.getCaNdleSubsystem().setLEDColor(0, 255, 0);
     else
-    
+
       robotContainer.getCaNdleSubsystem().setLEDColor(255, 0, 0);
   }
 
