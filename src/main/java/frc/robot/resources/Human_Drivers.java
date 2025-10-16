@@ -11,15 +11,11 @@ public class Human_Drivers {
         ///// DRIVERS /////
         DefaultUser, // DefaultUser use a default configuration for his joystick
         Joakin, // Joakin use a specific configuration for his joystick
-        Yare,
-        Carlos,
-        OneDriver,
-        OnlySwerve, // for Drivers Practice
+        Pato, Carlos, // actual drivers
+        OneDriver, OnlySwerve, // for Drivers Practice
 
         ///// PROGRAMMING /////
         JoakinButChambing, // Joaquin use a specific configuration for testing features
-        ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE,
-        LiftWristTest,
-        PoseTune,
+        ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE, LiftWristTest, PoseTune,
     }
 }

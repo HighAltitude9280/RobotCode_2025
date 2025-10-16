@@ -13,12 +13,10 @@ import frc.robot.resources.math.PoseUtil;
 import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
 /**
- * Vision-driven approach to the reef for algae removal.
- * - Locks a detected AprilTag (anti ping-pong).
- * - Maps tag→(level L2/L3) depending on alliance.
- * - Picks a base pose from HighAltitudeConstantsPose and applies a
- * forward/backoff offset.
- * - Drives using SwerveDriveTrain.AlignWithTargetPose(Pose2d, vMax, wMax).
+ * Vision-driven approach to the reef for algae removal. - Locks a detected AprilTag (anti
+ * ping-pong). - Maps tag→(level L2/L3) depending on alliance. - Picks a base pose from
+ * HighAltitudeConstantsPose and applies a forward/backoff offset. - Drives using
+ * SwerveDriveTrain.AlignWithTargetPose(Pose2d, vMax, wMax).
  */
 public class DriveToAlgaeRemovalFromReef extends Command {
 

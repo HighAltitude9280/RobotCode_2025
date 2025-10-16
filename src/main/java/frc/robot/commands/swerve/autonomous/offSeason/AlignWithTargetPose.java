@@ -1,4 +1,4 @@
-// src/main/java/frc/robot/commands/swerve/autonomous/reef/AlignWithTargetPose.java
+// src/main/java/frc/robot/commands/swerve/autonomous/offSeason/AlignWithTargetPose.java
 package frc.robot.commands.swerve.autonomous.offSeason;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,205 +12,224 @@ import frc.robot.HighAltitudeConstantsPose.REEF_POSITION;
 import frc.robot.HighAltitudeConstantsPose.REEF_SIDE;
 import frc.robot.Robot;
 import frc.robot.resources.math.PoseUtil;
-import frc.robot.subsystems.vision.LastPoseCache;
 
+/**
+ * Aligns the robot to a target reef branch pose using field-relative PID. Supports three modes: 1)
+ * Explicit position (pos!=null) and branch side (left). 2) From side (side!=null) + front/back ring
+ * via Robot.isFrontMode(). 3) Auto-detect via AprilTag ID (pos==null && side==null) using alliance
+ * tag arrays.
+ *
+ * If vision isn't ready at init, the command waits (with safety timeout), trying to resolve pos and
+ * the final targetPose every execute() cycle.
+ */
 public class AlignWithTargetPose extends Command {
 
+  // Selection inputs (may be null in auto-detect mode)
   private REEF_POSITION pos;
   private final REEF_SIDE side;
   private Boolean left;
-  protected final double maxLinearVelocity, maxAngularVelocity;
 
-  protected Pose2d targetPose;
-  protected boolean isFinished = false;
-  private boolean abort = false;
+  // Limits
+  private final double maxLinearVelocity;
+  private final double maxAngularVelocity;
 
-  private final LastPoseCache cache = new LastPoseCache();
-  private double startTs;
-  private int stableDetectCount = 0;
-  private Integer lockedTagId = null; // anti ping-pong
+  // Target & state
+  private Pose2d targetPose;
+  private boolean isFinished = false;
+  private double startTsSec;
 
-  // NUEVO: aplicar backoff (ej. CORAL_BACKOFF_M) a la pose objetivo
+  // Optional approach backoff (offset along target heading)
   private final boolean applyBackoff;
 
+  // ---------------------- Constructors ----------------------
+
+  /** Full constructor with explicit position/side/branch. */
   public AlignWithTargetPose(REEF_POSITION position, REEF_SIDE side, Boolean left,
       double maxLinearVelocity, double maxAngularVelocity) {
     this(position, side, left, maxLinearVelocity, maxAngularVelocity, false);
   }
 
+  /** Full constructor with explicit position/side/branch and backoff toggle. */
   public AlignWithTargetPose(REEF_POSITION position, REEF_SIDE side, Boolean left,
       double maxLinearVelocity, double maxAngularVelocity, boolean applyBackoff) {
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
     this.pos = position;
     this.side = side;
     this.left = left;
-    this.maxAngularVelocity = maxAngularVelocity;
     this.maxLinearVelocity = maxLinearVelocity;
-    this.applyBackoff = applyBackoff; // NUEVO
+    this.maxAngularVelocity = maxAngularVelocity;
+    this.applyBackoff = applyBackoff;
   }
+
+  /**
+   * NEW: Auto-detect constructor. Reads AprilTag → maps to REEF_POSITION and branch (left/right),
+   * then aligns. Pass left=null to use Robot.isLeftMode().
+   */
+  public AlignWithTargetPose(Boolean left, double maxLinearVelocity, double maxAngularVelocity,
+      Boolean applyBackoff) {
+    this(null, /* position */
+        null, /* side */
+        left, maxLinearVelocity, maxAngularVelocity, applyBackoff != null && applyBackoff);
+  }
+
+  // ---------------------- Command lifecycle ----------------------
 
   @Override
   public void initialize() {
-    abort = false;
     isFinished = false;
-    startTs = Timer.getFPGATimestamp();
-    stableDetectCount = 0;
-    lockedTagId = null;
+    startTsSec = Timer.getFPGATimestamp();
 
-    // Branch por default
+    // Decide branch side from parameter or robot mode
     left = (left != null) ? left : Robot.isLeftMode();
-    if (pos == null && side != null)
+
+    // If only side is given, derive pos from front/back mode
+    if (pos == null && side != null) {
       pos = side.getPosition(Robot.isFrontMode());
+    }
 
-    var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
-    SmartDashboard.putString("Align/alliance", alliance.toString());
-    SmartDashboard.putBoolean("Align/leftBranch", left);
-    SmartDashboard.putString("Align/reefSide", side != null ? side.name() : "null");
+    // Context logs
+    DriverStation.Alliance alliance =
+        DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
+    SmartDashboard.putString("Align/Alliance", alliance.toString());
+    SmartDashboard.putBoolean("Align/LeftBranch", left);
+    SmartDashboard.putString("Align/ReefSide", side != null ? side.name() : "null");
+    SmartDashboard.putString("Align/InitPos", pos != null ? pos.name() : "null");
+    SmartDashboard.putNumber("Align/StartTs", startTsSec);
 
-    if (targetPose == null) {
-      boolean hasFresh = determineTargetFreshAndCache();
-      if (!hasFresh)
-        targetPose = pickLatchedIfSafe();
-      if (targetPose == null) {
-        DriverStation.reportWarning("[Align] No valid target; aborting.", false);
-        stopAndFinish();
-        return;
-      }
+    // Try determine target once (do NOT abort if null; keep waiting)
+    determineTarget();
+    if (pos == null || targetPose == null) {
+      SmartDashboard.putString("Align/Status", "Waiting for target (init)...");
+    } else {
+      SmartDashboard.putString("Align/Status", "Target locked (init)");
+      SmartDashboard.putNumber("Align/Target/X", targetPose.getX());
+      SmartDashboard.putNumber("Align/Target/Y", targetPose.getY());
+      SmartDashboard.putNumber("Align/Target/RotDeg", targetPose.getRotation().getDegrees());
     }
   }
 
   @Override
   public void execute() {
-    if (abort)
+    if (isFinished)
       return;
 
-    // Timeout duro
-    if (Timer.getFPGATimestamp() - startTs > HighAltitudeConstants.COMMAND_TIMEOUT_SEC) {
-      DriverStation.reportWarning("[Align] Timeout; stopping.", false);
-      stopAndFinish();
+    // Safety timeout
+    double elapsed = Timer.getFPGATimestamp() - startTsSec;
+    SmartDashboard.putNumber("Align/ElapsedSec", elapsed);
+    if (elapsed > HighAltitudeConstants.COMMAND_TIMEOUT_SEC) {
+      SmartDashboard.putString("Align/Status", "Timeout -> finish");
+      isFinished = true;
       return;
     }
 
-    // Intentar refrescar target fresca de nuevo (rápido cuando hay visión)
-    boolean hasFresh = determineTargetFreshAndCache();
-    if (!hasFresh) {
-      targetPose = pickLatchedIfSafe();
-      if (targetPose == null) {
-        DriverStation.reportWarning("[Align] Target lost/expired; stopping.", false);
-        stopAndFinish();
-        return;
+    // Ensure we have a valid target; if not, keep waiting
+    if (pos == null || targetPose == null) {
+      determineTarget();
+      if (pos == null || targetPose == null) {
+        SmartDashboard.putString("Align/Status", "Waiting for target...");
+        return; // skip drive this cycle
       }
-      SmartDashboard.putString("Align/status", "Using latched");
-    } else {
-      SmartDashboard.putString("Align/status", "Target locked");
     }
 
-    // === NUEVO: aplicar backoff opcional sobre la targetPose final ===
+    // Optional backoff on final pose (approach offset along heading)
     Pose2d poseToUse = targetPose;
     if (applyBackoff && poseToUse != null) {
-      // usa tu constante en metros (defínela: CORAL_BACKOFF_M)
       poseToUse = PoseUtil.backoff(poseToUse, HighAltitudeConstants.CORAL_BACKOFF_M);
       SmartDashboard.putBoolean("Align/BackoffApplied", true);
     } else {
       SmartDashboard.putBoolean("Align/BackoffApplied", false);
     }
 
-    SmartDashboard.putNumber("Align/TargetAngleDeg", poseToUse.getRotation().getDegrees());
+    // Log odometry, target and error
+    Pose2d cur = Robot.getRobotContainer().getSwerveDriveTrain().getPose();
+    SmartDashboard.putNumber("Align/Odo/X", cur.getX());
+    SmartDashboard.putNumber("Align/Odo/Y", cur.getY());
+    SmartDashboard.putNumber("Align/Odo/RotDeg", cur.getRotation().getDegrees());
+    SmartDashboard.putNumber("Align/Use/X", poseToUse.getX());
+    SmartDashboard.putNumber("Align/Use/Y", poseToUse.getY());
+    SmartDashboard.putNumber("Align/Use/RotDeg", poseToUse.getRotation().getDegrees());
+    double dx = poseToUse.getX() - cur.getX();
+    double dy = poseToUse.getY() - cur.getY();
+    double dist = Math.hypot(dx, dy);
+    double dYaw = poseToUse.getRotation().minus(cur.getRotation()).getDegrees();
+    SmartDashboard.putNumber("Align/Error/DistM", dist);
+    SmartDashboard.putNumber("Align/Error/AngleDeg", dYaw);
 
-    isFinished = Robot.getRobotContainer().getSwerveDriveTrain()
-        .AlignWithTargetPose(poseToUse, maxLinearVelocity, maxAngularVelocity);
+    // Drive alignment
+    boolean reached = Robot.getRobotContainer().getSwerveDriveTrain().AlignWithTargetPose(poseToUse,
+        maxLinearVelocity, maxAngularVelocity);
+
+    SmartDashboard.putBoolean("Align/Reached", reached);
+    SmartDashboard.putString("Align/Status", reached ? "Reached" : "Tracking");
+    isFinished = reached;
   }
 
   @Override
   public void end(boolean interrupted) {
     Robot.getRobotContainer().getSwerveDriveTrain().stopModules();
-    SmartDashboard.putString("Align/status", interrupted ? "Interrupted" : "Finished");
+    SmartDashboard.putString("Align/Status", interrupted ? "Interrupted" : "Completed");
   }
 
   @Override
   public boolean isFinished() {
-    return isFinished || abort;
+    SmartDashboard.putBoolean("Align/isFinished", isFinished);
+    return isFinished;
   }
 
-  // ---------- Helpers de fiabilidad/velocidad ----------
+  // ---------------------- Helpers ----------------------
 
-  /** Intenta fijar 'pos' y 'targetPose' frescos y actualizar caché. */
-  private boolean determineTargetFreshAndCache() {
-    var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
-    int[] reefIDs = (alliance == DriverStation.Alliance.Red)
-        ? HighAltitudeConstantsPose.RED_APRILTAG_IDS
-        : HighAltitudeConstantsPose.BLUE_APRILTAG_IDS;
-    var branches = (alliance == DriverStation.Alliance.Red)
+  /** Resolve pos/targetPose from explicit args or AprilTag mapping. */
+  private void determineTarget() {
+    DriverStation.Alliance alliance =
+        DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
+
+    // Select mapping tables by alliance
+    int[] reefIDs =
+        (alliance == DriverStation.Alliance.Red) ? HighAltitudeConstantsPose.RED_APRILTAG_IDS
+            : HighAltitudeConstantsPose.BLUE_APRILTAG_IDS;
+    Pose2d[] branches = (alliance == DriverStation.Alliance.Red)
         ? HighAltitudeConstantsPose.PATHFINDING_RED_BRANCHES
         : HighAltitudeConstantsPose.PATHFINDING_BLUE_BRANCHES;
 
-    // Si ya tengo pos (preset o locked), solo construyo pose:
+    SmartDashboard.putString("Align/Det/Alliance", alliance.toString());
+    SmartDashboard.putString("Align/Det/BranchTable",
+        (alliance == DriverStation.Alliance.Red) ? "RED_BRANCHES" : "BLUE_BRANCHES");
+    SmartDashboard.putString("Align/Det/PosIn", pos != null ? pos.name() : "null");
+    SmartDashboard.putBoolean("Align/Det/Left", left);
+
+    // If position is not preset, try to detect via AprilTag
     if (pos == null) {
       int id = Robot.getRobotContainer().getVision().getTargetID();
-      if (id <= 0) {
-        stableDetectCount = 0;
-        return false;
-      }
+      SmartDashboard.putNumber("Align/Det/TargetID", id);
 
-      // Anti ping-pong: mantener id estable DETECT_STABLE_CYCLES
-      if (lockedTagId != null && id != lockedTagId) {
-        stableDetectCount = 0; // cambió temporalmente, no aceptes aún
-        return false;
-      }
-      if (lockedTagId == null) {
-        if (++stableDetectCount < HighAltitudeConstants.TAG_DETECTION_LOCK_CYCLES)
-          return false;
-        lockedTagId = id; // queda locked
-      }
-
-      // Mapear id→pos
-      for (int i = 0; i < reefIDs.length; i++) {
-        if (lockedTagId == reefIDs[i]) {
-          pos = HighAltitudeConstantsPose.REEF_POSITIONS[i];
-          break;
+      if (id > 0) {
+        for (int i = 0; i < reefIDs.length; i++) {
+          if (id == reefIDs[i]) {
+            pos = HighAltitudeConstantsPose.REEF_POSITIONS[i];
+            break;
+          }
         }
       }
-      if (pos == null)
-        return false;
     }
 
-    int branchIndex = pos.getBranchID(left);
-    if (branchIndex < 0 || branchIndex >= branches.length) {
-      DriverStation.reportWarning("[Align] branchIndex OOB: " + branchIndex, false);
+    // Build target pose if we have a valid position
+    if (pos != null) {
+      int branchIndex = pos.getBranchID(left);
+      SmartDashboard.putNumber("Align/Det/BranchIndex", branchIndex);
+
+      if (branchIndex >= 0 && branchIndex < branches.length) {
+        targetPose = branches[branchIndex];
+        SmartDashboard.putNumber("Align/Det/TargetX", targetPose.getX());
+        SmartDashboard.putNumber("Align/Det/TargetY", targetPose.getY());
+        SmartDashboard.putNumber("Align/Det/TargetRot", targetPose.getRotation().getDegrees());
+        SmartDashboard.putString("Align/Det/State", "Pose set");
+      } else {
+        targetPose = null;
+        SmartDashboard.putString("Align/Det/State", "Branch OOB");
+      }
+    } else {
       targetPose = null;
-      return false;
+      SmartDashboard.putString("Align/Det/State", "pos null (no tag yet)");
     }
-
-    targetPose = branches[branchIndex];
-    cache.update(targetPose); // solo cuando la fuente es fresca/determinista
-    SmartDashboard.putBoolean("Align/UsingCachedPose", false);
-    return true;
-  }
-
-  /** Devuelve pose latched solo si cumple TTL y deriva cinemática. */
-  private Pose2d pickLatchedIfSafe() {
-    var opt = cache.getIfFresh(HighAltitudeConstants.LATCHED_POSE_MAX_AGE_SEC);
-    if (opt.isEmpty())
-      return null;
-
-    double age = cache.ageSec();
-    var speeds = Robot.getRobotContainer().getSwerveDriveTrain().getChassisSpeeds();
-    double v = Math.hypot(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
-    double drift = v * age;
-    double omegaDriftDeg = Math.toDegrees(Math.abs(speeds.omegaRadiansPerSecond) * age);
-
-    SmartDashboard.putNumber("Align/LatchedAgeMs", age * 1000.0);
-    if (drift <= HighAltitudeConstants.LATCHED_POSE_MAX_TRANSLATION_DRIFT_M
-        && omegaDriftDeg <= HighAltitudeConstants.LATCHED_POSE_MAX_HEADING_DRIFT_DEG) {
-      SmartDashboard.putBoolean("Align/UsingCachedPose", true);
-      return opt.get();
-    }
-    return null;
-  }
-
-  private void stopAndFinish() {
-    Robot.getRobotContainer().getSwerveDriveTrain().stopModules();
-    abort = true;
-    isFinished = true;
   }
 }

@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -20,11 +19,16 @@ public class HighAltitudeConstants {
 
         public static final double caralho_var = 0.15;
 
+        //////////////////////// DRIVERS ////////////////////////
+
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Carlos;
+
+        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Pato;
+
+
         /**
-         * Enum used to indicate the height to grab/leave game pieces. Bottom
-         * corresponds to L1 for
-         * coral or processor for algae. Top corresponds to L4 for coral or net for
-         * algae.
+         * Enum used to indicate the height to grab/leave game pieces. Bottom corresponds to L1 for
+         * coral or processor for algae. Top corresponds to L4 for coral or net for algae.
          */
         public enum REEF_HEIGHT {
                 BOTTOM(0), L2(1), L3(2), TOP(3);
@@ -50,13 +54,10 @@ public class HighAltitudeConstants {
         /*
          * Necesitas la gráfica de velocidad del encoder del Lift
          * 
-         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad
-         * esté en target
+         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad esté en target
          * 
-         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda
-         * sin que se
-         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar
-         * picos
+         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda sin que se
+         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos
          * extraños, que quede smooth
          */
         public static final double LIFT_kS = 0.065;// 0.057012; // 0.03148;
@@ -79,18 +80,18 @@ public class HighAltitudeConstants {
 
         public static final double LIFT_REV_PER_NEO_PULSE = 1.0;
         public static final double LIFT_RATIO = 14.0 / 70.0;
-        public static final double LIFT_SPROCKET_REVS_PER_PULSE = LIFT_REV_PER_NEO_PULSE * LIFT_RATIO;
+        public static final double LIFT_SPROCKET_REVS_PER_PULSE =
+                        LIFT_REV_PER_NEO_PULSE * LIFT_RATIO;
         public static final double LIFT_INCHES_PER_SPROCKET_REV = 4.5;
-        public static final double LIFT_METERS_PER_PULSE = LIFT_INCHES_PER_SPROCKET_REV
-                        * LIFT_SPROCKET_REVS_PER_PULSE
-                        * 0.0254;
+        public static final double LIFT_METERS_PER_PULSE =
+                        LIFT_INCHES_PER_SPROCKET_REV * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = { 0.0, 0.32, 0.51, 0.7 }; // TODO: tunear
-                                                                                      // esto en
-                                                                                      // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = {0.0, 0.32, 0.51, 0.7}; // TODO: tunear
+                                                                                    // esto en
+                                                                                    // competencia
         // In the same order as the enum: Processor, L2, L3, Net
-        public static final double[] LIFT_ALGAE_POSITIONS = { 0.0, 0.28, 0.47, 0.73 };
+        public static final double[] LIFT_ALGAE_POSITIONS = {0.0, 0.28, 0.47, 0.73};
 
         public static final double LIFT_ALGAE_INTAKE_POSITION = 0.2;
 
@@ -121,17 +122,18 @@ public class HighAltitudeConstants {
         public static final double WRIST_RATIO = (1.0 * 12.0) / (15.0 * 48.0);
 
         public static final double WRIST_NEO_ENCODER_UNITS_PER_REV = 1.0;
-        public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV = WRIST_RATIO
-                        / WRIST_NEO_ENCODER_UNITS_PER_REV;
-        public static final double WRIST_DEGREES_PER_PULSE = 360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
+        public static final double WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV =
+                        WRIST_RATIO / WRIST_NEO_ENCODER_UNITS_PER_REV;
+        public static final double WRIST_DEGREES_PER_PULSE =
+                        360 * WRIST_NEO_ENCODER_UNITS_PER_WRIST_REV;
 
-        public static final double WRIST_ZERO_ANGLE = -85;
+        public static final double WRIST_ZERO_ANGLE = -83;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] WRIST_CORAL_POSITIONS = { 0, 0, 0, 20 }; // 40 in comp
+        public static final double[] WRIST_CORAL_POSITIONS = {0, 0, 0, 20}; // 40 in comp
         // In the same order as the enum: Processor, L2, L3, Net
         // public static final double[] WRIST_ALGAE_POSITIONS = { 145, 145, 145, 145 };
-        public static final double[] WRIST_ALGAE_POSITIONS = { 40, 40, 40, 40 };
+        public static final double[] WRIST_ALGAE_POSITIONS = {40, 40, 40, 40};
 
         public static final double WRIST_ALGAE_INTAKE_POSITION = 0;
 
@@ -150,7 +152,8 @@ public class HighAltitudeConstants {
         public static final double SWERVE_WHEEL_DIAMETER = 4.0 * 0.0254;
         // NEVER, ABSOLUTELY NEVER APPROXIMATE THIS, USE ONLY FRACTIONS WITH WHOLE
         // NUMBERS. (Driven / Driver) //pinion
-        public static final double SWERVE_DRIVE_GEAR_RATIO = (50.0 * 16.0 * 45.0) / (16.0 * 28.0 * 15.0);
+        public static final double SWERVE_DRIVE_GEAR_RATIO =
+                        (50.0 * 16.0 * 45.0) / (16.0 * 28.0 * 15.0);
 
         // ft/s //ft -> in //im -> m
         public static final double SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND = 19.5 * 12 * 0.0254;
@@ -189,8 +192,8 @@ public class HighAltitudeConstants {
 
         public static final double SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION = 1f;
         // encoder * this value = radians
-        public static final double SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE = (2.0 * Math.PI)
-                        / SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION;
+        public static final double SWERVE_ABSOLUTE_ENCODER_RADIANS_PER_PULSE =
+                        (2.0 * Math.PI) / SWERVE_ABSOLUTE_ENCODER_PULSES_PER_REVOLUTION;
 
         /////////// DRIVING MOTOR /////////// TODO: DRIVING MOTOR
 
@@ -198,13 +201,10 @@ public class HighAltitudeConstants {
         /*
          * Necesitas la gráfica de velocidad del encoder del driveMotor
          * 
-         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad
-         * esté en target
+         * PASO 1: 1. PID en 0 2. kS dejarla en 0 3. Tunear kV hasta que la velocidad esté en target
          * 
-         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda
-         * sin que se
-         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar
-         * picos
+         * PASO 2: 4. Ya no mueves el feedforward 5. Poner la kP lo más grande que pueda sin que se
+         * pase del target 6. Poner la kD lo más alto que pueda, sin que empiece a dar picos
          * extraños, que quede smooth
          */
 
@@ -223,14 +223,14 @@ public class HighAltitudeConstants {
 
         // Use this constants to convert from encoder position to meters
         // encoder position * this constant = meters
-        public static final double SWERVE_DRIVE_METERS_PER_REV = (Math.PI * SWERVE_WHEEL_DIAMETER)
-                        / (SWERVE_DRIVE_GEAR_RATIO);
+        public static final double SWERVE_DRIVE_METERS_PER_REV =
+                        (Math.PI * SWERVE_WHEEL_DIAMETER) / (SWERVE_DRIVE_GEAR_RATIO);
 
         // encoder position * this constant = meters
         public static final double SWERVE_DRIVE_PER_VELOCITY_UNITS = SWERVE_DRIVE_METERS_PER_REV;
 
-        public static final double SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND = SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND
-                        * 0.8;
+        public static final double SWERVE_DRIVE_PRECISION_MODE_SPEED_METERS_PER_SECOND =
+                        SWERVE_DRIVE_MAX_SPEED_METERS_PER_SECOND * 0.8;
 
         // Arbitrary to make controlling the swerve easier in teleop
         /*
@@ -256,13 +256,12 @@ public class HighAltitudeConstants {
 
         // Use this constant to convert from motor velocity to meters per second
         // encoder velocity * this constant = radians/second
-        public static final double SWERVE_DIRECTION_RADIANS_PER_SEC_PER_VELOCITY_UNITS = (1000
-                        * SWERVE_DIRECTION_RADIANS_PER_PULSE)
-                        / SWERVE_DIRECTION_VELOCITY_SAMPLE_RATE_MS;
+        public static final double SWERVE_DIRECTION_RADIANS_PER_SEC_PER_VELOCITY_UNITS =
+                        (1000 * SWERVE_DIRECTION_RADIANS_PER_PULSE)
+                                        / SWERVE_DIRECTION_VELOCITY_SAMPLE_RATE_MS;
 
         /*
-         * public static final double
-         * SWERVE_DIRECTION_TELEOP_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND =
+         * public static final double SWERVE_DIRECTION_TELEOP_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND =
          * 2 * Math.PI * 0.75;
          */
 
@@ -276,15 +275,12 @@ public class HighAltitudeConstants {
 
         // HOW TO GET THE VALUES //
         /*
-         * Necesitas las graficas: a) Gráfica del ángulo del CANCoder d) Setpoint del
-         * ángulo del
+         * Necesitas las graficas: a) Gráfica del ángulo del CANCoder d) Setpoint del ángulo del
          * CANCoder
          * 
-         * PASO 1: 1. PID en 0 2. Poner la kP lo más grande que pueda sin que se pase
-         * del target
+         * PASO 1: 1. PID en 0 2. Poner la kP lo más grande que pueda sin que se pase del target
          * 
-         * PASO 2: 3. Poner la kD lo más alto que pueda, sin que empiece a dar picos
-         * extraños, que
+         * PASO 2: 3. Poner la kD lo más alto que pueda, sin que empiece a dar picos extraños, que
          * quede smooth
          */
 
@@ -327,28 +323,21 @@ public class HighAltitudeConstants {
         //////////////////////////// VISION //////////////////////////////
 
         // Keep the order of the cameras consistent across the arrays.
-        public static final String[] CAMERA_NAMES = { "ArducamBack2", "Limelight2Pi" };
+        public static final String[] CAMERA_NAMES = {"ArducamFront2", "limelight2plus"};
         public static final Transform3d[] CAMERA_POSITIONS = {
-                        // ArducamFront
-                        new Transform3d(new Translation3d(0.223774, 0.261112,
-                                        0.20917466),
+                        // ArducamFront2
+                        new Transform3d(new Translation3d(0.223774, 0.261112, 0.20917466),
                                         new Rotation3d(Math.toRadians(0f), Math.toRadians(-20),
                                                         Math.toRadians(-24.97059824))),
 
-                        // Limelight3
-                        new Transform3d(new Translation3d(0.202692, -0.27051,
-                                        0.21686527),
+                        // Limelight2PP
+                        new Transform3d(new Translation3d(0.202692, -0.27051, 0.21686527),
                                         new Rotation3d(Math.toRadians(0), Math.toRadians(-20),
-                                                        Math.toRadians(30))),
-                        // Limelight2Pi
-                        new Transform3d(new Translation3d(-0.037639273664, 0.0235341,
-                                        0.989082539932),
-                                        new Rotation3d(Math.toRadians(0f), Math.toRadians(-30),
-                                                        Math.toRadians(180))) };
+                                                        Math.toRadians(30)))};
 
         // The indexes in the previous arrays of the cameras that will be used for
         // alignment.
-        public static final int[] ALIGNMENT_CAMERAS = { 0, 1 };
+        public static final int[] ALIGNMENT_CAMERAS = {0, 1};
 
         public static final double VISION_POSE_ESTIMATOR_MAX_DISTANCE = 2.5;
         public static final double VISION_POSE_ESTIMATOR_MAX_AMBIGUITY = 0.15;
@@ -394,15 +383,10 @@ public class HighAltitudeConstants {
         public static final double VISION_POSE_TURN_kI = 0;
         public static final double VISION_POSE_TURN_kD = 0;
         // In radians
-        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(2);// 2
+        public static final double VISION_POSE_TURN_ARRIVE_OFFSET = Math.toRadians(3);// 2
 
         public static final double VISION_POSE_MAX_TURN = 1.0;
         public static final double VISION_POSE_MAX_SPEED = 1.0;
-        //////////////////////// DRIVERS ////////////////////////
-
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.PoseTune;
-
-        public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.PoseTune;
 
         //////////////////////// ALIGN WITH TARGET POSE ////////////////////////
 
@@ -411,51 +395,36 @@ public class HighAltitudeConstants {
          */
         // Prioridades: confiable (fail-soft) y rápido (reactivo con límites)
         /*
-         * ==== LATCHED_POSE_MAX_AGE_SEC (TTL de la última pose válida) ==== Paso 1:
-         * arranca en 0.35
-         * s (auto: 0.45–0.60 s). Paso 2: si corta con pérdidas cortas (100–150 ms) →
-         * súbela +0.05
-         * s. Paso 3: si durante la pérdida entra chueco → bájala −0.05 s. Sugerido:
-         * teleop
+         * ==== LATCHED_POSE_MAX_AGE_SEC (TTL de la última pose válida) ==== Paso 1: arranca en 0.35
+         * s (auto: 0.45–0.60 s). Paso 2: si corta con pérdidas cortas (100–150 ms) → súbela +0.05
+         * s. Paso 3: si durante la pérdida entra chueco → bájala −0.05 s. Sugerido: teleop
          * 0.30–0.40 s, auto 0.40–0.60 s.
          */
 
         /*
-         * ==== LATCHED_POSE_MAX_TRANSLATION_DRIFT_M (deriva lineal permitida con
-         * latched) ==== Paso
-         * 1: arranca en 0.07 m. Paso 2: si aborta “antes de tiempo” y aún estabas bien
-         * alineado →
-         * súbela +0.01–0.03 m (hasta ~0.10 m). Paso 3: si entra chueco durante la
-         * pérdida → bájala
-         * −0.01–0.02 m (hasta ~0.05–0.06 m). Regla: mecanismo estricto 0.05–0.07 m,
-         * tolerante
+         * ==== LATCHED_POSE_MAX_TRANSLATION_DRIFT_M (deriva lineal permitida con latched) ==== Paso
+         * 1: arranca en 0.07 m. Paso 2: si aborta “antes de tiempo” y aún estabas bien alineado →
+         * súbela +0.01–0.03 m (hasta ~0.10 m). Paso 3: si entra chueco durante la pérdida → bájala
+         * −0.01–0.02 m (hasta ~0.05–0.06 m). Regla: mecanismo estricto 0.05–0.07 m, tolerante
          * 0.07–0.10 m.
          */
 
         /*
-         * ==== LATCHED_POSE_MAX_HEADING_DRIFT_DEG (deriva angular permitida con
-         * latched) ==== Paso
-         * 1: arranca en 3.0° (estrecho: 2–2.5°, tolerante: 4–5°). Paso 2: si corta muy
-         * pronto y aún
-         * “entrabas” → súbela +0.5–1.0°. Paso 3: si sale ladeado al reenganchar →
-         * bájala −0.5–1.0°.
+         * ==== LATCHED_POSE_MAX_HEADING_DRIFT_DEG (deriva angular permitida con latched) ==== Paso
+         * 1: arranca en 3.0° (estrecho: 2–2.5°, tolerante: 4–5°). Paso 2: si corta muy pronto y aún
+         * “entrabas” → súbela +0.5–1.0°. Paso 3: si sale ladeado al reenganchar → bájala −0.5–1.0°.
          */
 
         /*
-         * ==== COMMAND_TIMEOUT_SEC (corte de seguridad por tiempo) ==== Paso 1: arranca
-         * en 1.8 s.
-         * Paso 2: si corta justo antes de completar seguido → súbelo +0.2 s (o usa
-         * timeout dinámico
-         * por distancia). Paso 3: si nunca se acerca al límite → bájalo −0.2 s para ser
-         * más
+         * ==== COMMAND_TIMEOUT_SEC (corte de seguridad por tiempo) ==== Paso 1: arranca en 1.8 s.
+         * Paso 2: si corta justo antes de completar seguido → súbelo +0.2 s (o usa timeout dinámico
+         * por distancia). Paso 3: si nunca se acerca al límite → bájalo −0.2 s para ser más
          * estricto.
          */
 
         /*
-         * ==== TAG_DETECTION_LOCK_CYCLES (anti “ping-pong” de AprilTag) ==== Paso 1:
-         * arranca en 2
-         * ciclos (≈40 ms a 50 Hz). Paso 2: si cambia de rama por frames ruidosos →
-         * súbelo a 3. Paso
+         * ==== TAG_DETECTION_LOCK_CYCLES (anti “ping-pong” de AprilTag) ==== Paso 1: arranca en 2
+         * ciclos (≈40 ms a 50 Hz). Paso 2: si cambia de rama por frames ruidosos → súbelo a 3. Paso
          * 3: si tarda en decidir objetivo → bájalo a 1 (con más riesgo de ping-pong).
          */
         public static final double LATCHED_POSE_MAX_AGE_SEC = 0.35; // frescura de pose latched
@@ -475,16 +444,21 @@ public class HighAltitudeConstants {
 
         public static final double PATHFINDING_APPROACH_OFFSET = 0.9;
 
-        public static final double CORAL_BACKOFF_M = edu.wpi.first.math.util.Units.inchesToMeters(4.5);
+        public static final double CORAL_BACKOFF_M =
+                        edu.wpi.first.math.util.Units.inchesToMeters(4.5);
         public static final double ALGAE_APPROACH_OFFSET_M = 0.25;
         public static final double ALGAE_RETRACT_OFFSET_M = -0.45;
 
+        // Tiempo máx para pruebas de drive-to (s)
+        public static final double DRIVE_TO_POSE_TIMEOUT_S = 5.0; // ajusta si lo ves corto/largo
+
+
         public static final class LedColors {
-                public static final int[] CORAL_L1 = { 255, 10, 10 };
-                public static final int[] CORAL_LX = { 255, 127, 80 };
-                public static final int[] ALGA = { 0, 200, 100 };
-                public static final int[] MANUAL = { 0, 120, 255 };
-                public static final int[] ERROR = { 255, 0, 30 };
+                public static final int[] CORAL_L1 = {255, 10, 10};
+                public static final int[] CORAL_LX = {255, 127, 80};
+                public static final int[] ALGA = {0, 200, 100};
+                public static final int[] MANUAL = {0, 120, 255};
+                public static final int[] ERROR = {255, 0, 30};
         }
 
         public static int[] ledFor(GameMode mode) {

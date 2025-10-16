@@ -154,46 +154,46 @@ public final class HighAltitudeConstantsPose {
         // TODO: tunear
         public static final Pose2d[] BLUE_ALGAE_L3_POSES =
                         {new Pose2d(3.180, 4.000, Rotation2d.fromDegrees(0)),
-                                        // Tag 18,FC
+                                        // Tag 18,BC
 
                                         new Pose2d(5.167, 2.868, Rotation2d.fromDegrees(120)),
-                                        // Tag 22,BR
+                                        // Tag 22,FR
 
                                         new Pose2d(5.143, 5.170, Rotation2d.fromDegrees(-120))
-                        // Tag 20,BL
+                        // Tag 20,FL
                         };
 
         public static final Pose2d[] BLUE_ALGAE_L2_POSES =
                         {new Pose2d(3.860, 5.170, Rotation2d.fromDegrees(-60)),
-                                        // Tag 19, FL
+                                        // Tag 19, BL
 
                                         new Pose2d(3.836, 2.868, Rotation2d.fromDegrees(60)),
-                                        // Tag 17, FR
+                                        // Tag 17, BR
 
                                         new Pose2d(5.790, 4.000, Rotation2d.fromDegrees(180))
-                        // Tag 21, BC
+                        // Tag 21, FC
                         };
 
         public static final Pose2d[] RED_ALGAE_L3_POSES =
                         {new Pose2d(14.373, 4.019, Rotation2d.fromDegrees(180)),
-                                        // Tag 7, FC
+                                        // Tag 7, BC
 
                                         new Pose2d(12.407, 5.134, Rotation2d.fromDegrees(-60)),
-                                        // Tag 9, BR
+                                        // Tag 9, FR
 
                                         new Pose2d(12.383, 2.868, Rotation2d.fromDegrees(60))
-                        // Tag 11, BL
+                        // Tag 11, FL
                         };
 
         public static final Pose2d[] RED_ALGAE_L2_POSES =
                         {new Pose2d(13.738, 2.868, Rotation2d.fromDegrees(120)),
-                                        // Tag 6, FL
+                                        // Tag 6, BL
 
                                         new Pose2d(13.714, 5.134, Rotation2d.fromDegrees(-120)),
-                                        // Tag 8, FR
+                                        // Tag 8, BR
 
                                         new Pose2d(11.760, 4.019, Rotation2d.fromDegrees(0))
-                        // Tag 10, BC
+                        // Tag 10, FC
                         };
 
         // ---------------------------------------------------------------------------

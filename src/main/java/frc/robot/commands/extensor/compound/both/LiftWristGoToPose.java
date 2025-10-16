@@ -14,12 +14,11 @@ import frc.robot.subsystems.extensor.Lift;
 import frc.robot.subsystems.extensor.Wrist;
 
 /**
- * Mueve Lift y Wrist a uno de los 13 targets (índice 0..12) con orden seguro:
- * - Si el objetivo queda ARRIBA de la posición actual: Lift -> (hold) + Wrist
- * - Si el objetivo queda ABAJO: Wrist -> Lift (bajada)
+ * Mueve Lift y Wrist a uno de los 13 targets (índice 0..12) con orden seguro: - Si el objetivo
+ * queda ARRIBA de la posición actual: Lift -> (hold) + Wrist - Si el objetivo queda ABAJO: Wrist ->
+ * Lift (bajada)
  *
- * Los valores de lift/wrist salen de
- * HighAltitudeConstants.LIFT_POSE/WRIST_POSE.
+ * Los valores de lift/wrist salen de HighAltitudeConstants.LIFT_POSE/WRIST_POSE.
  */
 public class LiftWristGoToPose extends InstantCommand {
   private final Lift lift;
@@ -36,8 +35,8 @@ public class LiftWristGoToPose extends InstantCommand {
   }
 
   /**
-   * Compat: si todavía llamas por REEF_HEIGHT, mapeo rápido a tus 13 poses.
-   * BOTTOM->L1_SCORE (2), L2->(3), L3->(4), TOP->(5)
+   * Compat: si todavía llamas por REEF_HEIGHT, mapeo rápido a tus 13 poses. BOTTOM->L1_SCORE (2),
+   * L2->(3), L3->(4), TOP->(5)
    */
   public LiftWristGoToPose(REEF_HEIGHT height) {
     this(mapHeightToPoseIdx(height));
@@ -66,33 +65,22 @@ public class LiftWristGoToPose extends InstantCommand {
 
     if (goingUp) {
       new SequentialCommandGroup(
-          new LiftGoToTarget(
-              HighAltitudeConstants.LIFT_MAX_POWER,
-              liftTarget,
+          new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget,
               HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
           new ParallelRaceGroup(
-              new LiftDefaultCommand(
-                  HighAltitudeConstants.LIFT_MAX_POWER,
+              new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
                   HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
-              new WristGoToTarget(
-                  wristTarget,
-                  HighAltitudeConstants.WRIST_DRIVE_SPEED)))
-          .schedule();
+              new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED)))
+                  .schedule();
 
     } else {
       new SequentialCommandGroup(
           new ParallelRaceGroup(
-              new LiftDefaultCommand(
-                  HighAltitudeConstants.LIFT_MAX_POWER,
+              new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
                   HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
-              new WristGoToTarget(
-                  wristTarget,
-                  HighAltitudeConstants.WRIST_DRIVE_SPEED)),
-          new LiftGoToTarget(
-              HighAltitudeConstants.LIFT_MAX_POWER_GOING_DOWN,
-              liftTarget,
-              HighAltitudeConstants.LIFT_ARRIVE_OFFSET))
-          .schedule();
+              new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
+          new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER_GOING_DOWN, liftTarget,
+              HighAltitudeConstants.LIFT_ARRIVE_OFFSET)).schedule();
     }
   }
 }
