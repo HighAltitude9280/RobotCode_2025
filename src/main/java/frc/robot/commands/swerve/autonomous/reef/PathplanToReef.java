@@ -7,49 +7,46 @@ package frc.robot.commands.swerve.autonomous.reef;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.HighAltitudeConstants;
-import frc.robot.HighAltitudeConstants.REEF_POSITION;
-import frc.robot.HighAltitudeConstants.REEF_SIDE;
-import frc.robot.subsystems.swerve.SwerveDriveTrain;
+import frc.robot.HighAltitudeConstantsPose;
+import frc.robot.HighAltitudeConstantsPose.REEF_POSITION;
+import frc.robot.HighAltitudeConstantsPose.REEF_SIDE;
 import frc.robot.Robot;
+import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
-public class PathplanToReef extends InstantCommand 
-{
+public class PathplanToReef extends InstantCommand {
   REEF_POSITION pos = null;
 
   REEF_SIDE side = null;
 
-  public PathplanToReef(REEF_POSITION pos) 
-  {
+  public PathplanToReef(REEF_POSITION pos) {
     this.pos = pos;
   }
-  public PathplanToReef(REEF_SIDE side) 
-  {
+
+  public PathplanToReef(REEF_SIDE side) {
     this.side = side;
   }
-  public PathplanToReef()
-  {}
+
+  public PathplanToReef() {
+  }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
-    if(pos == null)
-    {
-      if(side == null)  
+  public void initialize() {
+    if (pos == null) {
+      if (side == null)
         side = Robot.getReefMode();
-    
+
       pos = side.getPosition(Robot.isFrontMode());
-      
+
     }
 
     Pose2d targetPose;
     var alliance = DriverStation.getAlliance();
 
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red)
-      targetPose = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[pos.getID()]; 
+      targetPose = HighAltitudeConstantsPose.PATHFINDING_RED_REEF_POS[pos.getID()];
     else
-      targetPose = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[pos.getID()];
+      targetPose = HighAltitudeConstantsPose.PATHFINDING_BLUE_REEF_POS[pos.getID()];
 
     SwerveDriveTrain.pathfindToPose(targetPose).schedule();
   }

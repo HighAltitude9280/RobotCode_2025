@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.HighAltitudeConstants.REEF_SIDE;
+import frc.robot.HighAltitudeConstantsPose.REEF_SIDE;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
   }
 
   public enum GameMode {
-    CORAL_L1, CORAL_LX, ALGA, MANUAL
+    CORAL_L1, CORAL_LX, ALGAE, MANUAL
   }
 
   /**

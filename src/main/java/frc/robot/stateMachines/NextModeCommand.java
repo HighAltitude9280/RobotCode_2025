@@ -15,8 +15,8 @@ public class NextModeCommand extends InstantCommand {
     var cur = rc.getGameMode();
     GameMode next = switch (cur) {
       case CORAL_L1 -> GameMode.CORAL_LX;
-      case CORAL_LX -> GameMode.ALGA;
-      case ALGA -> GameMode.CORAL_L1;
+      case CORAL_LX -> GameMode.ALGAE;
+      case ALGAE -> GameMode.CORAL_L1;
       case MANUAL -> GameMode.CORAL_LX;
     };
     rc.setGameMode(next);

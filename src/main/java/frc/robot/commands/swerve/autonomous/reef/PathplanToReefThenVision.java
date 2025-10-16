@@ -9,14 +9,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.HighAltitudeConstants;
-import frc.robot.HighAltitudeConstants.REEF_POSITION;
-import frc.robot.HighAltitudeConstants.REEF_SIDE;
-import frc.robot.subsystems.swerve.SwerveDriveTrain;
+import frc.robot.HighAltitudeConstantsPose;
+import frc.robot.HighAltitudeConstantsPose.REEF_POSITION;
+import frc.robot.HighAltitudeConstantsPose.REEF_SIDE;
 import frc.robot.Robot;
+import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
-public class PathplanToReefThenVision extends InstantCommand 
-{
+public class PathplanToReefThenVision extends InstantCommand {
   REEF_POSITION pos = null;
   REEF_SIDE side;
 
@@ -24,8 +23,8 @@ public class PathplanToReefThenVision extends InstantCommand
 
   double maxTurnPower, maxSpeedPower, maxStrafePower;
 
-  public PathplanToReefThenVision(REEF_POSITION pos, boolean left, double maxTurnPower, double maxSpeedPower, double maxStrafePower) 
-  {
+  public PathplanToReefThenVision(REEF_POSITION pos, boolean left, double maxTurnPower, double maxSpeedPower,
+      double maxStrafePower) {
     this.pos = pos;
     this.left = left;
 
@@ -33,8 +32,8 @@ public class PathplanToReefThenVision extends InstantCommand
     this.maxSpeedPower = maxSpeedPower;
     this.maxStrafePower = maxStrafePower;
   }
-  public PathplanToReefThenVision(REEF_SIDE side, double maxTurnPower, double maxSpeedPower, double maxStrafePower) 
-  {
+
+  public PathplanToReefThenVision(REEF_SIDE side, double maxTurnPower, double maxSpeedPower, double maxStrafePower) {
     this.side = side;
     this.maxTurnPower = maxTurnPower;
     this.maxSpeedPower = maxSpeedPower;
@@ -43,24 +42,21 @@ public class PathplanToReefThenVision extends InstantCommand
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     Command align;
-    if(pos == null)
-    {
+    if (pos == null) {
       pos = side.getPosition(Robot.isFrontMode());
       align = new AlignWithTargetVision(null, side, null, maxTurnPower, maxSpeedPower, maxStrafePower);
-    }
-    else
-    align = new AlignWithTargetVision(pos,null, left, maxTurnPower, maxSpeedPower, maxStrafePower);
+    } else
+      align = new AlignWithTargetVision(pos, null, left, maxTurnPower, maxSpeedPower, maxStrafePower);
 
     Pose2d targetPose;
     var alliance = DriverStation.getAlliance();
 
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red)
-      targetPose = HighAltitudeConstants.PATHFINDING_RED_REEF_POS[pos.getID()]; 
+      targetPose = HighAltitudeConstantsPose.PATHFINDING_RED_REEF_POS[pos.getID()];
     else
-      targetPose = HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS[pos.getID()];
+      targetPose = HighAltitudeConstantsPose.PATHFINDING_BLUE_REEF_POS[pos.getID()];
 
     var path = SwerveDriveTrain.pathfindToPose(targetPose);
 

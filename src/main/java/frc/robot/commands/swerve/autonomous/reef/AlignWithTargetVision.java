@@ -8,8 +8,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.HighAltitudeConstants;
-import frc.robot.HighAltitudeConstants.REEF_POSITION;
-import frc.robot.HighAltitudeConstants.REEF_SIDE;
+import frc.robot.HighAltitudeConstantsPose;
+import frc.robot.HighAltitudeConstantsPose.REEF_POSITION;
+import frc.robot.HighAltitudeConstantsPose.REEF_SIDE;
 import frc.robot.Robot;;
 
 public class AlignWithTargetVision extends Command {
@@ -63,12 +64,12 @@ public class AlignWithTargetVision extends Command {
     var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
 
     int[] reefIDs = (alliance == DriverStation.Alliance.Red)
-        ? HighAltitudeConstants.RED_APRILTAG_IDS
-        : HighAltitudeConstants.BLUE_APRILTAG_IDS;
+        ? HighAltitudeConstantsPose.RED_APRILTAG_IDS
+        : HighAltitudeConstantsPose.BLUE_APRILTAG_IDS;
 
     Pose2d[] reefPoses = (alliance == DriverStation.Alliance.Red)
-        ? HighAltitudeConstants.PATHFINDING_RED_REEF_POS
-        : HighAltitudeConstants.PATHFINDING_BLUE_REEF_POS;
+        ? HighAltitudeConstantsPose.PATHFINDING_RED_REEF_POS
+        : HighAltitudeConstantsPose.PATHFINDING_BLUE_REEF_POS;
 
     if (pos == null) {
       targetID = Robot.getRobotContainer().getVision().getTargetID();

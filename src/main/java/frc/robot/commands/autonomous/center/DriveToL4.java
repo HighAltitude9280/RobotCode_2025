@@ -5,6 +5,7 @@
 package frc.robot.commands.autonomous.center;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -13,7 +14,7 @@ import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.commands.autonomous.AutoLeave;
 import frc.robot.commands.autonomous.ScoreCoral;
 import frc.robot.commands.modes.SetCoralMode;
-import frc.robot.commands.swerve.autonomous.reef.AlignWithTargetPose;
+import frc.robot.commands.swerve.autonomous.offSeason.AlignWithTargetPose;
 
 // NOTE: Consider using this command inline, rather than writing a subclass. For more
 // information, see:

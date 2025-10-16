@@ -20,5 +20,6 @@ public class Human_Drivers {
         JoakinButChambing, // Joaquin use a specific configuration for testing features
         ItaiAndGomezButChambingButCompetionButIsLeonButIsREEFSCAPE,
         LiftWristTest,
+        PoseTune,
     }
 }

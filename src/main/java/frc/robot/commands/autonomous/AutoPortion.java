@@ -1,11 +1,11 @@
 // AutoPortion.java
 package frc.robot.commands.autonomous;
 
-import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
-import frc.robot.HighAltitudeConstants.REEF_POSITION;
-import frc.robot.HighAltitudeConstants;
-import frc.robot.HighAltitudeConstants.CORAL_STATION_POSITION; // Enum for Coral Station (FAR, MIDDLE, NEAR)
 import edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.HighAltitudeConstants;
+import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
+import frc.robot.HighAltitudeConstantsPose.CORAL_STATION_POSITION;
+import frc.robot.HighAltitudeConstantsPose.REEF_POSITION;
 
 public class AutoPortion {
     private REEF_POSITION pos;
