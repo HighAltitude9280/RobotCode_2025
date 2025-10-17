@@ -21,7 +21,7 @@ public class HighAltitudeConstants {
 
         //////////////////////// DRIVERS ////////////////////////
 
-        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.Carlos;
+        public static final HumanDrivers CURRENT_PILOT = HumanDrivers.OneDriver;
 
         public static final HumanDrivers CURRENT_COPILOT = HumanDrivers.Pato;
 
@@ -98,10 +98,10 @@ public class HighAltitudeConstants {
         public static final double LIFT_TRANSITION_POSITION = 0.47;
 
         ////////////////////////// GRIPPER //////////////////////////
-        public static final double GRIPPER_OUT_SPEED = 0.3;
+        public static final double GRIPPER_OUT_SPEED = 0.35;
         public static final double GRIPPER_IN_SPEED = -0.5625;
         public static final double GRIPPER_INTAKE_SPEED = -0.3; // -0.2
-        public static final double GRIPPER_HOLD_SPEED = 0.1;
+        public static final double GRIPPER_HOLD_SPEED = 0.2;
 
         ////////////////////////// WRIST //////////////////////////
         // TODO: Wrist Constants
@@ -516,7 +516,7 @@ public class HighAltitudeConstants {
                 // Lift
                 LIFT_POSE[PoseIdx.INTAKE_REAR] = 0.0;
                 LIFT_POSE[PoseIdx.L1_INTAKE] = 0.20;
-                LIFT_POSE[PoseIdx.L1_SCORE] = 0.15;
+                LIFT_POSE[PoseIdx.L1_SCORE] = 0.0;
                 LIFT_POSE[PoseIdx.L2] = 0.32;
                 LIFT_POSE[PoseIdx.L3] = 0.51;
                 LIFT_POSE[PoseIdx.L4] = 0.71;
@@ -524,7 +524,7 @@ public class HighAltitudeConstants {
                 // Wrist
                 WRIST_POSE[PoseIdx.INTAKE_REAR] = 0.0;
                 WRIST_POSE[PoseIdx.L1_INTAKE] = 20.0;
-                WRIST_POSE[PoseIdx.L1_SCORE] = 40.0;
+                WRIST_POSE[PoseIdx.L1_SCORE] = 20.0;
                 WRIST_POSE[PoseIdx.L2] = 0.0;
                 WRIST_POSE[PoseIdx.L3] = 0.0;
                 WRIST_POSE[PoseIdx.L4] = 20.0;
@@ -549,8 +549,8 @@ public class HighAltitudeConstants {
                 WRIST_POSE[PoseIdx.NET_PREPOS] = 0.0;
                 WRIST_POSE[PoseIdx.NET_SCORE] = 40.0; // “Net” de tu array
 
-                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L2] = 40.0;
-                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L3] = 40.0;
+                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L2] = 42.5;
+                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L3] = 42.5;
 
         }
 

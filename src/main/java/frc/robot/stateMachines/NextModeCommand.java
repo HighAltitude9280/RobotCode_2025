@@ -20,5 +20,7 @@ public class NextModeCommand extends InstantCommand {
       case MANUAL -> GameMode.CORAL_LX;
     };
     rc.setGameMode(next);
+    System.out.println("Acabo de cambiar a comando: " + next);
+
   }
 }

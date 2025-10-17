@@ -19,6 +19,8 @@ public final class OIHelpers {
   private OIHelpers() {}
 
   public static Command onlyInMode(Supplier<GameMode> modeSup, GameMode required, Command inner) {
+
+    System.out.println("caca" + (modeSup.get() == required));
     return new ConditionalCommand(inner, Commands.none(), () -> modeSup.get() == required);
   }
 
@@ -82,7 +84,7 @@ public final class OIHelpers {
     @Override
     public void initialize() {
       OIHelpers.setSelectedByHeight(height);
-      // TODO opcional: feedback (LEDs/haptics/log)
+      System.out.println(height);
     }
   }
 

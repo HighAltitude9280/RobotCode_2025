@@ -26,6 +26,7 @@ import frc.robot.commands.autonomous.center.LeaveAndL4;
 import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
 import frc.robot.commands.extensor.lift.control.LiftDefaultCommand;
+import frc.robot.commands.extensor.wrist.control.WristDefaultCommand;
 import frc.robot.commands.swerve.DefaultSwerveDriveNew;
 import frc.robot.resources.components.Navx;
 import frc.robot.subsystems.CANdleSubsystem;
@@ -123,14 +124,12 @@ public class RobotContainer {
     }
 
     public void ConfigureButtonBindings() {
-        OI.getInstance().ConfigureButtonBindings();
         swerveDriveTrain.setDefaultCommand(new DefaultSwerveDriveNew());
 
         // TODO: Crear un comando manual por si deja de funcionar el PID (que overridee
         // el default command).
 
-        // wrist.setDefaultCommand(new
-        // WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
+        wrist.setDefaultCommand(new WristDefaultCommand(HighAltitudeConstants.WRIST_DRIVE_SPEED));
 
         lift.setDefaultCommand(new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
                 HighAltitudeConstants.LIFT_ARRIVE_OFFSET));

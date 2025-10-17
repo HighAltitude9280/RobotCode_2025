@@ -6,7 +6,6 @@ package frc.robot.subsystems.manipulator;
 
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,7 +23,7 @@ public class Gripper extends SubsystemBase {
   ColorMatch colorMatcher;
 
   private final double CURRENT_THRESOLD = -2.3;
-  private final double CURRENT_THRESOLD_ALGAE = 3.6;
+  private final double CURRENT_THRESOLD_ALGAE = 4.1;
   boolean coralInGripper;
 
   /** Creates a new Gripper. */
