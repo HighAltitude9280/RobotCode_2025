@@ -3,6 +3,7 @@ package frc.robot.commands.autonomous;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.HighAltitudeConstants;
+import frc.robot.HighAltitudeConstants.PoseIdx;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.HighAltitudeConstantsPose.CORAL_STATION_POSITION;
 import frc.robot.HighAltitudeConstantsPose.REEF_POSITION;
@@ -26,6 +27,12 @@ public class AutoPortion {
         return height;
     }
 
+    private PoseIdx poseIdx;
+
+    public PoseIdx getPoseIdx() {
+        return poseIdx;
+    }
+
     private Boolean leftFeeder;
 
     public Boolean isLeftFeeder() {
@@ -42,17 +49,15 @@ public class AutoPortion {
     /**
      * Constructor for an autonomous portion.
      * 
-     * @param pos             The REEF_POSITION for reef portions (can be null if
-     *                        not applicable).
-     * @param leftBranch      True for left branch, false for right branch.
-     * @param height          The target REEF_HEIGHT.
-     * @param leftFeeder      True for left feeder, false for right feeder (can be
-     *                        null).
-     * @param coralStationPos The CORAL_STATION_POSITION for coral station portions;
-     *                        null for reef portions.
+     * @param pos The REEF_POSITION for reef portions (can be null if not applicable).
+     * @param leftBranch True for left branch, false for right branch.
+     * @param height The target REEF_HEIGHT.
+     * @param leftFeeder True for left feeder, false for right feeder (can be null).
+     * @param coralStationPos The CORAL_STATION_POSITION for coral station portions; null for reef
+     *        portions.
      */
-    public AutoPortion(REEF_POSITION pos, boolean leftBranch, REEF_HEIGHT height, Boolean leftFeeder,
-            CORAL_STATION_POSITION coralStationPos) {
+    public AutoPortion(REEF_POSITION pos, boolean leftBranch, REEF_HEIGHT height,
+            Boolean leftFeeder, CORAL_STATION_POSITION coralStationPos) {
         this.pos = pos;
         this.leftBranch = leftBranch;
         this.leftFeeder = leftFeeder;
@@ -61,17 +66,34 @@ public class AutoPortion {
     }
 
     /**
-     * Computes the approach pose for the given final target pose using an offset.
-     * If intakeMode is false (normal mode for REEF), the offset is subtracted
-     * (approach from behind).
-     * If intakeMode is true (for Coral Station or feeder intake), the offset is
-     * added (approach from the front).
-     * For horizontal branches (angles near 0° or 180°), only the X component is
-     * offset (with inverted behavior for intake mode).
+     * Constructor for an autonomous portion.
+     * 
+     * @param pos The REEF_POSITION for reef portions (can be null if not applicable).
+     * @param leftBranch True for left branch, false for right branch.
+     * @param poseIdx The target for LiftWristGoToPos.
+     * @param leftFeeder True for left feeder, false for right feeder (can be null).
+     * @param coralStationPos The CORAL_STATION_POSITION for coral station portions; null for reef
+     *        portions.
+     */
+    public AutoPortion(REEF_POSITION pos, boolean leftBranch, PoseIdx poseIdx, Boolean leftFeeder,
+            CORAL_STATION_POSITION coralStationPos) {
+        this.pos = pos;
+        this.leftBranch = leftBranch;
+        this.leftFeeder = leftFeeder;
+        this.poseIdx = poseIdx;
+        this.coralStationPos = coralStationPos;
+    }
+
+    /**
+     * Computes the approach pose for the given final target pose using an offset. If intakeMode is
+     * false (normal mode for REEF), the offset is subtracted (approach from behind). If intakeMode
+     * is true (for Coral Station or feeder intake), the offset is added (approach from the front).
+     * For horizontal branches (angles near 0° or 180°), only the X component is offset (with
+     * inverted behavior for intake mode).
      *
-     * @param finalPose  The final target pose.
-     * @param intakeMode True to calculate the approach pose for intake (Coral
-     *                   Station), false for normal REEF.
+     * @param finalPose The final target pose.
+     * @param intakeMode True to calculate the approach pose for intake (Coral Station), false for
+     *        normal REEF.
      * @return The computed approach pose.
      */
     public Pose2d getApproachPose(Pose2d finalPose, boolean intakeMode) {
@@ -83,10 +105,12 @@ public class AutoPortion {
         if (Math.abs(angleDeg) < 5 || Math.abs(Math.abs(angleDeg) - 180) < 5) {
             if (Math.abs(angleDeg) < 5) {
                 // Normal mode: subtract offset in X; intake mode: add offset in X.
-                newX = intakeMode ? finalPose.getX() + offsetDistance : finalPose.getX() - offsetDistance;
+                newX = intakeMode ? finalPose.getX() + offsetDistance
+                        : finalPose.getX() - offsetDistance;
             } else { // angle near 180°
                 // Normal mode: add offset; intake mode: subtract offset.
-                newX = intakeMode ? finalPose.getX() - offsetDistance : finalPose.getX() + offsetDistance;
+                newX = intakeMode ? finalPose.getX() - offsetDistance
+                        : finalPose.getX() + offsetDistance;
             }
             newY = finalPose.getY();
         } else {

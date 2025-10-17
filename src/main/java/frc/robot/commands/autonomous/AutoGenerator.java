@@ -2,7 +2,6 @@
 package frc.robot.commands.autonomous;
 
 import java.util.ArrayList;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,32 +40,35 @@ public class AutoGenerator extends InstantCommand {
       // 3. Execute coarse pathfinding to REEF approach pose
       commands.add(SwerveDriveTrain.pathfindToPose(approachReef));
       // 4. Execute fine alignment for REEF using AlignWithTargetPose (and ScoreCoral)
-      commands.add(new SequentialCommandGroup(
-          new AlignWithTargetPose(portion.getPos(), null, portion.isLeftBranch(),
-              HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN),
-          new ScoreCoral(portion.getHeight())));
+      commands.add(new SequentialCommandGroup(new AlignWithTargetPose(portion.getPos(), null,
+          portion.isLeftBranch(), HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+          HighAltitudeConstants.VISION_POSE_MAX_TURN), new ScoreCoral(portion.getHeight())));
 
       // ********** CORAL STATION Portion **********
       // 5. Get final Coral Station pose from the corresponding array using
       // coralStationPos
       Pose2d coralFinal;
       if (blueAlliance) {
-        if (portion.isLeftFeeder() != null) {
+        if (portion.isLeftFeeder() != null && portion.getCoralStationPos() != null) {
           coralFinal = portion.isLeftFeeder()
-              ? HighAltitudeConstantsPose.PATHFINDING_BLUE_LEFT_CORAL_STATION[portion.getCoralStationPos().getID()]
-              : HighAltitudeConstantsPose.PATHFINDING_BLUE_RIGHT_CORAL_STATION[portion.getCoralStationPos().getID()];
+              ? HighAltitudeConstantsPose.PATHFINDING_BLUE_LEFT_CORAL_STATION[portion
+                  .getCoralStationPos().getID()]
+              : HighAltitudeConstantsPose.PATHFINDING_BLUE_RIGHT_CORAL_STATION[portion
+                  .getCoralStationPos().getID()];
         } else {
-          coralFinal = HighAltitudeConstantsPose.PATHFINDING_BLUE_LEFT_CORAL_STATION[portion.getCoralStationPos()
-              .getID()];
+          coralFinal = HighAltitudeConstantsPose.PATHFINDING_BLUE_LEFT_CORAL_STATION[portion
+              .getCoralStationPos().getID()];
         }
       } else {
-        if (portion.isLeftFeeder() != null) {
+        if (portion.isLeftFeeder() != null && portion.getCoralStationPos() != null) {
           coralFinal = portion.isLeftFeeder()
-              ? HighAltitudeConstantsPose.PATHFINDING_RED_LEFT_CORAL_STATION[portion.getCoralStationPos().getID()]
-              : HighAltitudeConstantsPose.PATHFINDING_RED_RIGHT_CORAL_STATION[portion.getCoralStationPos().getID()];
+              ? HighAltitudeConstantsPose.PATHFINDING_RED_LEFT_CORAL_STATION[portion
+                  .getCoralStationPos().getID()]
+              : HighAltitudeConstantsPose.PATHFINDING_RED_RIGHT_CORAL_STATION[portion
+                  .getCoralStationPos().getID()];
         } else {
-          coralFinal = HighAltitudeConstantsPose.PATHFINDING_RED_LEFT_CORAL_STATION[portion.getCoralStationPos()
-              .getID()];
+          coralFinal = HighAltitudeConstantsPose.PATHFINDING_RED_LEFT_CORAL_STATION[portion
+              .getCoralStationPos().getID()];
         }
       }
       // 6. Calculate approach pose for Coral Station (intake mode = true)

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -198,10 +199,10 @@ public class OI {
 
                                 pilot.whileTrue(ButtonType.POV_W, new WhileHeldPrecisionMode());
                                 pilot.whileTrue(ButtonType.X, new TogglePrecisionMode());
-                                pilot.onTrue(ButtonType.LB, new AlignWithTargetPose(/* left= */true,
+
+                                pilot.onTrue(ButtonType.LB, new AlignWithTargetPose(true,
                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                HighAltitudeConstants.VISION_POSE_MAX_TURN,
-                                                /* applyBackoff= */true));
+                                                HighAltitudeConstants.VISION_POSE_MAX_TURN, true));
 
                                 pilot.onTrue(ButtonType.RB, new AlignWithTargetPose(
                                                 /* left= */false,
@@ -386,7 +387,7 @@ public class OI {
                                 // “SCORE”
                                 // =========================================================================
 
-                                // LB: “score left” → por ahora SOLO alineación/drive
+                                // LB: score left branch por ahora SOLO drive
                                 // - CORAL_L1: alinearse al branch izquierdo SIN backoff
                                 // - CORAL_LX: alinearse al branch izquierdo CON backoff (LX)
                                 // - ALGAE: ir a NET
@@ -395,20 +396,23 @@ public class OI {
                                                                                                  // branch
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
-                                                                false).withTimeout(
-                                                                                HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                false)));
+
+                                pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
+                                                GameMode.CORAL_L1,
+                                                InstantCommand(() -> System.out.println(
+                                                                "Imprime desde estado: " + mode))));
+
                                 pilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
                                                 GameMode.CORAL_LX,
                                                 new AlignWithTargetPose(true,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
-                                                                true).withTimeout(
-                                                                                HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                true)));
                                 pilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
                                                 GameMode.ALGAE,
                                                 new DriveToNet(HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)
-                                                                                .withTimeout(HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)));
 
                                 // RB: “score right” → por ahora SOLO alineación/drive
                                 // - CORAL_L1: branch derecho SIN backoff
@@ -419,21 +423,18 @@ public class OI {
                                                 new AlignWithTargetPose(false,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
-                                                                false).withTimeout(
-                                                                                HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                false)));
                                 pilot.onTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
                                                 GameMode.CORAL_LX,
                                                 new AlignWithTargetPose(false,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
-                                                                true).withTimeout(
-                                                                                HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                true)));
                                 pilot.onTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
                                                 GameMode.ALGAE,
                                                 new DriveToProcessor(
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)
-                                                                                .withTimeout(HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)));
 
                                 // LT: CORAL_L1: Ir a Coral Station Izq de frente TODO: falta
                                 // CORAL_LX: Ir a Coral Station Izq
@@ -444,8 +445,7 @@ public class OI {
                                                                 HighAltitudeConstantsPose.CORAL_STATION_POSITION.MIDDLE,
                                                                 true, // left
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)
-                                                                                .withTimeout(HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)));
 
                                 pilot.onTrue(ButtonType.LT, OIHelpers.onlyInMode(mode,
                                                 GameMode.ALGAE, new AlgaeIntakeFloor()));
@@ -469,8 +469,7 @@ public class OI {
                                                                 HighAltitudeConstantsPose.CORAL_STATION_POSITION.MIDDLE,
                                                                 false,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)
-                                                                                .withTimeout(HighAltitudeConstants.DRIVE_TO_POSE_TIMEOUT_S)));
+                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)));
 
                                 // Cancel global: LS + RS
                                 pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.LS,
@@ -492,8 +491,10 @@ public class OI {
                                 copilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
                                 copilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
 
-                                java.util.function.Supplier<GameMode> mode =
+
+                                Supplier<GameMode> mode =
                                                 () -> Robot.getRobotContainer().getGameMode();
+
 
                                 // ==== Cambio de modo & Toggle Manual ====
                                 copilot.onTrue(ButtonType.START, new NextModeCommand());

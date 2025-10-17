@@ -87,9 +87,9 @@ public class HighAltitudeConstants {
                         LIFT_INCHES_PER_SPROCKET_REV * LIFT_SPROCKET_REVS_PER_PULSE * 0.0254;
 
         // In the same order as the enum: L1, L2, L3, L4
-        public static final double[] LIFT_CORAL_POSITIONS = {0.0, 0.32, 0.51, 0.7}; // TODO: tunear
-                                                                                    // esto en
-                                                                                    // competencia
+        public static final double[] LIFT_CORAL_POSITIONS = {0.0, 0.32, 0.51, 0.71}; // TODO: tunear
+                                                                                     // esto en
+                                                                                     // competencia
         // In the same order as the enum: Processor, L2, L3, Net
         public static final double[] LIFT_ALGAE_POSITIONS = {0.0, 0.28, 0.47, 0.73};
 
