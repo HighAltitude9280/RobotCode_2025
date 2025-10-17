@@ -450,7 +450,9 @@ public class HighAltitudeConstants {
         public static final double ALGAE_RETRACT_OFFSET_M = -0.45;
 
         // Tiempo máx para pruebas de drive-to (s)
-        public static final double DRIVE_TO_POSE_TIMEOUT_S = 5.0; // ajusta si lo ves corto/largo
+        public static final double DRIVE_TO_POSE_TIMEOUT_S = 5.0;
+        public static final double ALGAE_INTAKE_TIMEOUT_S = 3.0;
+
 
 
         public static final class LedColors {
@@ -507,21 +509,22 @@ public class HighAltitudeConstants {
         public static final double[] LIFT_POSE = new double[PoseIdx.COUNT];
         public static final double[] WRIST_POSE = new double[PoseIdx.COUNT];
 
+
         static {
                 // TODO: ajustar en comp
                 // Coral
                 // Lift
                 LIFT_POSE[PoseIdx.INTAKE_REAR] = 0.0;
-                LIFT_POSE[PoseIdx.L1_INTAKE] = 0.00;
-                LIFT_POSE[PoseIdx.L1_SCORE] = 0.00;
+                LIFT_POSE[PoseIdx.L1_INTAKE] = 0.20;
+                LIFT_POSE[PoseIdx.L1_SCORE] = 0.15;
                 LIFT_POSE[PoseIdx.L2] = 0.32;
                 LIFT_POSE[PoseIdx.L3] = 0.51;
                 LIFT_POSE[PoseIdx.L4] = 0.71;
 
                 // Wrist
                 WRIST_POSE[PoseIdx.INTAKE_REAR] = 0.0;
-                WRIST_POSE[PoseIdx.L1_INTAKE] = 0.0;
-                WRIST_POSE[PoseIdx.L1_SCORE] = 0.0;
+                WRIST_POSE[PoseIdx.L1_INTAKE] = 20.0;
+                WRIST_POSE[PoseIdx.L1_SCORE] = 40.0;
                 WRIST_POSE[PoseIdx.L2] = 0.0;
                 WRIST_POSE[PoseIdx.L3] = 0.0;
                 WRIST_POSE[PoseIdx.L4] = 20.0;
@@ -535,8 +538,8 @@ public class HighAltitudeConstants {
                 LIFT_POSE[PoseIdx.NET_PREPOS] = 0.6;
                 LIFT_POSE[PoseIdx.NET_SCORE] = 0.7;
 
-                LIFT_POSE[PoseIdx.ALGAE_REMOVE_L2] = 0.28;
-                LIFT_POSE[PoseIdx.ALGAE_REMOVE_L3] = 0.47;
+                LIFT_POSE[PoseIdx.ALGAE_REMOVE_L2] = 0.2;
+                LIFT_POSE[PoseIdx.ALGAE_REMOVE_L3] = 0.4;
 
                 // Wrist
                 WRIST_POSE[PoseIdx.ALGAE_INTAKE_FLOOR] = 67.5;
@@ -546,8 +549,8 @@ public class HighAltitudeConstants {
                 WRIST_POSE[PoseIdx.NET_PREPOS] = 0.0;
                 WRIST_POSE[PoseIdx.NET_SCORE] = 40.0; // “Net” de tu array
 
-                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L2] = 20.0;
-                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L3] = 20.0;
+                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L2] = 40.0;
+                WRIST_POSE[PoseIdx.ALGAE_REMOVE_L3] = 40.0;
 
         }
 

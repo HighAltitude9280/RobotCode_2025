@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants.PoseIdx;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
@@ -126,8 +127,8 @@ public class OI {
                                                                                 .withTimeout(0.25)));
 
                                 pilot.onTrue(ButtonType.LT, new CoralOrAlgaeLiftDown());
-                                pilot.whileTrue(ButtonType.RT, new DriveToCoralStation(null, null,
-                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                pilot.whileTrue(ButtonType.RT, new DriveToCoralStation(false, null,
+                                                false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN));
 
                                 break;
@@ -347,6 +348,7 @@ public class OI {
                                 // actual L/R)
                                 pilot.onTrue(ButtonType.X,
                                                 new frc.robot.commands.swerve.autonomous.offSeason.DriveToCoralStation(
+                                                                false,
                                                                 frc.robot.stateMachines.TestTargets
                                                                                 .coralStationPosFromVariant(),
                                                                 Robot.isLeftMode(), // true = Left
@@ -397,11 +399,10 @@ public class OI {
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
                                                                 false)));
-
                                 pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
                                                 GameMode.CORAL_L1,
-                                                InstantCommand(() -> System.out.println(
-                                                                "Imprime desde estado: " + mode))));
+                                                new InstantCommand(() -> System.out.println(
+                                                                "LB hace desde estado: " + mode))));
 
                                 pilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
                                                 GameMode.CORAL_LX,
@@ -409,10 +410,19 @@ public class OI {
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
                                                                 true)));
+                                pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
+                                                GameMode.CORAL_LX,
+                                                new InstantCommand(() -> System.out.println(
+                                                                "LB hace desde estado: " + mode))));
+
                                 pilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
                                                 GameMode.ALGAE,
                                                 new DriveToNet(HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN)));
+                                pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
+                                                GameMode.ALGAE,
+                                                new InstantCommand(() -> System.out.println(
+                                                                "LB hace desde estado: " + mode))));
 
                                 // RB: “score right” → por ahora SOLO alineación/drive
                                 // - CORAL_L1: branch derecho SIN backoff
@@ -424,28 +434,52 @@ public class OI {
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
                                                                 false)));
+                                pilot.whileTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
+                                                GameMode.CORAL_L1,
+                                                new InstantCommand(() -> System.out.println(
+                                                                "RB hace desde estado: " + mode))));
+
                                 pilot.onTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
                                                 GameMode.CORAL_LX,
                                                 new AlignWithTargetPose(false,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN,
                                                                 true)));
+                                pilot.whileTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
+                                                GameMode.CORAL_LX,
+                                                new InstantCommand(() -> System.out.println(
+                                                                "RB hace desde estado: " + mode))));
+
                                 pilot.onTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
                                                 GameMode.ALGAE,
                                                 new DriveToProcessor(
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN)));
+                                pilot.whileTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
+                                                GameMode.ALGAE,
+                                                new InstantCommand(() -> System.out.println(
+                                                                "RB hace desde estado: " + mode))));
 
                                 // LT: CORAL_L1: Ir a Coral Station Izq de frente TODO: falta
                                 // CORAL_LX: Ir a Coral Station Izq
                                 // ALGAE: AlgaeIntake Floor
                                 pilot.onTrue(ButtonType.LT, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_LX,
-                                                new DriveToCoralStation(
+                                                GameMode.CORAL_L1,
+                                                new DriveToCoralStation(true,
                                                                 HighAltitudeConstantsPose.CORAL_STATION_POSITION.MIDDLE,
-                                                                true, // left
+                                                                true,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN)));
+
+                                pilot.onTrue(ButtonType.LT, OIHelpers.onlyInMode(mode,
+                                                GameMode.CORAL_LX,
+                                                new DriveToCoralStation(false,
+                                                                HighAltitudeConstantsPose.CORAL_STATION_POSITION.MIDDLE,
+                                                                true,
+                                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)));
+
+
 
                                 pilot.onTrue(ButtonType.LT, OIHelpers.onlyInMode(mode,
                                                 GameMode.ALGAE, new AlgaeIntakeFloor()));
@@ -457,6 +491,14 @@ public class OI {
                                 // CORAL_LX: Ir a Coral Station Der
                                 // ALGAE: DriveToAlgaeRemovalFromReef
                                 pilot.onTrue(ButtonType.RT, OIHelpers.onlyInMode(mode,
+                                                GameMode.CORAL_L1,
+                                                new DriveToCoralStation(true,
+                                                                HighAltitudeConstantsPose.CORAL_STATION_POSITION.MIDDLE,
+                                                                false,
+                                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN)));
+
+                                pilot.onTrue(ButtonType.RT, OIHelpers.onlyInMode(mode,
                                                 GameMode.ALGAE,
                                                 new DriveToAlgaeRemovalFromReef(
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
@@ -465,7 +507,7 @@ public class OI {
 
                                 pilot.onTrue(ButtonType.RT, OIHelpers.onlyInMode(mode,
                                                 GameMode.CORAL_LX,
-                                                new DriveToCoralStation(
+                                                new DriveToCoralStation(false,
                                                                 HighAltitudeConstantsPose.CORAL_STATION_POSITION.MIDDLE,
                                                                 false,
                                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,

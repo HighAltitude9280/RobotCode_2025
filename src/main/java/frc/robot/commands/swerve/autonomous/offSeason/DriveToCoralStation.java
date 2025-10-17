@@ -9,82 +9,63 @@ import frc.robot.HighAltitudeConstantsPose;
 import frc.robot.HighAltitudeConstantsPose.CORAL_STATION_POSITION;
 import frc.robot.Robot;
 
-/**
- * Drives to a Coral Station approach pose chosen from field constants.
- * - Alliance-based lookup (Blue/Red).
- * - Left/Right station side selection (forced or auto by proximity).
- * - Position index within the station (FAR/MIDDLE/NEAR).
- *
- * This command trusts the pre-baked Pose2d targets; no vision/determineTarget.
- */
 public class DriveToCoralStation extends Command {
 
-  // Parameters
+  // ---------------- Parameters ----------------
+  private final boolean l1Mode; // <--- L1 ON/OFF
   private CORAL_STATION_POSITION pos;
-  /**
-   * If not null: true = left station, false = right station.
-   * If null: picks whichever is closer to the current robot pose.
-   */
+
+  /** true = left, false = right; null = AUTO (elige el más cercano) */
   private final Boolean left;
+
   private final double maxLinearVelocity;
   private final double maxAngularVelocity;
 
-  // State
+  // ---------------- State ----------------
   private Pose2d targetPose;
   private boolean done;
 
-  /**
-   * Original constructor:
-   * 
-   * @param position           FAR, MIDDLE, or NEAR (defaults to MIDDLE if null).
-   * @param left               Force left(true)/right(false); if null, auto-pick
-   *                           closest. AUTO ONLY
-   * @param maxLinearVelocity  Max linear speed (m/s).
-   * @param maxAngularVelocity Max angular speed (rad/s).
-   */
-  public DriveToCoralStation(CORAL_STATION_POSITION position, Boolean left,
+  // ---------------- Constructors ----------------
+
+  /** Constructor general con L1. */
+  public DriveToCoralStation(boolean L1, CORAL_STATION_POSITION position, Boolean left,
       double maxLinearVelocity, double maxAngularVelocity) {
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
+    this.l1Mode = L1;
     this.pos = position;
     this.left = left;
     this.maxLinearVelocity = maxLinearVelocity;
     this.maxAngularVelocity = maxAngularVelocity;
   }
 
-  /**
-   * Convenience constructor (For TeleOp):
-   * Only specify left/right. Position defaults to MIDDLE.
-   * 
-   * @param left               true = left station, false = right station.
-   * @param maxLinearVelocity  Max linear speed (m/s).
-   * @param maxAngularVelocity Max angular speed (rad/s).
-   */
-  public DriveToCoralStation(boolean left,
-      double maxLinearVelocity, double maxAngularVelocity) {
-    this(CORAL_STATION_POSITION.MIDDLE, Boolean.valueOf(left), maxLinearVelocity, maxAngularVelocity);
+  /** Conveniencia: sólo L/R, MIDDLE por defecto (soporta L1). */
+  public DriveToCoralStation(boolean L1, boolean left, double maxLinearVelocity,
+      double maxAngularVelocity) {
+    this(L1, CORAL_STATION_POSITION.MIDDLE, Boolean.valueOf(left), maxLinearVelocity,
+        maxAngularVelocity);
   }
+
+  // ---------------- Lifecycle ----------------
 
   @Override
   public void initialize() {
     done = false;
-
-    // Default position if not provided
     if (pos == null)
       pos = CORAL_STATION_POSITION.MIDDLE;
 
-    targetPose = pickTargetPose();
-    if (targetPose == null) {
-      System.err.println("[DriveToCoralStation] targetPose is null, falling back to (0,0,0).");
-      targetPose = new Pose2d(); // very last resort
-    }
+    targetPose = l1Mode ? pickL1Pose() : pickStationPose();
 
+    if (targetPose == null) {
+      System.err.println("[DriveToCoralStation] targetPose is null, fallback (0,0,0).");
+      targetPose = new Pose2d();
+    }
     pushDebug();
   }
 
   @Override
   public void execute() {
-    done = Robot.getRobotContainer().getSwerveDriveTrain()
-        .AlignWithTargetPose(targetPose, maxLinearVelocity, maxAngularVelocity);
+    done = Robot.getRobotContainer().getSwerveDriveTrain().AlignWithTargetPose(targetPose,
+        maxLinearVelocity, maxAngularVelocity);
   }
 
   @Override
@@ -99,14 +80,48 @@ public class DriveToCoralStation extends Command {
 
   // ---------------- Internals ----------------
 
-  /**
-   * Selects the station approach pose:
-   * - Reads alliance to choose tables.
-   * - Retrieves left/right candidate by position index.
-   * - If 'left' is null, auto-picks closest to current pose.
-   * - If forced side is null in tables, falls back to the other side.
-   */
-  private Pose2d pickTargetPose() {
+  /** L1: elige entre {BLUE_LEFT, BLUE_RIGHT} o {RED_LEFT, RED_RIGHT}. */
+  private Pose2d pickL1Pose() {
+    var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
+
+    Pose2d candLeft = null, candRight = null;
+    switch (alliance) {
+      case Red:
+        candLeft = HighAltitudeConstantsPose.CORAL_STATION_L1_RED_LEFT;
+        candRight = HighAltitudeConstantsPose.CORAL_STATION_L1_RED_RIGHT;
+        break;
+      case Blue:
+      default:
+        candLeft = HighAltitudeConstantsPose.CORAL_STATION_L1_BLUE_LEFT;
+        candRight = HighAltitudeConstantsPose.CORAL_STATION_L1_BLUE_RIGHT;
+        break;
+    }
+
+    if (candLeft == null && candRight == null)
+      return null;
+
+    // Forzado por parámetro
+    if (left != null) {
+      return left.booleanValue() ? (candLeft != null ? candLeft : candRight)
+          : (candRight != null ? candRight : candLeft);
+    }
+
+    // Auto: el más cercano a la pose actual
+    Pose2d current = Robot.getRobotContainer().getSwerveDriveTrain().getPose();
+    if (current == null)
+      return (candLeft != null) ? candLeft : candRight;
+
+    double dL = (candLeft != null) ? candLeft.getTranslation().getDistance(current.getTranslation())
+        : Double.MAX_VALUE;
+    double dR =
+        (candRight != null) ? candRight.getTranslation().getDistance(current.getTranslation())
+            : Double.MAX_VALUE;
+
+    return (dL <= dR) ? candLeft : candRight;
+  }
+
+  /** Lógica original (no L1): tablas por alianza, side forzado o AUTO. */
+  private Pose2d pickStationPose() {
     int idx = pos.getID();
     var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
 
@@ -129,27 +144,23 @@ public class DriveToCoralStation extends Command {
         break;
     }
 
-    // If both are missing, we cannot proceed.
     if (candLeft == null && candRight == null)
       return null;
 
-    // Forced side
     if (left != null) {
-      if (left.booleanValue()) {
-        return (candLeft != null) ? candLeft : candRight; // fallback if left absent
-      } else {
-        return (candRight != null) ? candRight : candLeft; // fallback if right absent
-      }
+      return left.booleanValue() ? (candLeft != null ? candLeft : candRight)
+          : (candRight != null ? candRight : candLeft);
     }
 
-    // Auto side by proximity to current pose
     Pose2d current = Robot.getRobotContainer().getSwerveDriveTrain().getPose();
     if (current == null)
       return (candLeft != null) ? candLeft : candRight;
 
-    double dL = (candLeft != null) ? candLeft.getTranslation().getDistance(current.getTranslation()) : Double.MAX_VALUE;
-    double dR = (candRight != null) ? candRight.getTranslation().getDistance(current.getTranslation())
+    double dL = (candLeft != null) ? candLeft.getTranslation().getDistance(current.getTranslation())
         : Double.MAX_VALUE;
+    double dR =
+        (candRight != null) ? candRight.getTranslation().getDistance(current.getTranslation())
+            : Double.MAX_VALUE;
 
     return (dL <= dR) ? candLeft : candRight;
   }
@@ -157,10 +168,10 @@ public class DriveToCoralStation extends Command {
   private void pushDebug() {
     if (targetPose == null)
       return;
+    SmartDashboard.putBoolean("CoralStation/L1Mode", l1Mode);
     SmartDashboard.putNumber("CoralStation/TargetPoseX", targetPose.getX());
     SmartDashboard.putNumber("CoralStation/TargetPoseY", targetPose.getY());
     SmartDashboard.putNumber("CoralStation/TargetPoseDeg", targetPose.getRotation().getDegrees());
-    SmartDashboard.putString("CoralStation/TargetPoseStr", targetPose.toString());
     SmartDashboard.putString("CoralStation/Alliance",
         DriverStation.getAlliance().map(Enum::name).orElse("Unknown"));
     SmartDashboard.putString("CoralStation/PosIndex", pos.name());

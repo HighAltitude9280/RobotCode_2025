@@ -76,8 +76,9 @@ public class AutoGenerator extends InstantCommand {
       // 7. Execute coarse pathfinding to the Coral Station approach pose
       commands.add(SwerveDriveTrain.pathfindToPose(approachCoral));
       // 8. Execute fine alignment for Coral Station using DriveToCoralStation
-      commands.add(new DriveToCoralStation(portion.getCoralStationPos(), portion.isLeftFeeder(),
-          HighAltitudeConstants.VISION_POSE_MAX_SPEED, HighAltitudeConstants.VISION_POSE_MAX_TURN));
+      commands.add(new DriveToCoralStation(false, portion.getCoralStationPos(),
+          portion.isLeftFeeder(), HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+          HighAltitudeConstants.VISION_POSE_MAX_TURN));
       // 9. Execute intake using IntakeAuto (to pick up the game piece)
       commands.add(new IntakeAuto());
     }

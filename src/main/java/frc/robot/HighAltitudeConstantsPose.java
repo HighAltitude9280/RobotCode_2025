@@ -196,6 +196,16 @@ public final class HighAltitudeConstantsPose {
                         // Tag 10, FC
                         };
 
+        public static final Pose2d CORAL_STATION_L1_BLUE_LEFT =
+                        new Pose2d(1.103, 6.956, Rotation2d.fromDegrees(125.0));
+        public static final Pose2d CORAL_STATION_L1_BLUE_RIGHT =
+                        new Pose2d(1.103, 1.058, Rotation2d.fromDegrees(-125.0));
+
+        public static final Pose2d CORAL_STATION_L1_RED_LEFT =
+                        new Pose2d(16.076, 0.782, Rotation2d.fromDegrees(-55.0));
+        public static final Pose2d CORAL_STATION_L1_RED_RIGHT =
+                        new Pose2d(16.076, 7.256, Rotation2d.fromDegrees(55.0));
+
         // ---------------------------------------------------------------------------
         // Enums and helpers
         // ---------------------------------------------------------------------------
