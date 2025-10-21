@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.82,
-        "y": 3.85
+        "x": 5.69,
+        "y": 4.04298155737705
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.539393752238539,
-        "y": 4.03846253550369
+        "x": 5.409393752238539,
+        "y": 4.231444092880739
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.82,
-        "y": 7.0
+        "x": 11.95,
+        "y": 4.043
       },
       "prevControl": {
-        "x": 6.360116850864827,
-        "y": 6.306558529875551
-      },
-      "nextControl": {
-        "x": 5.456076171055206,
-        "y": 7.467231997210829
-      },
-      "isLocked": false,
-      "linkedName": "nOlEsTorBesABALAM"
-    },
-    {
-      "anchor": {
-        "x": 1.5703893442622954,
-        "y": 7.495440573770491
-      },
-      "prevControl": {
-        "x": 2.0600361426194116,
-        "y": 7.39139026853105
+        "x": 11.449419883373503,
+        "y": 4.042999999999999
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LeftCoralStationFarSide"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -58,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -55.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Center",

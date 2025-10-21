@@ -9,7 +9,11 @@ import frc.robot.HighAltitudeConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.manipulator.Gripper;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+/*
+ * You should consider using the more terse Command factories API instead
+ * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#
+ * defining-commands
+ */
 public class HoldAlgae extends Command {
   Gripper gripper;
 
@@ -24,13 +28,12 @@ public class HoldAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    gripper.gripperOut(HighAltitudeConstants.GRIPPER_HOLD_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    gripper.gripperOut(HighAltitudeConstants.GRIPPER_HOLD_SPEED);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

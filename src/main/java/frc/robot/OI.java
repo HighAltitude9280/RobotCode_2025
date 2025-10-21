@@ -5,36 +5,33 @@
 package frc.robot;
 
 import java.util.function.Supplier;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants.PoseIdx;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
-import frc.robot.HighAltitudeConstantsPose.REEF_SIDE;
 import frc.robot.Robot.GameMode;
+import frc.robot.commands.autonomous.algae.AlgaeDetachFromReefSequence;
+import frc.robot.commands.autonomous.coral.CoralLX_StationIntakeSequence;
 import frc.robot.commands.cancel.PathCancelCommand;
 import frc.robot.commands.cancel.ResetLiftEncoders;
 import frc.robot.commands.extensor.compound.both.CoralOrAlgaeLiftDown;
-import frc.robot.commands.extensor.compound.both.LiftWristGoToPose;
 import frc.robot.commands.extensor.compound.both.LiftWristGoToTargetHeight;
 import frc.robot.commands.extensor.gripper.IntakeAuto;
-import frc.robot.commands.extensor.gripper.algae.IntakeAlgaeAuto;
 import frc.robot.commands.extensor.gripper.manual.IntakeAlgae;
 import frc.robot.commands.extensor.gripper.manual.ScoreGamePiece;
 import frc.robot.commands.extensor.lift.manual.LiftDown;
+import frc.robot.commands.extensor.lift.manual.LiftDownControl;
 import frc.robot.commands.extensor.lift.manual.LiftUp;
+import frc.robot.commands.extensor.lift.manual.LiftUpControl;
 import frc.robot.commands.extensor.wrist.control.WristGoToTarget;
+import frc.robot.commands.extensor.wrist.manual.WristDownControl;
+import frc.robot.commands.extensor.wrist.manual.WristUpControl;
 import frc.robot.commands.modes.SetCoralMode;
-import frc.robot.commands.modes.SetFrontMode;
 import frc.robot.commands.modes.SetLeftMode;
-import frc.robot.commands.modes.SetReefSideMode;
 import frc.robot.commands.modes.ToggleCoralMode;
 import frc.robot.commands.modes.TogglePrecisionMode;
 import frc.robot.commands.modes.WhileHeldPrecisionMode;
 import frc.robot.commands.oneDriver.AlignWithBranchAndScore;
-import frc.robot.commands.swerve.autonomous.SwerveMoveMeters;
-import frc.robot.commands.swerve.autonomous.TurnWheels;
-import frc.robot.commands.swerve.autonomous.offSeason.AlignWithTargetPose;
 import frc.robot.commands.swerve.autonomous.offSeason.DriveToCoralStation;
+import frc.robot.commands.swerve.autonomous.offSeason.DriveToTargetBranchPose;
 import frc.robot.commands.swerve.swerveParameters.ResetOdometryZeros;
 import frc.robot.commands.swerve.swerveParameters.SetIsFieldOriented;
 import frc.robot.resources.joysticks.HighAltitudeJoystick;
@@ -72,53 +69,40 @@ public class OI {
                                 pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START,
                                                 ButtonType.BACK);
 
-                                pilot.whileTrue(ButtonType.POV_E, new SetLeftMode(false));
+                                pilot.whileTrue(ButtonType.X, new WhileHeldPrecisionMode());
 
-                                pilot.whileTrue(ButtonType.POV_W, new SetLeftMode(true));
-                                /*
-                                 * pilot.whileTrue(ButtonType.POV_W, new
-                                 * PathplanToReefThenVisionPose(null, null, true,
-                                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                 * HighAltitudeConstants.VISION_POSE_MAX_TURN)); *
-                                 */
-
-                                pilot.whileTrue(ButtonType.POV_N, new SetFrontMode(true));
-                                pilot.whileTrue(ButtonType.POV_S, new SetFrontMode(false));
-
-                                pilot.whileTrue(ButtonType.X, new SetReefSideMode(REEF_SIDE.LEFT));
-                                pilot.whileTrue(ButtonType.A,
-                                                new SetReefSideMode(REEF_SIDE.CENTER));
-                                pilot.whileTrue(ButtonType.B, new SetReefSideMode(REEF_SIDE.RIGHT));
-
-                                pilot.whileTrue(ButtonType.Y, new WhileHeldPrecisionMode());
-
-                                pilot.whileTrue(ButtonType.LB, new AlignWithTargetPose(null, null,
-                                                true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
-                                pilot.onFalse(ButtonType.LB, new SequentialCommandGroup(
-                                                new TurnWheels(0).withTimeout(0.5),
-                                                new SwerveMoveMeters(0.2, 0,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED)
-                                                                                .withTimeout(0.25)));
+                                pilot.whileTrue(ButtonType.LB, new DriveToTargetBranchPose(true,
+                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                                HighAltitudeConstants.VISION_POSE_MAX_TURN, true));
 
                                 // pilot.whileTrue(ButtonType.LB, new AlignVisionMoveMeters(true));
 
                                 // pilot.whileTrue(ButtonType.RB, new AlignVisionMoveMeters(false));
 
-                                pilot.whileTrue(ButtonType.RB, new AlignWithTargetPose(null, null,
-                                                false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
-                                pilot.onFalse(ButtonType.RB, new SequentialCommandGroup(
-                                                new TurnWheels(0).withTimeout(0.5),
-                                                new SwerveMoveMeters(0.2, 0,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED)
-                                                                                .withTimeout(0.25)));
+                                pilot.whileTrue(ButtonType.RB, new DriveToTargetBranchPose(false,
+                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                                HighAltitudeConstants.VISION_POSE_MAX_TURN, true));
 
                                 pilot.onTrue(ButtonType.LT, new CoralOrAlgaeLiftDown());
-                                pilot.whileTrue(ButtonType.RT, new DriveToCoralStation(false, null,
-                                                false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                HighAltitudeConstants.VISION_POSE_MAX_TURN));
+                                pilot.onTrue(ButtonType.RT,
+                                                new CoralLX_StationIntakeSequence(false));
 
+
+                                pilot.onTrue(ButtonType.B, new CoralLX_StationIntakeSequence(true));
+
+                                pilot.onTrue(ButtonType.A, new AlgaeDetachFromReefSequence(
+                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED * 0.7,
+                                                HighAltitudeConstants.VISION_POSE_MAX_TURN * 0.7,
+                                                HighAltitudeConstants.ALGAE_RETRACT_OFFSET_M,
+                                                HighAltitudeConstants.ALGAE_APPROACH_OFFSET_M));
+
+
+
+                                // Cancel global: LS + RS
+                                pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.LS,
+                                                ButtonType.RS);
+
+                                // pilot.onTrue(ButtonType.B, new ScoreCoral(REEF_HEIGHT.TOP));
                                 break;
                         case OneDriver:
 
@@ -176,8 +160,10 @@ public class OI {
 
                                 pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
 
-                                java.util.function.Supplier<GameMode> mode =
-                                                () -> Robot.getRobotContainer().getGameMode();
+                                /*
+                                 * java.util.function.Supplier<GameMode> mode = () ->
+                                 * Robot.getRobotContainer().getGameMode()
+                                 */;
 
 
 
@@ -200,33 +186,33 @@ public class OI {
                                 pilot.whileTrue(ButtonType.X, new TogglePrecisionMode());
 
 
-                                pilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_L1,
-                                                new AlignWithTargetPose(true,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-                                                                HighAltitudeConstants.VISION_POSE_MAX_TURN,
-                                                                true)));
 
-                                pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_L1,
-                                                new InstantCommand(() -> System.out.println(
-                                                                "LB hace desde estado: " + Robot
-                                                                                .getRobotContainer()
-                                                                                .getGameMode()))));
+                                /*
+                                 * pilot.onTrueWithState(ButtonType.LB, new
+                                 * AlignWithTargetPose(true,
+                                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                 * HighAltitudeConstants.VISION_POSE_MAX_TURN, true), mode,
+                                 * GameMode.CORAL_L1);
+                                 * 
+                                 * pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
+                                 * GameMode.CORAL_L1, new InstantCommand(() -> System.out.println(
+                                 * "LB hace desde estado: " + Robot .getRobotContainer()
+                                 * .getGameMode()))));
+                                 * 
+                                 * pilot.onTrueWithState(ButtonType.LB, new
+                                 * AlignWithTargetPose(true,
+                                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                 * HighAltitudeConstants.VISION_POSE_MAX_TURN, true), mode,
+                                 * GameMode.CORAL_LX);
+                                 * 
+                                 * pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
+                                 * GameMode.CORAL_LX, new InstantCommand(() -> System.out.println(
+                                 * "LB hace desde estado: " + Robot .getRobotContainer()
+                                 * .getGameMode()))));
+                                 */
 
-                                pilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_LX,
-                                                new AlignWithBranchAndScore(true, REEF_HEIGHT.L3)));
 
-                                pilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_LX,
-                                                new InstantCommand(() -> System.out.println(
-                                                                "LB hace desde estado: " + Robot
-                                                                                .getRobotContainer()
-                                                                                .getGameMode()))));
-
-
-                                pilot.onTrue(ButtonType.RB, new AlignWithTargetPose(false,
+                                pilot.onTrue(ButtonType.RB, new DriveToTargetBranchPose(false,
                                                 HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                                 HighAltitudeConstants.VISION_POSE_MAX_TURN, true));
 
@@ -318,12 +304,15 @@ public class OI {
                                 // LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
 
                                 /*
-                                 * pilot.whileTrue(ButtonType.POV_W, new AlignWithTargetPose(null,
-                                 * null, true, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                 * 
+                                 * pilot.whileTrue(ButtonType.POV_W, new
+                                 * DriveToTargetBranchPose(null, null, true,
+                                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                  * HighAltitudeConstants.VISION_POSE_MAX_TURN));
                                  * 
-                                 * pilot.whileTrue(ButtonType.POV_E, new AlignWithTargetPose(null,
-                                 * null, false, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+                                 * pilot.whileTrue(ButtonType.POV_E, new
+                                 * DriveToTargetBranchPose(null, null, false,
+                                 * HighAltitudeConstants.VISION_POSE_MAX_SPEED,
                                  * HighAltitudeConstants.VISION_POSE_MAX_TURN));
                                  */
                                 /*
@@ -388,6 +377,103 @@ public class OI {
                                                 ButtonType.RS);
                                 break;
 
+                        case Carlos:
+                                pilot = new HighAltitudeJoystick(0, JoystickType.XBOX);
+
+                                java.util.function.Supplier<GameMode> mode =
+                                                () -> Robot.getRobotContainer().getGameMode();
+
+                                pilot.setAxisDeadzone(AxisType.LEFT_X, 0.1);
+                                pilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
+                                pilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
+
+                                // ===== Field oriented + reset odometría =====
+                                pilot.onTrue(ButtonType.BACK, new SetIsFieldOriented(true));
+                                pilot.onTrue(ButtonType.START, new SetIsFieldOriented(false));
+                                pilot.onTrueCombo(new ResetOdometryZeros(), ButtonType.START,
+                                                ButtonType.BACK);
+
+                                // ===== Precision mientras se mantiene =====
+                                pilot.whileTrue(ButtonType.Y, new WhileHeldPrecisionMode());
+
+                                // =========================================================================
+                                // MISMAS TECLAS, ACCIONES DISTINTAS SEGÚN MODO
+                                // =========================================================================
+
+                                // --- LB: Alinea y Anota Izquierda (Branch o Net) ---
+                                pilot.onTrueWithState(ButtonType.LB,
+                                                new OIHelpers.DriveToBranchAndScoreSelected(true),
+                                                mode, GameMode.CORAL_L1);
+
+                                pilot.onTrueWithState(ButtonType.LB,
+                                                new OIHelpers.DriveToBranchAndScoreSelected(true),
+                                                mode, GameMode.CORAL_LX);
+
+                                pilot.onTrueWithState(ButtonType.LB,
+                                                new OIHelpers.DriveToNetAndScore(), mode,
+                                                GameMode.ALGAE);
+
+
+                                // --- RB: Alinea y Anota Derecha (Branch o Processor) ---
+                                pilot.onTrueWithState(ButtonType.RB,
+                                                new OIHelpers.DriveToBranchAndScoreSelected(false),
+                                                mode, GameMode.CORAL_L1);
+
+                                pilot.onTrueWithState(ButtonType.RB,
+                                                new OIHelpers.DriveToBranchAndScoreSelected(false),
+                                                mode, GameMode.CORAL_LX);
+
+                                pilot.onTrueWithState(ButtonType.RB,
+                                                new OIHelpers.DriveToProcessorAndScore(), mode,
+                                                GameMode.ALGAE);
+
+
+                                // --- LT: Intake (Estación o Suelo) ---
+                                pilot.onTrueWithState(ButtonType.LT,
+                                                new OIHelpers.LaunchCoralL1StationIntake(true), // <--
+                                                                                                // CORREGIDO
+                                                mode, GameMode.CORAL_L1);
+
+                                pilot.onTrueWithState(ButtonType.LT,
+                                                new OIHelpers.LaunchCoralLXStationIntake(true), // <--
+                                                                                                // CORREGIDO
+                                                mode, GameMode.CORAL_LX);
+
+                                pilot.onTrueWithState(ButtonType.LT,
+                                                new OIHelpers.LaunchAlgaeIntakeFloor(), // <--
+                                                                                        // CORREGIDO
+                                                mode, GameMode.ALGAE);
+
+                                // Al soltar LT en modo ALGAE, guarda la pieza
+                                pilot.onFalse(ButtonType.LT, OIHelpers.onlyInMode(mode,
+                                                GameMode.ALGAE,
+                                                // Usamos el lanzador para la pose específica
+                                                new OIHelpers.LaunchLiftWristGoToPose(
+                                                                PoseIdx.ALGAE_HOLD) // <-- CORREGIDO
+                                ));
+
+
+                                // --- RT: Intake Estación Derecha o Quitar Algas ---
+                                pilot.onTrueWithState(ButtonType.RT,
+                                                new OIHelpers.LaunchCoralL1StationIntake(false), // <--
+                                                                                                 // CORREGIDO
+                                                mode, GameMode.CORAL_L1);
+
+                                pilot.onTrueWithState(ButtonType.RT,
+                                                new OIHelpers.LaunchCoralLXStationIntake(false), // <--
+                                                                                                 // CORREGIDO
+                                                mode, GameMode.CORAL_LX);
+
+                                pilot.onTrueWithState(ButtonType.RT,
+                                                new OIHelpers.DriveToAlgaeRemoval(), // <-- (Este ya
+                                                                                     // estaba bien)
+                                                mode, GameMode.ALGAE);
+
+                                // Cancel global: LS + RS
+                                pilot.whileTrueCombo(new PathCancelCommand(), ButtonType.LS,
+                                                ButtonType.RS);
+
+                                break; // No olvides el break del case
 
 
                         default:
@@ -403,127 +489,190 @@ public class OI {
                                 copilot.setAxisDeadzone(AxisType.LEFT_Y, 0.1);
                                 copilot.setAxisDeadzone(AxisType.RIGHT_X, 0.1);
 
-
                                 Supplier<GameMode> mode =
                                                 () -> Robot.getRobotContainer().getGameMode();
 
-
                                 // ==== Cambio de modo & Toggle Manual ====
+                                // (Estos están BIEN, asumiendo que son InstantCommands sin
+                                // requisitos)
                                 copilot.onTrue(ButtonType.START, new NextModeCommand());
-
                                 copilot.onTrue(ButtonType.BACK, new NextModeCommand());
-
-                                copilot.onTrueCombo(new ToggleManualCommand(true), // START+BACK =
-                                                                                   // //
-                                                                                   // Toggle MANUAL
-                                                ButtonType.START, ButtonType.BACK);
                                 copilot.onTrueCombo(new ToggleManualCommand(true), ButtonType.START,
                                                 ButtonType.BACK);
 
+                                // =========================================================================
+                                // SELECCIÓN DE POSE (COPILOTO)
+                                // CORREGIDO: Cambiado a onTrueWithState para no "spammear" un
+                                // InstantCommand.
+                                // =========================================================================
+
+                                // A: L1 Intake / L2 / Algae Intake Floor / L2 (manual)
+                                copilot.onTrueWithState(ButtonType.A, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L1_INTAKE),
+                                                mode, GameMode.CORAL_L1);
+
+                                copilot.onTrueWithState(ButtonType.A, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L2),
+                                                mode, GameMode.CORAL_LX);
+
+                                copilot.onTrueWithState(ButtonType.A, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.ALGAE_INTAKE_FLOOR),
+                                                mode, GameMode.ALGAE);
+
+                                copilot.onTrueWithState(ButtonType.A, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L2),
+                                                mode, GameMode.MANUAL);
+
+                                // B: L1 Score / INTAKE REAR / Processor Score / L1 Intake (manual)
+                                copilot.onTrueWithState(ButtonType.B, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L1_SCORE),
+                                                mode, GameMode.CORAL_L1);
+
+                                copilot.onTrueWithState(ButtonType.B, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.INTAKE_REAR),
+                                                mode, GameMode.CORAL_LX);
+
+                                copilot.onTrueWithState(ButtonType.B, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.PROCESSOR_SCORE),
+                                                mode, GameMode.ALGAE);
+
+                                copilot.onTrueWithState(ButtonType.B, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.INTAKE_REAR),
+                                                mode, GameMode.MANUAL);
+
+                                // X: L1 Score / L3 / Algae Hold / L3 (manual)
+                                copilot.onTrueWithState(ButtonType.X, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L1_SCORE),
+                                                mode, GameMode.CORAL_L1);
+
+                                copilot.onTrueWithState(ButtonType.X, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L3),
+                                                mode, GameMode.CORAL_LX);
+
+                                copilot.onTrueWithState(ButtonType.X, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.ALGAE_HOLD),
+                                                mode, GameMode.ALGAE);
+
+                                copilot.onTrueWithState(ButtonType.X, // <-- CORREGIDO (era B) y a
+                                                                      // onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L3),
+                                                mode, GameMode.MANUAL);
+
+                                // Y: L1_INTAKE / L4 / Net PrePos / L4 (manual)
+                                copilot.onTrueWithState(ButtonType.Y, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L1_INTAKE),
+                                                mode, GameMode.CORAL_L1);
+
+                                copilot.onTrueWithState(ButtonType.Y, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L4),
+                                                mode, GameMode.CORAL_LX);
+
+                                copilot.onTrueWithState(ButtonType.Y, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.NET_PREPOS),
+                                                mode, GameMode.ALGAE);
+
+                                copilot.onTrueWithState(ButtonType.Y, // <-- CORREGIDO a onTrue
+                                                new SetSelectedPoseIdxCommand(
+                                                                HighAltitudeConstants.PoseIdx.L4),
+                                                mode, GameMode.MANUAL);
 
                                 // =========================================================================
-                                // MISMAS TECLAS, ACCIONES DIFERENTES SEGÚN MODO (poses Lift/Wrist)
+                                // ACCIONES (COPILOTO)
+                                // CORREGIDO: Usando los "Lanzadores" de OIHelpers
                                 // =========================================================================
 
-                                // A: L1 Intake / Intake Rear / Algae Intake Floor / L2 (manual)
-                                copilot.whileTrue(ButtonType.A, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_L1, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.L1_INTAKE)));
-                                copilot.whileTrue(ButtonType.A, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_LX, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.INTAKE_REAR)));
-                                copilot.whileTrue(ButtonType.A, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.ALGAE_INTAKE_FLOOR)));
-                                copilot.whileTrue(ButtonType.A, OIHelpers.onlyInMode(mode,
-                                                GameMode.MANUAL, new LiftWristGoToPose(
-                                                                HighAltitudeConstants.PoseIdx.L2)));
+                                // RB: Algae Removal L3
+                                // !! ERROR LÓGICO: Tenías DOS bindings para RB en modo ALGAE.
+                                // !! Decide cuál quieres y borra el otro.
+                                copilot.whileTrueWithState(ButtonType.RB,
+                                                new OIHelpers.LaunchLiftWristGoToPose( // <--
+                                                                                       // CORREGIDO
+                                                                HighAltitudeConstants.PoseIdx.ALGAE_REMOVE_L3),
+                                                mode, GameMode.ALGAE);
 
-                                // B: L1 Score / L4 / Processor Score / L1 Intake (manual)
-                                copilot.whileTrue(ButtonType.B, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_L1, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.L1_SCORE)));
-                                copilot.whileTrue(ButtonType.B, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_LX, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.L4)));
-                                copilot.whileTrue(ButtonType.B, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.PROCESSOR_SCORE)));
-                                copilot.whileTrue(ButtonType.B, OIHelpers.onlyInMode(mode,
-                                                GameMode.MANUAL, new LiftWristGoToPose(
-                                                                HighAltitudeConstants.PoseIdx.L1_INTAKE)));
+                                // !! ERROR: DUPLICADO para RB en modo ALGAE
+                                // copilot.whileTrueWithState(ButtonType.RB,
+                                // new OIHelpers.LaunchIntakeAlgaeAuto(), // <-- CORREGIDO
+                                // mode, GameMode.ALGAE);
 
-                                // X: L1 Score / L2 / Algae Hold / L3 (manual)
-                                copilot.whileTrue(ButtonType.X, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_L1, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.L1_SCORE)));
-                                copilot.whileTrue(ButtonType.X, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_LX, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.L2)));
-                                copilot.whileTrue(ButtonType.X, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.ALGAE_HOLD)));
-                                copilot.whileTrue(ButtonType.X, OIHelpers.onlyInMode(mode,
-                                                GameMode.MANUAL, new LiftWristGoToPose(
-                                                                HighAltitudeConstants.PoseIdx.L3)));
+                                // LB: Algae Removal L2
+                                // !! ERROR LÓGICO: Tenías DOS bindings para LB en modo ALGAE.
+                                // !! Decide cuál quieres y borra el otro.
+                                copilot.whileTrueWithState(ButtonType.LB,
+                                                new OIHelpers.LaunchLiftWristGoToPose( // <--
+                                                                                       // CORREGIDO
+                                                                HighAltitudeConstants.PoseIdx.ALGAE_REMOVE_L2),
+                                                mode, GameMode.ALGAE);
 
-                                // Y: L1_INTAKE / L3 / Net PrePos / L4 (manual)
-                                copilot.whileTrue(ButtonType.Y, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_L1, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.L1_INTAKE)));
-                                copilot.whileTrue(ButtonType.Y, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_LX, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.L3)));
-                                copilot.whileTrue(ButtonType.Y, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new SetSelectedPoseIdxCommand(
-                                                                HighAltitudeConstants.PoseIdx.NET_PREPOS)));
-                                copilot.whileTrue(ButtonType.Y, OIHelpers.onlyInMode(mode,
-                                                GameMode.MANUAL, new LiftWristGoToPose(
-                                                                HighAltitudeConstants.PoseIdx.L4)));
+                                // !! ERROR: DUPLICADO para LB en modo ALGAE
+                                // copilot.whileTrueWithState(ButtonType.LB,
+                                // new OIHelpers.LaunchIntakeAlgaeAuto(), // <-- CORREGIDO
+                                // mode, GameMode.ALGAE);
 
-                                // RB/LB: pruebas de Algae Removal L3/L2 en modo ALGA (mismo botón
-                                // en otros modos = no-op)
-                                copilot.whileTrue(ButtonType.RB, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new LiftWristGoToPose(
-                                                                HighAltitudeConstants.PoseIdx.ALGAE_REMOVE_L3)));
+                                // LB: Ir a Pose Seleccionada (en modos CORAL)
+                                // Esto ya usa un "Lanzador" de OIHelpers, así que está BIEN.
+                                // CORREGIDO a onTrueWithState para no "spammear" el lanzador.
+                                copilot.onTrueWithState(ButtonType.LB, // <-- CORREGIDO a onTrue
+                                                new LiftWristGoToSelectedPose(), mode,
+                                                GameMode.CORAL_LX);
 
+                                copilot.onTrueWithState(ButtonType.LB, // <-- CORREGIDO a onTrue
+                                                new LiftWristGoToSelectedPose(), mode,
+                                                GameMode.CORAL_L1);
 
-                                copilot.whileTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new LiftWristGoToPose(
-                                                                HighAltitudeConstants.PoseIdx.ALGAE_REMOVE_L2)));
-                                copilot.whileTrue(ButtonType.LB,
-                                                OIHelpers.onlyInMode(mode, GameMode.CORAL_LX,
-                                                                new LiftWristGoToSelectedPose()));
-                                copilot.whileTrue(ButtonType.LB,
-                                                OIHelpers.onlyInMode(mode, GameMode.CORAL_L1,
-                                                                new LiftWristGoToSelectedPose()));
-
-                                copilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
-                                                GameMode.CORAL_L1, new IntakeAlgaeAuto()));
+                                // !! ERROR LÓGICO: Este era el TERCER binding para LB en CORAL_L1.
+                                // !! Lo he comentado.
+                                // copilot.onTrue(ButtonType.LB, OIHelpers.onlyInMode(mode,
+                                // GameMode.CORAL_L1, new OIHelpers.LaunchIntakeAlgaeAuto()));
 
 
                                 // POV E/W: en ALGA, probar NET pre/score rápidamente
                                 copilot.whileTrue(ButtonType.POV_E, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new LiftWristGoToPose(
+                                                GameMode.ALGAE,
+                                                new OIHelpers.LaunchLiftWristGoToPose( // <--
+                                                                                       // CORREGIDO
                                                                 HighAltitudeConstants.PoseIdx.NET_PREPOS)));
+
                                 copilot.whileTrue(ButtonType.POV_W, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new LiftWristGoToPose(
+                                                GameMode.ALGAE,
+                                                new OIHelpers.LaunchLiftWristGoToPose( // <--
+                                                                                       // CORREGIDO
                                                                 HighAltitudeConstants.PoseIdx.NET_SCORE)));
 
-                                // Triggers en ALGA: intake/eject (si ya los tenías así)
-                                copilot.whileTrue(ButtonType.LT, new ScoreGamePiece(
-                                                HighAltitudeConstants.GRIPPER_IN_SPEED));
+                                // Triggers: intake/eject (GLOBALES)
+                                copilot.whileTrue(ButtonType.LT, new OIHelpers.LaunchIntakeAuto()); // <--
+                                                                                                    // CORREGIDO
 
+                                // RT: en ALGA, intake
                                 copilot.onTrue(ButtonType.RT, OIHelpers.onlyInMode(mode,
-                                                GameMode.ALGAE, new IntakeAlgaeAuto()));
+                                                GameMode.ALGAE,
+                                                new OIHelpers.LaunchIntakeAlgaeAuto())); // <--
+                                                                                         // CORREGIDO
 
-                                copilot.onTrue(ButtonType.RS,
-                                                new LiftWristGoToPose(PoseIdx.INTAKE_REAR));
-                                // Utilidades
-                                copilot.onTrue(ButtonType.LS, new ResetLiftEncoders());
+                                // Joysticks Clicks: Reset (GLOBALES)
+                                copilot.onTrue(ButtonType.RS, new OIHelpers.LaunchLiftWristGoToPose(
+                                                PoseIdx.INTAKE_REAR)); // <-- CORREGIDO
+
+                                copilot.onTrue(ButtonType.LS,
+                                                new OIHelpers.LaunchResetLiftEncoders()); // <--
+                                                                                          // CORREGIDO
+
                                 break;
-
-
                         case PoseTune:
                                 copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
 
@@ -676,6 +825,51 @@ public class OI {
                          * IntakeAlgaeAuto())); // (opcional) RT para subir a HOLD inmediatamente
                          * break;
                          */
+
+
+                        case Carlos:
+
+                                copilot = new HighAltitudeJoystick(1, JoystickType.XBOX);
+
+                                copilot.whileTrue(ButtonType.LB, new ScoreGamePiece(
+                                                HighAltitudeConstants.GRIPPER_IN_SPEED)); // Score
+                                                                                          // Game
+                                                                                          // Piece
+                                copilot.onTrue(ButtonType.RT, new IntakeAlgae()); // Intake Algae /
+                                                                                  // Reverse Coral
+
+                                copilot.whileTrue(ButtonType.RB, new IntakeAlgae());
+
+                                copilot.onTrue(ButtonType.B,
+                                                new LiftWristGoToTargetHeight(REEF_HEIGHT.BOTTOM));
+
+                                copilot.onTrue(ButtonType.A,
+                                                new LiftWristGoToTargetHeight(REEF_HEIGHT.L2));
+
+                                copilot.onTrue(ButtonType.X,
+                                                new LiftWristGoToTargetHeight(REEF_HEIGHT.L3));
+
+                                copilot.onTrue(ButtonType.Y,
+                                                new LiftWristGoToTargetHeight(REEF_HEIGHT.TOP));
+
+
+                                copilot.onTrue(ButtonType.BACK, new SetCoralMode(false)); // Algae
+                                                                                          // Mode
+                                copilot.onTrue(ButtonType.START, new SetCoralMode(true)); // Coral
+                                                                                          // Mode
+
+
+                                copilot.onTrue(ButtonType.LT, new IntakeAuto());
+
+                                copilot.whileTrue(ButtonType.POV_N, new LiftUpControl());
+                                copilot.whileTrue(ButtonType.POV_S, new LiftDownControl());
+
+                                copilot.whileTrue(ButtonType.POV_E, new WristUpControl());
+                                copilot.whileTrue(ButtonType.POV_W, new WristDownControl());
+
+                                copilot.whileTrue(ButtonType.LS, new ScoreGamePiece(-0.4));
+                                copilot.whileTrue(ButtonType.RS, new ResetLiftEncoders());
+                                break;
 
 
                         default:

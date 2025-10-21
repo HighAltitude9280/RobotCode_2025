@@ -26,8 +26,10 @@ public final class HighAltitudeConstantsPose {
                         {new Pose2d(2.963, 4.015, Rotation2d.fromDegrees(0)), // BC
                                         new Pose2d(3.704, 2.668, Rotation2d.fromDegrees(60)), // BR
                                         new Pose2d(5.282, 2.620, Rotation2d.fromDegrees(120)), // FR
+                                                                                               // bien
                                         new Pose2d(5.975, 3.987, Rotation2d.fromDegrees(180)), // FC
                                         new Pose2d(5.253, 5.439, Rotation2d.fromDegrees(-120)), // FL
+                                                                                                // bien
                                         new Pose2d(3.695, 5.439, Rotation2d.fromDegrees(-60)) // BL
                         };
 
@@ -35,6 +37,7 @@ public final class HighAltitudeConstantsPose {
                         {new Pose2d(14.587, 4.015, Rotation2d.fromDegrees(180)), // BC
                                         new Pose2d(13.855, 5.439, Rotation2d.fromDegrees(-120)), // BR
                                         new Pose2d(12.297, 5.439, Rotation2d.fromDegrees(-60)), // FR
+                                                                                                // bien
                                         new Pose2d(11.500, 3.987, Rotation2d.fromDegrees(0)), // FC
                                         new Pose2d(12.268, 2.620, Rotation2d.fromDegrees(60)), // FL
                                         new Pose2d(13.846, 2.668, Rotation2d.fromDegrees(120)) // BL
@@ -66,32 +69,32 @@ public final class HighAltitudeConstantsPose {
 
         public static final Pose2d[] PATHFINDING_BLUE_LEFT_CORAL_STATION =
                         {new Pose2d(1.640, 7.440, Rotation2d.fromDegrees(-54.2)), // Left Far
-                                        new Pose2d(1.160, 7.090, Rotation2d.fromDegrees(-54.2)), // Left
-                                                                                                 // Middle
+                                        new Pose2d(1.235, 7.364, Rotation2d.fromDegrees(-55)), // Left
+                                                                                               // Middle
                                         new Pose2d(0.620, 6.700, Rotation2d.fromDegrees(-54.2)) // Left
                                                                                                 // Near
                         };
 
         public static final Pose2d[] PATHFINDING_BLUE_RIGHT_CORAL_STATION =
                         {new Pose2d(1.540, 0.660, Rotation2d.fromDegrees(54.2)), // Right Far
-                                        new Pose2d(1.130, 1.010, Rotation2d.fromDegrees(54.2)), // Right
-                                                                                                // Middle
+                                        new Pose2d(1.367, 0.603, Rotation2d.fromDegrees(55)), // Right
+                                                                                              // Middle
                                         new Pose2d(0.650, 1.320, Rotation2d.fromDegrees(54.2)) // Right
                                                                                                // Near
                         };
 
         public static final Pose2d[] PATHFINDING_RED_LEFT_CORAL_STATION =
                         {new Pose2d(15.980, 0.630, Rotation2d.fromDegrees(125.8)), // Left Far
-                                        new Pose2d(16.410, 0.950, Rotation2d.fromDegrees(125.8)), // Left
-                                                                                                  // Middle
+                                        new Pose2d(16.183, 0.686, Rotation2d.fromDegrees(125)), // Left
+                                                                                                // Middle
                                         new Pose2d(16.930, 1.310, Rotation2d.fromDegrees(125.8)) // Left
                                                                                                  // Near
                         };
 
         public static final Pose2d[] PATHFINDING_RED_RIGHT_CORAL_STATION =
                         {new Pose2d(15.920, 7.440, Rotation2d.fromDegrees(-125.8)), // Right Far
-                                        new Pose2d(16.420, 7.060, Rotation2d.fromDegrees(-125.8)), // Right
-                                                                                                   // Middle
+                                        new Pose2d(16.076, 7.424, Rotation2d.fromDegrees(-125)), // Right
+                                                                                                 // Middle
                                         new Pose2d(16.940, 6.700, Rotation2d.fromDegrees(-125.8)) // Right
                                                                                                   // Near
                         };
@@ -101,33 +104,33 @@ public final class HighAltitudeConstantsPose {
         // ---------------------------------------------------------------------------
 
         public static final Pose2d[] PATHFINDING_BLUE_BRANCHES =
-                        {new Pose2d(3.125, 4.180, Rotation2d.fromDegrees(0)), // A
-                                        new Pose2d(3.125, 3.850, Rotation2d.fromDegrees(0)), // B
-                                        new Pose2d(3.670, 2.950, Rotation2d.fromDegrees(60)), // C
-                                        new Pose2d(3.960, 2.770, Rotation2d.fromDegrees(60)), // D
-                                        new Pose2d(5.000, 2.770, Rotation2d.fromDegrees(120)), // E
-                                        new Pose2d(5.290, 2.950, Rotation2d.fromDegrees(120)), // F
-                                        new Pose2d(5.820, 3.850, Rotation2d.fromDegrees(180)), // G
-                                        new Pose2d(5.820, 4.190, Rotation2d.fromDegrees(180)), // H
-                                        new Pose2d(5.290, 5.100, Rotation2d.fromDegrees(-120)), // I
-                                        new Pose2d(5.010, 5.260, Rotation2d.fromDegrees(-120)), // J
-                                        new Pose2d(3.950, 5.260, Rotation2d.fromDegrees(-60)), // K
-                                        new Pose2d(3.660, 5.100, Rotation2d.fromDegrees(-60)) // L
+                        {new Pose2d(3.239, 4.205, Rotation2d.fromDegrees(-4.459)), // A
+                                        new Pose2d(3.209, 3.855, Rotation2d.fromDegrees(-1.754)), // B
+                                        new Pose2d(3.695, 3.040, Rotation2d.fromDegrees(54.403)), // C
+                                        new Pose2d(3.970, 2.843, Rotation2d.fromDegrees(56.743)), // D
+                                        new Pose2d(4.961, 2.855, Rotation2d.fromDegrees(114.523)), // E
+                                        new Pose2d(5.260, 2.997, Rotation2d.fromDegrees(118.430)), // F
+                                        new Pose2d(5.752, 3.901, Rotation2d.fromDegrees(178.655)), // G
+                                        new Pose2d(5.757, 4.173, Rotation2d.fromDegrees(179.371)), // H
+                                        new Pose2d(5.278, 5.019, Rotation2d.fromDegrees(-125.049)), // I
+                                        new Pose2d(5.020, 5.199, Rotation2d.fromDegrees(-121.780)), // J
+                                        new Pose2d(4.016, 5.284, Rotation2d.fromDegrees(-62.888)), // K
+                                        new Pose2d(3.724, 5.061, Rotation2d.fromDegrees(-62.788)) // L
                         };
 
         public static final Pose2d[] PATHFINDING_RED_BRANCHES =
-                        {new Pose2d(14.390, 3.850, Rotation2d.fromDegrees(180)), // A
-                                        new Pose2d(14.390, 4.190, Rotation2d.fromDegrees(180)), // B
-                                        new Pose2d(13.870, 5.090, Rotation2d.fromDegrees(-120)), // C
-                                        new Pose2d(13.580, 5.260, Rotation2d.fromDegrees(-120)), // D
-                                        new Pose2d(12.540, 5.260, Rotation2d.fromDegrees(-60)), // E
-                                        new Pose2d(12.250, 5.200, Rotation2d.fromDegrees(-60)), // F
-                                        new Pose2d(11.710, 4.190, Rotation2d.fromDegrees(0)), // G
-                                        new Pose2d(11.710, 3.860, Rotation2d.fromDegrees(0)), // H
-                                        new Pose2d(12.250, 2.940, Rotation2d.fromDegrees(60)), // I
-                                        new Pose2d(12.530, 2.770, Rotation2d.fromDegrees(60)), // J
-                                        new Pose2d(13.580, 2.780, Rotation2d.fromDegrees(120)), // K
-                                        new Pose2d(13.860, 2.950, Rotation2d.fromDegrees(120)) // L
+                        {new Pose2d(14.310, 3.873, Rotation2d.fromDegrees(177.199)), // A
+                                        new Pose2d(14.334, 4.178, Rotation2d.fromDegrees(178.577)), // B
+                                        new Pose2d(13.816, 5.037, Rotation2d.fromDegrees(-123.300)), // C
+                                        new Pose2d(13.544, 5.231, Rotation2d.fromDegrees(-120.013)), // D
+                                        new Pose2d(12.608, 5.212, Rotation2d.fromDegrees(-63.615)), // E
+                                        new Pose2d(12.315, 5.071, Rotation2d.fromDegrees(-62.207)), // F
+                                        new Pose2d(11.808, 4.205, Rotation2d.fromDegrees(-3.318)), // G
+                                        new Pose2d(11.784, 3.875, Rotation2d.fromDegrees(-1.090)), // H
+                                        new Pose2d(12.265, 3.041, Rotation2d.fromDegrees(56.268)), // I
+                                        new Pose2d(12.575, 2.835, Rotation2d.fromDegrees(59.627)), // J
+                                        new Pose2d(13.540, 2.851, Rotation2d.fromDegrees(116.721)), // K
+                                        new Pose2d(13.876, 3.019, Rotation2d.fromDegrees(120.057)) // L
                         };
 
         // --- Net & Processor approach poses (one per alliance) --- //TODO: tunearlos

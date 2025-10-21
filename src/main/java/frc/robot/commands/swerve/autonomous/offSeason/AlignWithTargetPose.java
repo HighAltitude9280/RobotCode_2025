@@ -1,4 +1,3 @@
-// src/main/java/frc/robot/commands/swerve/autonomous/offSeason/AlignWithTargetPose.java
 package frc.robot.commands.swerve.autonomous.offSeason;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,43 +12,37 @@ import frc.robot.HighAltitudeConstantsPose.REEF_SIDE;
 import frc.robot.Robot;
 import frc.robot.resources.math.PoseUtil;
 
-/**
- * Aligns the robot to a target reef branch pose using field-relative PID. Supports three modes: 1)
- * Explicit position (pos!=null) and branch side (left). 2) From side (side!=null) + front/back ring
- * via Robot.isFrontMode(). 3) Auto-detect via AprilTag ID (pos==null && side==null) using alliance
- * tag arrays.
- *
- * If vision isn't ready at init, the command waits (with safety timeout), trying to resolve pos and
- * the final targetPose every execute() cycle.
- */
 public class AlignWithTargetPose extends Command {
 
-  // Selection inputs (may be null in auto-detect mode)
+  // Entradas (pueden ser null en auto)
   private REEF_POSITION pos;
   private final REEF_SIDE side;
   private Boolean left;
 
-  // Limits
+  // Límites
   private final double maxLinearVelocity;
   private final double maxAngularVelocity;
 
-  // Target & state
+  // Estado/target
   private Pose2d targetPose;
   private boolean isFinished = false;
   private double startTsSec;
 
-  // Optional approach backoff (offset along target heading)
+  // Opcional: backoff
   private final boolean applyBackoff;
 
-  // ---------------------- Constructors ----------------------
+  // ---- Anti ping-pong + retarget ----
+  private Integer lockedTagId = null; // tag en uso
+  private Integer candidateTagId = null; // posible nuevo tag
+  private int candidateStable = 0; // frames consecutivos del candidato
+  private double lastFreshIdTs = -1; // último ts con visión de id/lock
+  private static final double ID_TTL_SEC = 0.35; // aguantar lock sin visión (s)
 
-  /** Full constructor with explicit position/side/branch. */
   public AlignWithTargetPose(REEF_POSITION position, REEF_SIDE side, Boolean left,
       double maxLinearVelocity, double maxAngularVelocity) {
     this(position, side, left, maxLinearVelocity, maxAngularVelocity, false);
   }
 
-  /** Full constructor with explicit position/side/branch and backoff toggle. */
   public AlignWithTargetPose(REEF_POSITION position, REEF_SIDE side, Boolean left,
       double maxLinearVelocity, double maxAngularVelocity, boolean applyBackoff) {
     addRequirements(Robot.getRobotContainer().getSwerveDriveTrain());
@@ -61,51 +54,34 @@ public class AlignWithTargetPose extends Command {
     this.applyBackoff = applyBackoff;
   }
 
-  /**
-   * NEW: Auto-detect constructor. Reads AprilTag → maps to REEF_POSITION and branch (left/right),
-   * then aligns. Pass left=null to use Robot.isLeftMode().
-   */
+  // Auto (pos/side null), left puede ser null para tomar Robot.isLeftMode()
   public AlignWithTargetPose(Boolean left, double maxLinearVelocity, double maxAngularVelocity,
       Boolean applyBackoff) {
-    this(null, /* position */
-        null, /* side */
-        left, maxLinearVelocity, maxAngularVelocity, applyBackoff != null && applyBackoff);
+    this(null, null, left, maxLinearVelocity, maxAngularVelocity,
+        applyBackoff != null && applyBackoff);
   }
-
-  // ---------------------- Command lifecycle ----------------------
 
   @Override
   public void initialize() {
     isFinished = false;
     startTsSec = Timer.getFPGATimestamp();
 
-    // Decide branch side from parameter or robot mode
+    // Branch side por parámetro o modo de robot
     left = (left != null) ? left : Robot.isLeftMode();
 
-    // If only side is given, derive pos from front/back mode
+    // Si dan solo side, infiere pos del front/back
     if (pos == null && side != null) {
       pos = side.getPosition(Robot.isFrontMode());
     }
 
-    // Context logs
-    DriverStation.Alliance alliance =
-        DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
-    SmartDashboard.putString("Align/Alliance", alliance.toString());
-    SmartDashboard.putBoolean("Align/LeftBranch", left);
-    SmartDashboard.putString("Align/ReefSide", side != null ? side.name() : "null");
-    SmartDashboard.putString("Align/InitPos", pos != null ? pos.name() : "null");
-    SmartDashboard.putNumber("Align/StartTs", startTsSec);
+    // reset retarget state
+    lockedTagId = null;
+    candidateTagId = null;
+    candidateStable = 0;
+    lastFreshIdTs = -1;
 
-    // Try determine target once (do NOT abort if null; keep waiting)
-    determineTarget();
-    if (pos == null || targetPose == null) {
-      SmartDashboard.putString("Align/Status", "Waiting for target (init)...");
-    } else {
-      SmartDashboard.putString("Align/Status", "Target locked (init)");
-      SmartDashboard.putNumber("Align/Target/X", targetPose.getX());
-      SmartDashboard.putNumber("Align/Target/Y", targetPose.getY());
-      SmartDashboard.putNumber("Align/Target/RotDeg", targetPose.getRotation().getDegrees());
-    }
+    // primer cálculo (puede no resolver aún)
+    determineTarget(true);
   }
 
   @Override
@@ -113,49 +89,27 @@ public class AlignWithTargetPose extends Command {
     if (isFinished)
       return;
 
-    // Safety timeout
     double elapsed = Timer.getFPGATimestamp() - startTsSec;
     SmartDashboard.putNumber("Align/ElapsedSec", elapsed);
     if (elapsed > HighAltitudeConstants.COMMAND_TIMEOUT_SEC) {
-      SmartDashboard.putString("Align/Status", "Timeout -> finish");
+      SmartDashboard.putString("Align/Status", "Timeout");
       isFinished = true;
       return;
     }
 
-    // Ensure we have a valid target; if not, keep waiting
-    if (pos == null || targetPose == null) {
-      determineTarget();
-      if (pos == null || targetPose == null) {
-        SmartDashboard.putString("Align/Status", "Waiting for target...");
-        return; // skip drive this cycle
-      }
+    // SIEMPRE reevalúa (permite retarget)
+    determineTarget(false);
+
+    if (targetPose == null) {
+      SmartDashboard.putString("Align/Status", "Waiting target");
+      return;
     }
 
-    // Optional backoff on final pose (approach offset along heading)
     Pose2d poseToUse = targetPose;
-    if (applyBackoff && poseToUse != null) {
+    if (applyBackoff) {
       poseToUse = PoseUtil.backoff(poseToUse, HighAltitudeConstants.CORAL_BACKOFF_M);
-      SmartDashboard.putBoolean("Align/BackoffApplied", true);
-    } else {
-      SmartDashboard.putBoolean("Align/BackoffApplied", false);
     }
 
-    // Log odometry, target and error
-    Pose2d cur = Robot.getRobotContainer().getSwerveDriveTrain().getPose();
-    SmartDashboard.putNumber("Align/Odo/X", cur.getX());
-    SmartDashboard.putNumber("Align/Odo/Y", cur.getY());
-    SmartDashboard.putNumber("Align/Odo/RotDeg", cur.getRotation().getDegrees());
-    SmartDashboard.putNumber("Align/Use/X", poseToUse.getX());
-    SmartDashboard.putNumber("Align/Use/Y", poseToUse.getY());
-    SmartDashboard.putNumber("Align/Use/RotDeg", poseToUse.getRotation().getDegrees());
-    double dx = poseToUse.getX() - cur.getX();
-    double dy = poseToUse.getY() - cur.getY();
-    double dist = Math.hypot(dx, dy);
-    double dYaw = poseToUse.getRotation().minus(cur.getRotation()).getDegrees();
-    SmartDashboard.putNumber("Align/Error/DistM", dist);
-    SmartDashboard.putNumber("Align/Error/AngleDeg", dYaw);
-
-    // Drive alignment
     boolean reached = Robot.getRobotContainer().getSwerveDriveTrain().AlignWithTargetPose(poseToUse,
         maxLinearVelocity, maxAngularVelocity);
 
@@ -176,14 +130,15 @@ public class AlignWithTargetPose extends Command {
     return isFinished;
   }
 
-  // ---------------------- Helpers ----------------------
+  // ---------------- Helpers ----------------
 
-  /** Resolve pos/targetPose from explicit args or AprilTag mapping. */
-  private void determineTarget() {
-    DriverStation.Alliance alliance =
-        DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
+  /**
+   * Resuelve/actualiza pos & target. Si recibo otro tag estable, **retargetea**. Si pierdo visión
+   * brevemente, mantengo lock por ID_TTL_SEC.
+   */
+  private void determineTarget(boolean isInit) {
+    var alliance = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
 
-    // Select mapping tables by alliance
     int[] reefIDs =
         (alliance == DriverStation.Alliance.Red) ? HighAltitudeConstantsPose.RED_APRILTAG_IDS
             : HighAltitudeConstantsPose.BLUE_APRILTAG_IDS;
@@ -191,45 +146,99 @@ public class AlignWithTargetPose extends Command {
         ? HighAltitudeConstantsPose.PATHFINDING_RED_BRANCHES
         : HighAltitudeConstantsPose.PATHFINDING_BLUE_BRANCHES;
 
-    SmartDashboard.putString("Align/Det/Alliance", alliance.toString());
-    SmartDashboard.putString("Align/Det/BranchTable",
-        (alliance == DriverStation.Alliance.Red) ? "RED_BRANCHES" : "BLUE_BRANCHES");
-    SmartDashboard.putString("Align/Det/PosIn", pos != null ? pos.name() : "null");
-    SmartDashboard.putBoolean("Align/Det/Left", left);
+    // Si ya viene pos explícita (o por side), solo arma la pose y sal
+    if (pos != null) {
+      int idx = pos.getBranchID(left);
+      if (idx >= 0 && idx < branches.length) {
+        targetPose = branches[idx];
+        SmartDashboard.putNumber("Align/Target/X", targetPose.getX());
+        SmartDashboard.putNumber("Align/Target/Y", targetPose.getY());
+        SmartDashboard.putNumber("Align/Target/RotDeg", targetPose.getRotation().getDegrees());
+      } else {
+        targetPose = null;
+      }
+      return;
+    }
 
-    // If position is not preset, try to detect via AprilTag
-    if (pos == null) {
-      int id = Robot.getRobotContainer().getVision().getTargetID();
-      SmartDashboard.putNumber("Align/Det/TargetID", id);
+    // ---- Auto a partir del tag confiable ----
+    final double now = Timer.getFPGATimestamp();
+    int id = Robot.getRobotContainer().getVision().getAlignmentTargetIdReliable();
+    SmartDashboard.putNumber("Align/ID", id);
 
-      if (id > 0) {
-        for (int i = 0; i < reefIDs.length; i++) {
-          if (id == reefIDs[i]) {
-            pos = HighAltitudeConstantsPose.REEF_POSITIONS[i];
-            break;
-          }
+    if (id > 0) {
+      lastFreshIdTs = now;
+
+      if (lockedTagId == null) {
+        // aún sin lock: espera N frames estables para fijarlo
+        updateCandidate(id);
+        if (candidateStable >= HighAltitudeConstants.TAG_DETECTION_LOCK_CYCLES) {
+          lockedTagId = candidateTagId;
+          SmartDashboard.putNumber("Align/LockedId", lockedTagId);
+          mapIdToPose(lockedTagId, reefIDs, branches);
         }
+      } else if (id == lockedTagId) {
+        // seguimos viendo el mismo tag: nada que hacer
+        candidateTagId = null;
+        candidateStable = 0;
+      } else {
+        // posible retarget: requiere N frames estables del nuevo id
+        updateCandidate(id);
+        if (candidateStable >= HighAltitudeConstants.TAG_DETECTION_LOCK_CYCLES) {
+          lockedTagId = candidateTagId;
+          SmartDashboard.putNumber("Align/LockedId", lockedTagId);
+          mapIdToPose(lockedTagId, reefIDs, branches);
+        }
+      }
+    } else {
+      // sin visión: mantén lock por un TTL corto; después, suelta
+      if (lockedTagId != null && (now - lastFreshIdTs) <= ID_TTL_SEC) {
+        // conserva targetPose actual
+      } else {
+        lockedTagId = null;
+        candidateTagId = null;
+        candidateStable = 0;
+        targetPose = null; // forzar espera
       }
     }
 
-    // Build target pose if we have a valid position
-    if (pos != null) {
-      int branchIndex = pos.getBranchID(left);
-      SmartDashboard.putNumber("Align/Det/BranchIndex", branchIndex);
+    if (isInit) {
+      SmartDashboard.putString("Align/Status",
+          (targetPose != null) ? "Target locked (init)" : "Waiting (init)");
+    }
+  }
 
-      if (branchIndex >= 0 && branchIndex < branches.length) {
-        targetPose = branches[branchIndex];
-        SmartDashboard.putNumber("Align/Det/TargetX", targetPose.getX());
-        SmartDashboard.putNumber("Align/Det/TargetY", targetPose.getY());
-        SmartDashboard.putNumber("Align/Det/TargetRot", targetPose.getRotation().getDegrees());
-        SmartDashboard.putString("Align/Det/State", "Pose set");
-      } else {
-        targetPose = null;
-        SmartDashboard.putString("Align/Det/State", "Branch OOB");
+  private void updateCandidate(int newId) {
+    if (candidateTagId == null || candidateTagId != newId) {
+      candidateTagId = newId;
+      candidateStable = 1;
+    } else {
+      candidateStable++;
+    }
+    SmartDashboard.putNumber("Align/CandidateId", candidateTagId);
+    SmartDashboard.putNumber("Align/CandidateStable", candidateStable);
+  }
+
+  private void mapIdToPose(int id, int[] reefIDs, Pose2d[] branches) {
+    // id -> REEF_POSITION -> branch index -> pose
+    for (int i = 0; i < reefIDs.length; i++) {
+      if (id == reefIDs[i]) {
+        pos = HighAltitudeConstantsPose.REEF_POSITIONS[i];
+        break;
       }
+    }
+    if (pos == null) {
+      targetPose = null;
+      return;
+    }
+
+    int idx = pos.getBranchID(left);
+    if (idx >= 0 && idx < branches.length) {
+      targetPose = branches[idx];
+      SmartDashboard.putNumber("Align/Target/X", targetPose.getX());
+      SmartDashboard.putNumber("Align/Target/Y", targetPose.getY());
+      SmartDashboard.putNumber("Align/Target/RotDeg", targetPose.getRotation().getDegrees());
     } else {
       targetPose = null;
-      SmartDashboard.putString("Align/Det/State", "pos null (no tag yet)");
     }
   }
 }

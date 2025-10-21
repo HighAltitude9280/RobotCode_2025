@@ -540,6 +540,16 @@ public class SwerveDriveTrain extends SubsystemBase {
     return AutoBuilder.pathfindToPose(targetPose, constraints);
   }
 
+  public static Command pathfindToPose(Pose2d targetPose, double timeoutSeconds) {
+    PathConstraints constraints =
+        new PathConstraints(HighAltitudeConstants.PATHFINDING_MAX_LINEAR_SPEED,
+            HighAltitudeConstants.PATHFINDING_MAX_LINEAR_ACCELERATION,
+            HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_SPEED,
+            HighAltitudeConstants.PATHFINDING_MAX_ANGULAR_ANGULAR_ACCELERATION);
+
+    return AutoBuilder.pathfindToPose(targetPose, constraints).withTimeout(timeoutSeconds);
+  }
+
   public static Command pathfindThenPath(PathPlannerPath path) {
 
     PathConstraints constraints =

@@ -18,3 +18,5 @@ public class IntakeAuto extends SequentialCommandGroup {
     addCommands(new IntakeUntilCoral(), new ScoreGamePiece(-0.05).withTimeout(0.5));
   }
 }
+
+

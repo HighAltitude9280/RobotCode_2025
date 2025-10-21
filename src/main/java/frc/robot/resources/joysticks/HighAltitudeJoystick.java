@@ -6,13 +6,14 @@ package frc.robot.resources.joysticks;
 
 import java.util.HashMap;
 import java.util.function.BooleanSupplier;
-
+import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Robot.GameMode;
 import frc.robot.resources.math.Math;
 
 /** Add your docs here. */
@@ -23,50 +24,15 @@ public class HighAltitudeJoystick {
     private Haptics haptics;
 
     public enum JoystickType {
-        PS4,
-        XBOX,
-        UNKNOWN
+        PS4, XBOX, UNKNOWN
     }
 
     public enum ButtonType {
-        A,
-        B,
-        X,
-        Y,
-        LB,
-        RB,
-        BACK,
-        START,
-        LS,
-        RS,
-        PS,
-        TOUCHPAD,
-        POV_N,
-        POV_NE,
-        POV_E,
-        POV_SE,
-        POV_S,
-        POV_SW,
-        POV_W,
-        POV_NW,
-        POV_NULL,
-        LT,
-        RT,
-        JOYSTICK_L_X,
-        JOYSTICK_L_Y,
-        JOYSTICK_R_X,
-        JOYSTICK_R_Y
+        A, B, X, Y, LB, RB, BACK, START, LS, RS, PS, TOUCHPAD, POV_N, POV_NE, POV_E, POV_SE, POV_S, POV_SW, POV_W, POV_NW, POV_NULL, LT, RT, JOYSTICK_L_X, JOYSTICK_L_Y, JOYSTICK_R_X, JOYSTICK_R_Y
     }
 
     public enum AxisType {
-        LEFT_X,
-        LEFT_Y,
-        RIGHT_X,
-        RIGHT_Y,
-        LEFT_TRIGGER,
-        RIGHT_TRIGGER,
-        POV_X,
-        POV_Y
+        LEFT_X, LEFT_Y, RIGHT_X, RIGHT_Y, LEFT_TRIGGER, RIGHT_TRIGGER, POV_X, POV_Y
     }
 
     private HashMap<Integer, JoystickButton> availableJoystickButtons;
@@ -81,18 +47,16 @@ public class HighAltitudeJoystick {
 
     /**
      * 
-     * Creates a new {@link HighAltitudeJoystick}, which can be either XBOX or PS4.
-     * This Joystick has associated buttons.
+     * Creates a new {@link HighAltitudeJoystick}, which can be either XBOX or PS4. This Joystick
+     * has associated buttons.
      * 
-     * If the joystick type is UNKOWN, use
-     * {@link #HighAltitudeJoystick(int, int, int)} as constructor preferrably.
-     * Otherwise, the default button count will be 14 and the default axis count
-     * will be 6. If these values are not true, you risk nullPointerExceptions and
-     * DS warning overloads.
+     * If the joystick type is UNKOWN, use {@link #HighAltitudeJoystick(int, int, int)} as
+     * constructor preferrably. Otherwise, the default button count will be 14 and the default axis
+     * count will be 6. If these values are not true, you risk nullPointerExceptions and DS warning
+     * overloads.
      * 
-     * Though there's some support for an
-     * UNKNOWN {@link JoystickType}, the specific case will have to be handled
-     * manually by the programmer using {@link #getJoystickButtonObj(int)} and
+     * Though there's some support for an UNKNOWN {@link JoystickType}, the specific case will have
+     * to be handled manually by the programmer using {@link #getJoystickButtonObj(int)} and
      * {@link #getRawAxis(int)}.
      * 
      * 
@@ -124,18 +88,16 @@ public class HighAltitudeJoystick {
 
     /**
      * 
-     * Creates a new UNKNOWN{@link HighAltitudeJoystick}.
-     * This Joystick has associated buttons and axes, which you specify in the
-     * constructor's second and third parameter respectively.
-     * Use {@link #getJoystickButtonObj(int)} and {@link #getRawAxis(int)} to access
-     * their data. Use accurate button and axes counts to prevent DS Warning
-     * overloads.
+     * Creates a new UNKNOWN{@link HighAltitudeJoystick}. This Joystick has associated buttons and
+     * axes, which you specify in the constructor's second and third parameter respectively. Use
+     * {@link #getJoystickButtonObj(int)} and {@link #getRawAxis(int)} to access their data. Use
+     * accurate button and axes counts to prevent DS Warning overloads.
      * 
      * 
-     * @param port        The port of the controller.
-     * @param type        The {@link JoystickType} of the controller.
+     * @param port The port of the controller.
+     * @param type The {@link JoystickType} of the controller.
      * @param buttonCount The amount of buttons 1...n that this joystick has.
-     * @param axisCount   The amount of axes 1...n that this joystick has.
+     * @param axisCount The amount of axes 1...n that this joystick has.
      */
 
     public HighAltitudeJoystick(int port, int buttonCount, int axisCount) {
@@ -314,10 +276,9 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Will return the RAW value of the given {@link AxisType}. The mapping that
-     * relates {@link AxisType} with the corresponding port is
-     * {@link axisConfiguration}. PS4 triggers will return a value from -1 to 1
-     * instead of returning from 0-1.
+     * Will return the RAW value of the given {@link AxisType}. The mapping that relates
+     * {@link AxisType} with the corresponding port is {@link axisConfiguration}. PS4 triggers will
+     * return a value from -1 to 1 instead of returning from 0-1.
      * 
      * @param axisType The desired axis
      * @return Raw axis value
@@ -336,8 +297,8 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Will return the RAW value of the given axis port. PS4 triggers will return a
-     * value from -1 to 1 instead of returning from 0-1.
+     * Will return the RAW value of the given axis port. PS4 triggers will return a value from -1 to
+     * 1 instead of returning from 0-1.
      * 
      * @param axisType The port of the desired axis
      * @return Raw axis value
@@ -347,10 +308,10 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Will return the PROCESSED value of the chosen axis, applying both the set
-     * <b>deadzone</b> and <b>multiplier</b>. PS4 Triggers are given in standard 0
-     * to 1 instead of -1 to 1. Use {@link #setAxisDeadzone(AxisType, double)} and
-     * {@link #setAxisMultiplier(AxisType, double)} to modify these values.
+     * Will return the PROCESSED value of the chosen axis, applying both the set <b>deadzone</b> and
+     * <b>multiplier</b>. PS4 Triggers are given in standard 0 to 1 instead of -1 to 1. Use
+     * {@link #setAxisDeadzone(AxisType, double)} and {@link #setAxisMultiplier(AxisType, double)}
+     * to modify these values.
      * 
      * @param axis The desired axis
      * @return Processed axis value
@@ -367,11 +328,9 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Will return the value of the joystick's Left and Right Triggers combined. For
-     * instance, if the left one is pressed all the way in, -1 will be returned. If
-     * the
-     * right trigger is pressed all the way in, +1 will returned. If both
-     * are pressed, 0 will be returned.
+     * Will return the value of the joystick's Left and Right Triggers combined. For instance, if
+     * the left one is pressed all the way in, -1 will be returned. If the right trigger is pressed
+     * all the way in, +1 will returned. If both are pressed, 0 will be returned.
      * 
      * @return Processed axis value
      */
@@ -385,8 +344,8 @@ public class HighAltitudeJoystick {
     /**
      * Treats the POV axis as if it were another axis.
      * 
-     * @return the 'raw' x-value of the POV. Use {@link #getAxis()} to obtain a
-     *         value with deadzone/multiplier applied.
+     * @return the 'raw' x-value of the POV. Use {@link #getAxis()} to obtain a value with
+     *         deadzone/multiplier applied.
      */
 
     public double getPovXAxis() {
@@ -397,8 +356,8 @@ public class HighAltitudeJoystick {
     /**
      * Treats the POV axis as if it were another axis.
      * 
-     * @return the 'raw' y-value of the POV. Use {@link #getAxis()} to obtain a
-     *         value with deadzone/multiplier applied.
+     * @return the 'raw' y-value of the POV. Use {@link #getAxis()} to obtain a value with
+     *         deadzone/multiplier applied.
      */
 
     public double getPovYAxis() {
@@ -450,12 +409,11 @@ public class HighAltitudeJoystick {
     // THIS WAY
 
     /**
-     * Starts the given command whenever the button changes from 'unpressed' to
-     * 'pressed'.
-     * Won't cancel the command.
+     * Starts the given command whenever the button changes from 'unpressed' to 'pressed'. Won't
+     * cancel the command.
      * 
      * @param buttonType the button which will trigger the command
-     * @param command    command to be assigned to button
+     * @param command command to be assigned to button
      */
     public void onTrue(ButtonType buttonType, Command command) {
         try {
@@ -467,13 +425,47 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Starts the given command whenever the condition changes from 'unpressed' to
-     * 'pressed'.
-     * Cancels the given command whenever the condition changes from 'pressed' to
-     * 'unpressed'.
+     * Starts the given command whenever the button changes from 'unpressed' to 'pressed'. Won't
+     * cancel the command.
+     * 
+     * @param buttonType the button which will trigger the command
+     * @param command command to be assigned to button
+     */
+    public void onTrueWithState(ButtonType buttonType, Command command,
+            Supplier<GameMode> currentMode, GameMode requiredMode) {
+        try {
+            Trigger chosenButton = joystickButtonConfiguration.get(buttonType);
+            System.out.println("OnTrue" + (currentMode.get() == requiredMode));
+            chosenButton.and(() -> currentMode.get() == requiredMode).onTrue(command);
+        } catch (NullPointerException e) {
+            reportButtonError(buttonType, command);
+        }
+    }
+
+    /**
+     * Starts the given command whenever the condition changes from 'unpressed' to 'pressed'.
+     * Cancels the given command whenever the condition changes from 'pressed' to 'unpressed'.
      *
      * @param povE the button which will trigger the command
-     * @param command    command to be assigned to button
+     * @param command command to be assigned to button
+     */
+    public void whileTrueWithState(ButtonType povE, Command command, Supplier<GameMode> currentMode,
+            GameMode requiredMode) {
+        try {
+            Trigger chosenButton = joystickButtonConfiguration.get(povE);
+            System.out.println("WhileTrue" + (currentMode.get() == requiredMode));
+            chosenButton.and(() -> currentMode.get() == requiredMode).whileTrue(command);
+        } catch (NullPointerException e) {
+            reportButtonError(povE, command);
+        }
+    }
+
+    /**
+     * Starts the given command whenever the condition changes from 'unpressed' to 'pressed'.
+     * Cancels the given command whenever the condition changes from 'pressed' to 'unpressed'.
+     *
+     * @param povE the button which will trigger the command
+     * @param command command to be assigned to button
      */
     public void whileTrue(ButtonType povE, Command command) {
         try {
@@ -485,12 +477,11 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * When the condition changes from 'unpressed' to 'pressed', starts the command
-     * if it's not running
-     * and cancels the command if it's already running.
+     * When the condition changes from 'unpressed' to 'pressed', starts the command if it's not
+     * running and cancels the command if it's already running.
      *
      * @param buttonType the button which will trigger the command
-     * @param command    command to be assigned to button
+     * @param command command to be assigned to button
      */
     public void toggleOnTrue(ButtonType buttonType, Command command) {
         try {
@@ -502,12 +493,11 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Starts the given command whenever the condition changes from 'pressed' to
-     * 'unpressed'.
-     * Won't cancel the command.
+     * Starts the given command whenever the condition changes from 'pressed' to 'unpressed'. Won't
+     * cancel the command.
      *
      * @param buttonType the button which will trigger the command
-     * @param command    command to be assigned to button
+     * @param command command to be assigned to button
      */
     public void onFalse(ButtonType buttonType, Command command) {
         try {
@@ -519,13 +509,11 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Starts the given command whenever the condition changes from 'pressed' to
-     * 'unpressed'.
-     * Cancels the given command whenever the condition changes from 'unpressed' to
-     * 'pressed'.
+     * Starts the given command whenever the condition changes from 'pressed' to 'unpressed'.
+     * Cancels the given command whenever the condition changes from 'unpressed' to 'pressed'.
      *
      * @param buttonType the button which will trigger the command
-     * @param command    command to be assigned to button
+     * @param command command to be assigned to button
      */
     public void whileFalse(ButtonType buttonType, Command command) {
         try {
@@ -537,12 +525,11 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * When the condition changes from 'pressed' to 'unpressed', starts the command
-     * if it's not running
-     * and cancels the command if it's already running.
+     * When the condition changes from 'pressed' to 'unpressed', starts the command if it's not
+     * running and cancels the command if it's already running.
      *
      * @param buttonType the button which will trigger the command
-     * @param command    command to be assigned to button
+     * @param command command to be assigned to button
      */
     public void toggleOnFalse(ButtonType buttonType, Command command) {
         try {
@@ -554,8 +541,8 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Starts the given command whenever the condition of ALL chosen buttons
-     * is 'pressed'. Won't cancel the command.
+     * Starts the given command whenever the condition of ALL chosen buttons is 'pressed'. Won't
+     * cancel the command.
      *
      * @param command command to be assigned to button
      * @param buttons these are the buttons which will trigger the command
@@ -594,9 +581,8 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * Starts the given command whenever the condition of ALL chosen buttons
-     * is 'pressed'. Cancells the command when at least one of the buttons is
-     * 'unpressed'.
+     * Starts the given command whenever the condition of ALL chosen buttons is 'pressed'. Cancells
+     * the command when at least one of the buttons is 'unpressed'.
      *
      * @param command command to be assigned to button
      * @param buttons these are the buttons which will trigger the command
@@ -634,8 +620,8 @@ public class HighAltitudeJoystick {
     }
 
     /**
-     * When all buttons are 'pressed', starts the command if it's not running
-     * and cancels the command if it's already running.
+     * When all buttons are 'pressed', starts the command if it's not running and cancels the
+     * command if it's already running.
      *
      * @param command command to be assigned to button
      * @param buttons these are the buttons which will trigger the command
@@ -673,10 +659,12 @@ public class HighAltitudeJoystick {
     }
 
     private void reportButtonError(ButtonType b, Command c) {
-        DriverStation.reportWarning("Button " + b + " not found! The command " + c + " won't be assigned.", true);
+        DriverStation.reportWarning(
+                "Button " + b + " not found! The command " + c + " won't be assigned.", true);
     }
 
     private void reportButtonErrorCombo(ButtonType b, Command c) {
-        DriverStation.reportWarning("Button " + b + " not found when assigning combo for " + c, true);
+        DriverStation.reportWarning("Button " + b + " not found when assigning combo for " + c,
+                true);
     }
 }

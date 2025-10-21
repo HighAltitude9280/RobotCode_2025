@@ -30,6 +30,8 @@ public class Vision extends SubsystemBase {
   ArrayList<PhotonPoseEstimator> poseEstimators;
   ArrayList<List<PhotonPipelineResult>> results;
 
+  private int bestTargetID;
+
   // Cache del mejor target por cámara (para alineación robusta)
   private PhotonTrackedTarget[] lastGoodTarget; // por cámara
   private double[] lastGoodTs; // timestamp (FPGATime) del target cacheado
@@ -86,6 +88,7 @@ public class Vision extends SubsystemBase {
 
       Optional<EstimatedRobotPose> pose = resList.stream().filter(r -> r.hasTargets()).filter(r -> {
         var t = r.getBestTarget();
+
         double dist = t.bestCameraToTarget.getTranslation().getNorm();
         double amb = t.poseAmbiguity;
         return dist <= HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_DISTANCE
@@ -189,6 +192,7 @@ public class Vision extends SubsystemBase {
         lastGoodTarget[i] = best;
         lastGoodTs[i] = now;
       }
+      bestTargetID = r.getBestTarget().getFiducialId();
     }
 
     /*
@@ -209,6 +213,80 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Limelight Target ID", getTargetID());
   }
 
+  // ========= API DIRECTA USANDO getBestTarget() =========
+
+  /**
+   * Busca el mejor target *actual* (sin TTL/caché) entre las cámaras de alineación usando la
+   * función predefinida "getBestTarget()" de PhotonVision. * Filtra el target resultante por
+   * distancia y ambigüedad. * @return El ID del mejor target visible en este frame, or -1 si no
+   * hay.
+   */
+  public int getBestTargetID() {
+    PhotonTrackedTarget bestOverallCandidate = null;
+
+    // Métricas para comparar al 'bestOverallCandidate'
+    double bestAmb = Double.POSITIVE_INFINITY;
+    double bestYawA = Double.POSITIVE_INFINITY;
+    double bestDist = Double.POSITIVE_INFINITY;
+
+    // (EPS para comparaciones, si no lo tienes global, decláralo aquí)
+    final double EPS = 1e-9;
+
+    // Itera solo sobre las cámaras designadas para alineación
+    for (int camIdx : HighAltitudeConstants.ALIGNMENT_CAMERAS) {
+      // Chequeos de seguridad
+      if (camIdx < 0 || camIdx >= results.size())
+        continue;
+
+      var resList = results.get(camIdx);
+      if (resList == null || resList.isEmpty())
+        continue;
+
+      var r = resList.get(resList.size() - 1); // Obtiene solo el frame más reciente
+      if (!r.hasTargets())
+        continue;
+
+      // === INICIO DEL CAMBIO ===
+      // 1. Usamos la función predefinida de PhotonVision
+      PhotonTrackedTarget cameraBestTarget = r.getBestTarget();
+
+      // 2. APLICAMOS TUS FILTROS sobre ESE target
+      double dist = cameraBestTarget.bestCameraToTarget.getTranslation().getNorm();
+      double amb = cameraBestTarget.poseAmbiguity;
+
+      boolean ambOk =
+          (amb < 0) || (amb <= HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_AMBIGUITY);
+      boolean distOk = dist <= HighAltitudeConstants.VISION_POSE_ESTIMATOR_MAX_DISTANCE;
+
+      // Si el "mejor" target de esta cámara NO es válido, ignoramos esta cámara
+      if (!(ambOk && distOk)) {
+        continue;
+      }
+      // === FIN DEL CAMBIO ===
+
+      // 3. Este target SÍ es válido. Vemos si es mejor que el mejor de OTRA cámara.
+      double yawAbs = Math.abs(cameraBestTarget.getYaw());
+      double ambScore = (amb < 0) ? 0.0 : amb; // -1 (desconocido) se trata como 0
+
+      // Compara con el mejor 'pick' encontrado hasta ahora
+      if (ambScore + EPS < bestAmb
+          || (Math.abs(ambScore - bestAmb) < EPS && (yawAbs + EPS < bestYawA
+              || (Math.abs(yawAbs - bestYawA) < EPS && dist + EPS < bestDist)))) {
+
+        bestOverallCandidate = cameraBestTarget; // Nuevo mejor
+        bestAmb = ambScore;
+        bestYawA = yawAbs;
+        bestDist = dist;
+      }
+    }
+
+    // Al final, devolvemos el ID del mejor de los mejores
+    if (bestOverallCandidate != null) {
+      return bestOverallCandidate.getFiducialId();
+    } else {
+      return -1; // No se encontró ningún target válido en este frame
+    }
+  }
   // ========= NUEVAS APIS RELIABLE PARA ALINEACIÓN =========
 
   /** Mejor target disponible (con TTL) entre las cámaras de alineación. */
@@ -226,6 +304,7 @@ public class Vision extends SubsystemBase {
         continue;
 
       var t = lastGoodTarget[camIdx];
+
       double ts = lastGoodTs[camIdx];
       if (t == null)
         continue;

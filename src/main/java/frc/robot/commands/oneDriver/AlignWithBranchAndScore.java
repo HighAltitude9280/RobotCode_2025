@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.HighAltitudeConstants;
 import frc.robot.HighAltitudeConstants.REEF_HEIGHT;
 import frc.robot.commands.autonomous.ScoreCoral;
-import frc.robot.commands.swerve.autonomous.offSeason.AlignWithTargetPose;
+import frc.robot.commands.swerve.autonomous.offSeason.DriveToTargetBranchPose;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// NOTE: Consider using this command inline, rather than writing a subclass. For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AlignWithBranchAndScore extends SequentialCommandGroup {
@@ -20,9 +20,8 @@ public class AlignWithBranchAndScore extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-        new AlignWithTargetPose(null, null, left,
-            HighAltitudeConstants.VISION_POSE_MAX_SPEED,
-            HighAltitudeConstants.VISION_POSE_MAX_TURN),
+        new DriveToTargetBranchPose(left, HighAltitudeConstants.VISION_POSE_MAX_SPEED,
+            HighAltitudeConstants.VISION_POSE_MAX_TURN, true),
         new ScoreCoral(height)
 
     );

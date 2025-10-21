@@ -16,7 +16,7 @@ import frc.robot.commands.extensor.wrist.control.WristGoToTarget;
 import frc.robot.subsystems.extensor.Lift;
 import frc.robot.subsystems.extensor.Wrist;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// NOTE: Consider using this command inline, rather than writing a subclass. For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LiftWristGoToTargetHeight extends InstantCommand {
@@ -60,15 +60,17 @@ public class LiftWristGoToTargetHeight extends InstantCommand {
           new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER, liftTarget,
               HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
           new ParallelRaceGroup(
-              new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
+              new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
+                  HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
               new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED))))
-          .schedule();
+                  .schedule();
     else
-      (new SequentialCommandGroup(new ParallelRaceGroup(
-          new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER, HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
-          new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
+      (new SequentialCommandGroup(
+          new ParallelRaceGroup(
+              new LiftDefaultCommand(HighAltitudeConstants.LIFT_MAX_POWER,
+                  HighAltitudeConstants.LIFT_ARRIVE_OFFSET),
+              new WristGoToTarget(wristTarget, HighAltitudeConstants.WRIST_DRIVE_SPEED)),
           new LiftGoToTarget(HighAltitudeConstants.LIFT_MAX_POWER_GOING_DOWN, liftTarget,
-              HighAltitudeConstants.LIFT_ARRIVE_OFFSET)))
-          .schedule();
+              HighAltitudeConstants.LIFT_ARRIVE_OFFSET))).schedule();
   }
 }
