@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
     return coralMode;
   }
 
+
   private static REEF_SIDE reef_mode = REEF_SIDE.CENTER;
 
   public static REEF_SIDE getReefMode() {

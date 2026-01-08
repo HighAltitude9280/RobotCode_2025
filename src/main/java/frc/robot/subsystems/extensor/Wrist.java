@@ -26,14 +26,13 @@ public class Wrist extends SubsystemBase {
   /** Creates a new Wrist. */
   public Wrist() {
     wristMotors = new HighAltitudeMotorGroup(RobotMap.WRIST_MOTOR_PORTS,
-        RobotMap.WRIST_INVERTED_MOTORS_PORTS,
-        RobotMap.WRIST_MOTOR_TYPES);
+        RobotMap.WRIST_INVERTED_MOTORS_PORTS, RobotMap.WRIST_MOTOR_TYPES);
 
     wristMotors.setEncoderInverted(RobotMap.WRIST_ENCODER_IS_INVERTED);
     wristMotors.setBrakeMode(true);
 
-    pidController = new PIDController(HighAltitudeConstants.WRIST_kP, HighAltitudeConstants.WRIST_kI,
-        HighAltitudeConstants.WRIST_kD);
+    pidController = new PIDController(HighAltitudeConstants.WRIST_kP,
+        HighAltitudeConstants.WRIST_kI, HighAltitudeConstants.WRIST_kD);
     // resetEncoders();
   }
 
@@ -68,7 +67,6 @@ public class Wrist extends SubsystemBase {
   }
 
   public void mantainTarget(double maxPower) {
-
     double power = pidController.calculate(getWristPosDegrees(), getCurrentTarget());
     power = Math.clamp(power * maxPower, -maxPower, maxPower);
     driveWrist(power);
@@ -100,6 +98,6 @@ public class Wrist extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    putTuningValues();
+    // putTuningValues();
   }
 }

@@ -45,6 +45,15 @@ public class Gripper extends SubsystemBase {
     gripperMotors.setAll(HighAltitudeConstants.GRIPPER_IN_SPEED);
   }
 
+  public void gripperOut(double speed) {
+    gripperMotors.setAll(speed);
+  }
+
+  public void stopGripper() {
+    gripperMotors.setAll(0);
+  }
+
+
   /** Verifica si la corriente del motor ha superado el umbral */
   public boolean isCurrentThresholdExceeded() {
     double current = gripperMotors.getMotors().get(0).getOutput();
@@ -75,13 +84,6 @@ public class Gripper extends SubsystemBase {
     }
   }
 
-  public void gripperOut(double speed) {
-    gripperMotors.setAll(speed);
-  }
-
-  public void stopGripper() {
-    gripperMotors.setAll(0);
-  }
 
   public boolean getDigitalInput() {
     if (RobotMap.GRIPPER_DIGITAL_INPUT_IS_AVAILABLE)
